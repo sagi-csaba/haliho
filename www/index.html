@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>[sagi Smart Solutions</title>
+		<meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
+		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">		
+		<link rel="stylesheet" href="css/fonts.css">
+		<link rel="stylesheet" href="css/csagi.css">
+		<link rel="stylesheet" href="css/icono.min.css">
+		<link rel="stylesheet" href="css/grid_listview-grid.css">
+		<style type="text/css" media="screen">
+	
+			html, body, div, span, applet, object, iframe,
+			p, blockquote, pre,
+			a, abbr, acronym, address, big, cite, code,
+			del, dfn, em, img, ins, kbd, q, s, samp,
+			small, strike, strong, sub, sup, tt, var,
+			b, u, i, center,
+			dl, dt, dd, ol, ul, li,
+			fieldset, form, label, legend,
+			table, caption, tbody, tfoot, thead, tr, th, td,
+			article, aside, canvas, details, embed, 
+			figure, figcaption, footer, header, hgroup, 
+			menu, nav, output, ruby, section, summary,
+			time, mark, audio, video {font-family: 'Jura' !important; font-weight: 400 !important;}
+			h1 {font-family: 'Jura' !important; font-weight: 700 !important;}
+			h2 {font-family: 'Jura' !important; font-weight: 600 !important;}
+			h3 {font-family: 'Jura' !important; font-weight: 500 !important;}
+			h4,h5,h6 {font-family: 'Jura' !important; font-weight: 300 !important;}
+			article {font-family: 'Jura';}
+		</style>
+    </head>
+	
+    <body>
+        <script type="text/javascript" src="cordova.js"></script>
+		<script src="js/jquery-1.11.1.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+		<script src="js/jscolor.js"></script>
+		<section data-role="page" id="first" data-theme="a">
+			<header data-role="header" data-position="fixed">
+				<h2><span class="redText">[</span>sagi Smart Solutions</h2>
+			</header>
+
+			<article role="main" class="ui-content my-page" >
+         <h2>elérhető Node-ok:</h2>
+			
+		<script type="text/javascript">
+				$('#ledType').change(function(){
+								var selected_value = $("input[name='radio-choice-t-6']:checked").val();
+								if (selected_value == "on")
+								{
+									document.getElementById("rgbPicker").classList.remove("hide");
+									document.getElementById("whiteLEDBrightness").classList.add("hide");
+								}
+								else
+								{
+									document.getElementById("rgbPicker").classList.add("hide");
+									document.getElementById("whiteLEDBrightness").classList.remove("hide");
+								}
+				});
+				
+				function showLEDtype() {
+					document.getElementById("ledType").classList.remove("hide");
+				}
+				
+			
+				function turnOffAnimText() {
+					document.getElementById("ledType").classList.add("hide");
+					document.getElementById("rgbPicker").classList.add("hide");
+					document.getElementById("whiteLEDBrightness").classList.add("hide");
+					document.getElementById("showRgbSetting").classList.remove("ui-btn-active");
+					document.getElementById("showRgbSetting").classList.remove("ui-btn-active");
+					document.getElementById("powerState").innerHTML = "kikapcsolva";
+				}
+				
+				function powerButtonPressed()
+				{
+					var klasszlista = document.getElementById("powerButton").classList;
+					if (klasszlista == "btn btn-blob")
+					{
+						document.getElementById("powerButton").classList.add("blob");
+						document.getElementById("powerState").innerHTML = "bekapcsolva";
+						window.setTimeout(showLEDtype,250);
+					}
+					else
+					{
+						document.getElementById("powerButton").classList.remove("blob");
+						
+						
+						window.setTimeout(turnOffAnimText,250);
+					}
+				}
+				
+				function showRgbSetting()
+				{
+					document.getElementById("rgbPicker").classList.remove("hide");
+					document.getElementById("whiteLEDBrightness").classList.add("hide");
+
+				}
+				
+				function showWhiteSetting() {
+					document.getElementById("rgbPicker").classList.add("hide");
+					document.getElementById("whiteLEDBrightness").classList.remove("hide");
+				}
+				
+				function onLoad() {
+					document.addEventListener("deviceready", onDeviceReady, false);
+				}
+				onLoad();
+				
+				function onDeviceReady() {
+					document.getElementById("content").innerHTML = "funkció meg lett hívva";
+					
+						document.getElementById("content").innerHTML = "elkezdődött...";
+						var zeroconf = cordova.plugins.zeroconf;
+						zeroconf.watch('_http._tcp.', 'local.', function(result) {
+							var action = result.action;
+							var service = result.service;
+							document.getElementById("content").innerHTML += (JSON.stringify(result));
+							if (action == 'added') {
+								document.getElementById("content").innerHTML += "service added...: " + service;
+								
+							} 
+							else if (action == 'resolved') {
+								document.getElementById("content").innerHTML += "service resolved...";
+								
+								document.getElementById("content3").innerHTML += "service resolved...";
+								var namett = service.name;
+								var ipv4addresstt = service.ipv4Addresses;
+								document.getElementById("content3").innerHTML += "<br>ID: " + namett + "<br>IP: " +  ipv4addresstt + "<br>";
+							}
+							else {
+								document.getElementById("content").innerHTML += "service removed...";
+							}
+						});
+						
+						document.getElementById("content").innerHTML += "vége is lett...";
+				 }
+
+				function ws1()
+				{
+					document.getElementById("content").innerHTML += "***********ws1 ";
+					if ("WebSocket" in window)
+					{
+						document.getElementById("content").innerHTML += "ws támogatva ";
+					}
+					var ws = new WebSocket("ws://192.168.1.238:8009");
+					document.getElementById("content").innerHTML += "deklarálva ";
+					ws.onopen = function () {
+						//document.getElementById("content").innerHTML += "onopen ";
+						ws.send("hoppszala-mukodik");
+						ws.close();
+					}
+				}
+				
+				function testf2() 
+				{
+					
+					document.getElementById("content2").innerHTML = "funkció meg lett hívva";
+					
+						document.getElementById("content2").innerHTML = "";
+						var zeroconf = cordova.plugins.zeroconf;
+						zeroconf.reInit();
+						zeroconf.watch('_http._tcp.', 'local.', function(result) {
+							var action = result.action;
+							var service = result.service;
+							//document.getElementById("content2").innerHTML += (JSON.stringify(result));
+							if (action == 'added') {
+								
+							} 
+							else if (action == 'resolved') {
+								document.getElementById("content2").innerHTML += "service resolved...";
+								var namett = service.name;
+								var ipv4addresstt = service.ipv4Addresses;
+								document.getElementById("content2").innerHTML += "<br>ID: " + namett + "<br>IP: " +  ipv4addresstt + "<br>";
+								
+							}
+							else {
+								//document.getElementById("content2").innerHTML += "service removed...";
+							}
+						});
+						
+						//document.getElementById("content2").innerHTML += "vége is lett...";
+						
+				
+				
+				}
+				
+				function testf3() 
+				{
+				
+				}
+				
+				function debug() {
+					var allapot = document.getElementById("flip-debug").checked;
+					
+					if (allapot == true)
+					{
+						document.getElementById("content").style.display = "block";
+						document.getElementById("content2").style.display = "block";
+						document.getElementById("content3").style.display = "block";
+						document.getElementById("btn_debug1").style.display = "block";
+						document.getElementById("btn_debug2").style.display = "block";
+						document.getElementById("btn_debug3").style.display = "block";
+					}
+					else
+					{
+						document.getElementById("content").style.display = "none";
+						document.getElementById("content2").style.display = "none";
+						document.getElementById("content3").style.display = "none";
+						document.getElementById("btn_debug1").style.display = "none";
+						document.getElementById("btn_debug2").style.display = "none";
+						document.getElementById("btn_debug3").style.display = "none";
+					}
+					
+				}
+				
+				function showNode(nodeID) {
+					loading('show');
+					var nodetitle = document.getElementById("node" + nodeID + "title").innerHTML;
+					var nodedescription = document.getElementById("node" + nodeID + "description").innerHTML;
+					var descriptionsplit = nodedescription.split("|");
+						if (nodedescription.indexOf("RGBW") != -1){
+							document.getElementById("nodenameRGBW").innerHTML = "RGBW | " + nodetitle;
+							document.getElementById("rgbNodeName").innerHTML = descriptionsplit[0];
+							document.getElementById("rgbNodeIP").innerHTML = descriptionsplit[1];
+							loading('hide');
+							window.location.href = '#pageRGBW';
+						}
+						
+						if (nodedescription.indexOf("WS") != -1){
+							document.getElementById("nodenameWS").innerHTML = "WS | " + nodetitle;
+							document.getElementById("wsNodeName").innerHTML = descriptionsplit[0];
+							document.getElementById("wsNodeIP").innerHTML = descriptionsplit[1];
+							loading('hide');
+							window.location.href = '#pageWEATHER';
+						}	
+					
+				}
+					
+				function updateRGBcode(picker) {
+					//document.getElementById("rgbValueToChange").innerHTML = Math.round(picker.rgb[0]) + "," Math.round(picker.rgb[1]) + "," + Math.round(picker.rgb[2]) ;
+					var newcode = "alap";
+					newcode = Math.round(picker.rgb[0]) + "-" + Math.round(picker.rgb[1]) + "-" + Math.round(picker.rgb[2]) + "-0";
+					document.getElementById("rgbValueToChange").innerHTML = newcode;
+					
+					var ws = new WebSocket("ws://192.168.1.238:8009");
+					ws.onopen = function () {
+						//document.getElementById("content").innerHTML += "onopen ";
+						ws.send(newcode);
+						ws.close();
+					}
+				}
+				
+				function updateWhiteCode(ertek)
+				{
+					var newcode = "alap";
+					newcode = "0-0-0-" + ertek;
+					document.getElementById("rgbValueToChange2").innerHTML = newcode;
+					
+					var ws = new WebSocket("ws://192.168.1.238:8009");
+					ws.onopen = function () {
+						//document.getElementById("content").innerHTML += "onopen ";
+						ws.send(newcode);
+						ws.close();
+					}
+				}
+				
+				function loading(showOrHide) {
+					setTimeout(function(){
+						$.mobile.loading(showOrHide);
+					}, 1); 
+				}
+				
+			</script>
+			
+				<!-- DEBUG -->
+				 <div name="content" id="content" style="display:none; min-height:25vh;" >hahó</div>
+				 <div name="content2" id="content2" style="display:none; min-height:25vh;" >hahó</div>
+				 <div name="content3" id="content3" style="display:none; min-height:25vh;" >hahó</div>
+				 <button name="btn_debug1" id="btn_debug1" style="display: none;" onclick="testf2()">új testf2</button> 
+				 <button name="btn_debug2" id="btn_debug2" style="display: none;" onclick="testf2()">ismét új testf2</button> 
+				 <button name="btn_debug3" id="btn_debug3" style="display: none;" onclick="ws1()">websocket ip-re</button>
+				<!-- END DEBUG -->    
+				<!--<a href="#pageRGBW" name="linkRGBW" id="linkRGBW" style="diplay:none" data-transition="flip"> --><!-- ez a linkes megoldás a click-el hívható meg -->
+				<ul data-role="listview" data-inset="true">
+							<li name="node1" id ="node1"><a href="javascript:void(0)" data-transition="slidefade" onclick="showNode('1')">
+								<img name="node1img" id ="node1img" class="ui-li-thumb" src="img/icon_rgb.png">
+								<h2 name="node1title" id ="node1title">nappali </h2>
+								<p name="node1description" id ="node1description">csagi_NODE_RGBW_1168558 | 192.168.1.238</p>
+								<p name="node1status" id ="node1status" class="ui-li-aside">kikapcsolva</p>
+							</a></li>
+							<li name="node2" id ="node2"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('2')">
+								<img name="node2img" id ="node2img" class="ui-li-thumb" src="img/icon_weather.png">
+								<h2 name="node2title" id ="node2title">nappali hőmérő</h2>
+								<p name="node2description" id ="node2description">csagi_NODE_WS_1168559 | 192.168.1.239</p>
+								<p name="node2status" id ="node2status" class="ui-li-aside">26°C - 67% - 1011 hpa</p>
+							</a></li>
+							<li name="node3" id ="node3"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('3')">
+								<img name="node3img" id ="node3img" class="ui-li-thumb" src="img/icon_rgb.png">
+								<h2 name="node3title" id ="node3title">hálószoba </h2>
+								<p name="node3description" id ="node3description">csagi_NODE_RGBW_1168560 | 192.168.1.240</p>
+								<p name="node3status" id ="node3status" class="ui-li-aside">"almazöld" - 70%</p>
+							</a></li>
+							<li name="node4" id ="node4"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('4')">
+								<img name="node4img" id ="node4img" class="ui-li-thumb" src="img/bedroom.jpg">
+								<h2 name="node4title" id ="node4title">gyerekszoba</h2>
+								<p name="node4description" id ="node4description">csagi_NODE_RGBW_1168561 | 192.168.1.241</p>
+								<p name="node4status" id ="node4status" class="ui-li-aside">Fehér: 76%</p>
+							</a></li>
+							<li name="node5" id ="node5"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('5')">
+								<img name="node5img" id ="node5img" class="ui-li-thumb" src="img/icon_irrigation.png">
+								<h2 name="node5title" id ="node5title">öntöző rendszer</h2>
+								<p name="node5description" id ="node5description">további beágyazott rendszerek</p>
+								<p name="node5status" id ="node5status" class="ui-li-aside">1:be 2:ki 3:ki 4:ki</p>
+							</a></li>
+							<li name="node6" id ="node5"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('6')">
+								<h2 name="node6title" id ="node6title">kép nélküli</h2>
+								<p name="node6description" id ="node6description">ez pedig itt egy olyan csempe, amihez nem tartozik kép</p>
+								<p name="node6status" id ="node6status" class="ui-li-aside">Egyszerűbb</p>
+							</a></li>
+						</ul>
+			
+            </article>
+
+            <footer data-role="footer" data-position="fixed">
+                <div align="center">debug:  
+					<input type="checkbox" name="flip-debug" id="flip-debug" data-role="flipswitch" data-on-text="be" data-off-text="ki" onchange="debug()" data-wrapper-class="custom-label-flipswitch" >
+				</div>
+            </footer>
+        </section>
+
+        <section data-role="page" id="pageRGBW" data-theme="b" data-transition="slidefade">
+				<header data-role="header" data-position="fixed" >
+					<h2 name="nodenameRGBW" id ="nodenameRGBW">RGBW: </h2>
+					<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+					<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+				</header>
+
+				<article role="main" class="ui-content">
+					
+						<div id="powerButton" name="powerButton" onclick="powerButtonPressed()" class="btn btn-blob"><div style="margin-top:-15px;" class="icono-power"></div></div>
+						
+						<h2 id="powerState" name="powerState" align="center">kikapcsolva</h2>
+						
+						<!--<form id="ledType" style="margin-bottom:20px;" name="ledType" class="lathato hide">
+							<fieldset data-role="controlgroup" data-theme="b" data-type="horizontal">
+								<h3>Fényforrás:</h3>
+								<input name="radio-choice-t-6" id="radio-choice-t-6a" value="on" checked="true" type="radio">
+								<label for="radio-choice-t-6a">Színes LED</label>
+								<input name="radio-choice-t-6" id="radio-choice-t-6b" value="off" checked="false" type="radio">
+								<label for="radio-choice-t-6b">Fehér LED</label> 
+							</fieldset>
+						</form>-->
+						
+						<div id="ledType" name="ledType" style="max-width:90%;margin-left:5%;margin-top:10px; margin-bottom:35px;" class="lathato hide" data-role="navbar">
+							<h3>Fényforrás:</h3>
+							<ul>
+								<li><a href="#" id="showRgbSetting" style="font-size:1.2em;" name="showRgbSetting" onclick="showRgbSetting()">Színes LED</a></li>
+								<li><a href="#" id="showWhiteSetting" style="font-size:1.2em;" name="showWhiteSetting" onclick="showWhiteSetting()">Fehér LED</a></li>
+							</ul>
+						</div><!-- /navbar -->
+						
+						
+						<div id="rgbPicker" name="rgbPicker" style="margin-right:5%;" class="lathato hide">
+						<div style="display:inline-block;margin-left:5%;">Szín és fényerő: </div>
+						<div  style="display:inline-block;font-size:0.8em;float:right;margin-top:5px;">RGB kód: <div name="rgbValueToChange" id="rgbValueToChange" style="display:inline-block;font-size:0.7em;"> </div></div>
+						<div style="margin-left:65px;"><input id="rgbPickerValue" name="rgbPickerValue" class="jscolor {onFineChange: 'updateRGBcode(this)'}" value="009900" readonly></div>
+						
+						</div>
+						
+						
+						
+						<form class="lathato hide" style="margin-right:5%;" id="whiteLEDBrightness" name="whiteLEDBrightness" >
+							<label for="slider-2" style="display:inline-block;margin-left:5%;" >Fényerő:</label>
+							<div  style="display:inline-block;font-size:0.8em;float:right;margin-top:5px;">RGB kód: <div name="rgbValueToChange2" id="rgbValueToChange2" style="display:inline-block;font-size:0.7em;"> </div></div>
+							<input name="slider-2" id="slider-2" oninput="updateWhiteCode(this.value)" onchange="updateWhiteCode(this.value)" data-highlight="true" data-track-theme="a" data-theme="a" min="0" max="1023" value="50" type="range">
+						</form>
+						<hr style="margin-top:50px;margin-bottom:50px;margin-left:20px;margin-right:20px;">
+						<h2>Node adatok</h2>
+						<div style="margin-left:50px;">
+							Név:<div id="rgbNodeName" name="rgbNodeName">...</div><br>
+							Szériaszám:<div id="rgbNodeSN" name="rgbNodeSN">...</div><br>
+							IP cím:<div id="rgbNodeIP" name="rgbNodeIP">...</div>
+							
+						</div>
+
+				</article>
+
+				<footer data-role="footer" data-position="fixed">
+					<h4>node-hoz tartozó lábléc</h4>
+				</footer>
+        </section>
+		
+		
+		<section data-role="page" id="pageWEATHER" data-theme="b" data-transition="slidefade">
+            <header data-role="header" data-position="fixed"  data-add-back-btn="true">
+                <h1 name="nodenameWS" id ="nodenameWS" >WS: </h1>
+				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+				
+				
+            </header>
+
+            <article role="main" class="ui-content">
+                <div style="display:inline-block;font-size:4em;">26 C</div><br>
+				relatív páratartalom:  <div center style="display:inline-block;font-size:2em;">62%</div><br> 
+				      légköri nyomás:  <div style="display:inline-block;font-size:1.5em;">1012 hpa</div>
+				
+				<hr style="margin-top:50px;margin-bottom:50px;margin-left:20px;margin-right:20px;">
+						<h2>Node adatok</h2>
+						<div style="margin-left:50px;">
+							Név:<div id="wsNodeName" name="wsNodeName">...</div><br>
+							Szériaszám:<div id="wsNodeSN" name="wsNodeSN">...</div><br>
+							IP cím:<div id="wsNodeIP" name="wsNodeIP">...</div>
+							
+						</div>
+				
+            </article>
+
+            <footer data-role="footer" data-position="fixed">
+                <h4>node-hoz tartozó lábléc</h4>
+            </footer>
+
+        </section>
+		
+    </body>
+</html>
