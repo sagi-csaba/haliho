@@ -183,7 +183,14 @@
 											var nodedesc = 'node' + listID + 'description';
 											document.getElementById(nodedesc).innerHTML = ipv4addresstt;
 											var nodestatus = 'node' + listID + 'status';
-											document.getElementById(nodestatus).innerHTML = "frissítés...";
+											document.getElementById(nodestatus).innerHTML = "frissítés2...";
+											var nodeimage = 'node' + listID + 'img';
+											
+											if (namett.indexOf('_WS') != -1) {document.getElementById(nodeimage).src = 'img\icon_WS.svg';}
+											if (namett.indexOf('_RGBW') != -1) {document.getElementById(nodeimage).src = 'img\icon_RGBW.svg';}
+											if (namett.indexOf('_SP') != -1) {document.getElementById(nodeimage).src = 'img\icon_SP.svg';}
+											if (namett.indexOf('_RF') != -1) {document.getElementById(nodeimage).src = 'img\icon_RF.svg';}
+											
 											
 											
 											document.getElementById(nodeIDchk).style.display = 'block';
