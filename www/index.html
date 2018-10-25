@@ -2,9 +2,9 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>[sagi Smart Solutions</title>
+		<title>snode</title>
 		<meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
-		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">		
+		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
 		<link rel="stylesheet" href="css/fonts.css">
 		<link rel="stylesheet" href="css/csagi.css">
 		<link rel="stylesheet" href="css/icono.min.css">
@@ -29,6 +29,7 @@
 			h3 {font-family: 'Jura' !important; font-weight: 500 !important;}
 			h4,h5,h6 {font-family: 'Jura' !important; font-weight: 300 !important;}
 			article {font-family: 'Jura';}
+			
 		</style>
     </head>
 	
@@ -40,14 +41,17 @@
 		<script src="js/Chart.min.js"></script>
 		<script src="js/moment.js"></script>
 		<section data-role="page" id="first" data-theme="a">
-			<header data-role="header" data-position="fixed">
-				<h2><span class="redText">[</span>sagi Smart Solutions</h2>
+			<header data-role="header" data-position="fixed" data-tap-toggle="false">
+				<div style="height:60px;margin-left:auto;margin-right:auto;"><img name="headerlogo" id ="headerlogo" style="height:50px;margin:auto;padding-top:5px;display:block;" src="img/logo_snode_dark_easy_final.svg"></div>
 			</header>
 
 			<article role="main" class="ui-content my-page" >
          <h2>elérhető Node-ok:</h2>
 			
 		<script type="text/javascript">
+				var nodeList = ["name|ip|statusTxt","dummy|dummy|dummy"]; //initial state
+				var nodeNames = ["name", "dummy"];
+				
 				$('#ledType').change(function(){
 								var selected_value = $("input[name='radio-choice-t-6']:checked").val();
 								if (selected_value == "on")
@@ -113,33 +117,85 @@
 				}
 				onLoad();
 				
-				function onDeviceReady() {
-					document.getElementById("content").innerHTML = "funkció meg lett hívva";
-					
-						document.getElementById("content").innerHTML = "elkezdődött...";
+				function hideNodeRecords() {
+					document.getElementById("node1").style.display = 'none';
+					document.getElementById("node2").style.display = 'none';
+					document.getElementById("node3").style.display = 'none';
+					document.getElementById("node4").style.display = 'none';
+					document.getElementById("node5").style.display = 'none';
+					document.getElementById("node6").style.display = 'none';
+					document.getElementById("node7").style.display = 'none';
+					document.getElementById("node8").style.display = 'none';
+					document.getElementById("node9").style.display = 'none';
+					document.getElementById("node10").style.display = 'none';
+				}
+				
+				function resetnodeList () {
+					nodeList = ["name|ip|statusTxt","dummy|dummy|dummy"];
+					nodeNames = ["name", "dummy"];
+				}
+				
+				function refreshNodeList() {
+				
+					resetnodeList();
+					hideNodeRecords();
+				
+					document.getElementById("content").innerHTML = "snode eszközök felderítése a hálózaton...";
 						var zeroconf = cordova.plugins.zeroconf;
 						zeroconf.watch('_http._tcp.', 'local.', function(result) {
 							var action = result.action;
 							var service = result.service;
 							document.getElementById("content").innerHTML += (JSON.stringify(result));
 							if (action == 'added') {
-								document.getElementById("content").innerHTML += "service added...: " + service;
-								
+								document.getElementById("content").innerHTML += "service added...: " + service;		
 							} 
 							else if (action == 'resolved') {
 								document.getElementById("content").innerHTML += "service resolved...";
 								
-								document.getElementById("content3").innerHTML += "service resolved...";
 								var namett = service.name;
 								var ipv4addresstt = service.ipv4Addresses;
-								document.getElementById("content3").innerHTML += "<br>ID: " + namett + "<br>IP: " +  ipv4addresstt + "<br>";
+																
+								//check if element is already in the list
+								var containsList = false;
+								for (var i = 0; i < nodeNames.length; i++)
+								{
+									if (nodeNames[i] == namett) {containsList = true;}
+								}
+								
+								//push to list if service is not in the list yet
+								if (containsList == false)
+								{
+									nodeNames.push(namett);
+									nodeList.push(namett + "|" + ipv4addresstt + "|ide_jon_a_statusz");
+									document.getElementById("content2").innerHTML += "<br>ID: " + namett + " IP: " +  ipv4addresstt + " hozzáadva a listához<br>";
+									
+									//add to visible list this device
+									for (var listID = 1; listID < 10; listID++)
+									{
+										var nodeIDchk = 'node' + listID;
+										if (document.getElementById(nodeIDchk).style.display == 'none')
+										{
+											//ide fog bekerulni
+											document.getElementById("content2").innerHTML += "a listában az alábbi helyre kerül be: " + nodeIDchk;
+											return;//ki kell lepni
+										}
+									}
+									
+								}
+								else
+								{
+									document.getElementById("content2").innerHTML += "<br>ID: " + namett + " IP: " +  ipv4addresstt + " már benne van a listában<br>";
+								}
 							}
 							else {
 								document.getElementById("content").innerHTML += "service removed...";
 							}
 						});
-						
-						document.getElementById("content").innerHTML += "vége is lett...";
+				}
+				
+				function onDeviceReady() {
+					refreshNodeList();
+					
 				 }
 
 				function ws1()
@@ -245,6 +301,7 @@
 					
 				function updateRGBcode(picker) {
 					//document.getElementById("rgbValueToChange").innerHTML = Math.round(picker.rgb[0]) + "," Math.round(picker.rgb[1]) + "," + Math.round(picker.rgb[2]) ;
+					alert("ez műxik!");
 					var newcode = "alap";
 					newcode = Math.round(picker.rgb[0]) + "-" + Math.round(picker.rgb[1]) + "-" + Math.round(picker.rgb[2]) + "-0";
 					document.getElementById("rgbValueToChange").innerHTML = newcode;
@@ -289,60 +346,108 @@
 					//TODO: a DIV-ekre kattintva vissza kell állítani a háttérszínt a jscolor-nak megadni; ha nincs, akkor nem csinál semmit sem
 				});
 
+				function rgbToHex(col)
+				{
+					if(col.charAt(0)=='r')
+					{
+						col=col.replace('rgb(','').replace(')','').split(',');
+						var r=parseInt(col[0], 10).toString(16);
+						var g=parseInt(col[1], 10).toString(16);
+						var b=parseInt(col[2], 10).toString(16);
+						r=r.length==1?'0'+r:r; g=g.length==1?'0'+g:g; b=b.length==1?'0'+b:b;
+						var colHex=r+g+b;
+						return colHex;
+					}
+				}
+				
+				function setOwnColor(sajatSzinID)
+				{
+					var col = document.getElementById( 'sajatszin' + sajatSzinID ).style.background;
+					var colHEX = rgbToHex(col);
+					//alert(colHEX);
+					document.getElementById('rgbPickerValue').jscolor.fromString(colHEX);
+				}
+				
 			</script>
 			
 				<!-- DEBUG -->
-				 <div name="content" id="content" style="display:none; min-height:25vh;" >hahó</div>
-				 <div name="content2" id="content2" style="display:none; min-height:25vh;" >hahó</div>
-				 <div name="content3" id="content3" style="display:none; min-height:25vh;" >hahó</div>
+				 <div name="content" id="content" style="display:none; min-height:25vh;font-size:0.6em;background:white;" >debug info 1</div>
+				 <div name="content2" id="content2" style="display:none; min-height:25vh;font-size:0.6em;background:lightgray;" >debug info 2</div>
+				 <div name="content3" id="content3" style="display:none; min-height:25vh;font-size:0.6em;background:white;" >debug info 3</div>
 				 <button name="btn_debug1" id="btn_debug1" style="display: none;" onclick="testf2()">új testf2</button> 
 				 <button name="btn_debug2" id="btn_debug2" style="display: none;" onclick="testf2()">ismét új testf2</button> 
 				 <button name="btn_debug3" id="btn_debug3" style="display: none;" onclick="ws1()">websocket ip-re</button>
 				<!-- END DEBUG -->    
 				<!--<a href="#pageRGBW" name="linkRGBW" id="linkRGBW" style="diplay:none" data-transition="flip"> --><!-- ez a linkes megoldás a click-el hívható meg -->
 				<ul data-role="listview" data-inset="true">
-							<li name="node1" id ="node1"><a href="javascript:void(0)" data-transition="slidefade" onclick="showNode('1')">
-								<img name="node1img" id ="node1img" class="ui-li-thumb" src="img/icon_rgb.png">
-								<h2 name="node1title" id ="node1title">nappali </h2>
-								<p name="node1description" id ="node1description">csagi_NODE_RGBW_1168558 | 192.168.1.238</p>
-								<p name="node1status" id ="node1status" class="ui-li-aside">kikapcsolva</p>
+							<li name="node1" style="display:none;" id ="node1"><a href="javascript:void(0)" data-transition="slidefade" onclick="showNode('1')">
+								<img name="node1img" id ="node1img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/icon_RGBW.svg">
+								<h2 style="margin-top:20px;" name="node1title" id ="node1title">node_name</h2>
+								<p name="node1description" id ="node1description">IP</p>
+								<p name="node1status" id ="node1status" class="ui-li-aside">status_text</p>
 							</a></li>
-							<li name="node2" id ="node2"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('2')">
-								<img name="node2img" id ="node2img" class="ui-li-thumb" src="img/icon_weather.png">
-								<h2 name="node2title" id ="node2title">nappali hőmérő</h2>
-								<p name="node2description" id ="node2description">csagi_NODE_WS_1168559 | 192.168.1.239</p>
-								<p name="node2status" id ="node2status" class="ui-li-aside">26°C - 67% - 1011 hpa</p>
+							<li name="node2" style="display:none;" id ="node2"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('2')">
+								<img name="node2img" id ="node2img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/icon_WS.svg">
+								<h2 style="margin-top:20px;" name="node2title" id ="node2title">node_name</h2>
+								<p name="node2description" id ="node2description">IP</p>
+								<p name="node2status" id ="node2status" class="ui-li-aside">status_text</p>
 							</a></li>
-							<li name="node3" id ="node3"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('3')">
-								<img name="node3img" id ="node3img" class="ui-li-thumb" src="img/icon_rgb.png">
-								<h2 name="node3title" id ="node3title">hálószoba </h2>
-								<p name="node3description" id ="node3description">csagi_NODE_RGBW_1168560 | 192.168.1.240</p>
-								<p name="node3status" id ="node3status" class="ui-li-aside">"almazöld" - 70%</p>
+							<li name="node3" style="display:none;" id ="node3"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('3')">
+								<img name="node3img" id ="node3img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/icon_SP.svg">
+								<h2 style="margin-top:20px;" name="node3title" id ="node3title">node_name </h2>
+								<p name="node3description" id ="node3description">IP</p>
+								<p name="node3status" id ="node3status" class="ui-li-aside">status_text</p>
 							</a></li>
-							<li name="node4" id ="node4"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('4')">
-								<img name="node4img" id ="node4img" class="ui-li-thumb" src="img/bedroom.jpg">
-								<h2 name="node4title" id ="node4title">gyerekszoba</h2>
-								<p name="node4description" id ="node4description">csagi_NODE_RGBW_1168561 | 192.168.1.241</p>
-								<p name="node4status" id ="node4status" class="ui-li-aside">Fehér: 76%</p>
+							<li name="node4" style="display:none;" id ="node4"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('4')">
+								<img name="node4img" id ="node4img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node4title" id ="node4title">node_name</h2>
+								<p name="node4description" id ="node4description">IP</p>
+								<p name="node4status" id ="node4status" class="ui-li-aside">status_text</p>
 							</a></li>
-							<li name="node5" id ="node5"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('5')">
-								<img name="node5img" id ="node5img" class="ui-li-thumb" src="img/icon_irrigation.png">
-								<h2 name="node5title" id ="node5title">öntöző rendszer</h2>
-								<p name="node5description" id ="node5description">további beágyazott rendszerek</p>
-								<p name="node5status" id ="node5status" class="ui-li-aside">1:be 2:ki 3:ki 4:ki</p>
+							<li name="node5" style="display:none;" id ="node5"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('5')">
+								<img name="node5img" id ="node5img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node5title" id ="node5title">node_name</h2>
+								<p name="node5description" id ="node5description">IP</p>
+								<p name="node5status" id ="node5status" class="ui-li-aside">status_text</p>
 							</a></li>
-							<li name="node6" id ="node5"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('6')">
-								<h2 name="node6title" id ="node6title">kép nélküli</h2>
-								<p name="node6description" id ="node6description">ez pedig itt egy olyan csempe, amihez nem tartozik kép</p>
-								<p name="node6status" id ="node6status" class="ui-li-aside">Egyszerűbb</p>
+							<li name="node6" style="display:none;" id ="node6"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('6')">
+								<img name="node6img" id ="node6img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node6title" id ="node6title">node_name</h2>
+								<p name="node6description" id ="node6description">IP</p>
+								<p name="node6status" id ="node6status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node7" style="display:none;" id ="node7"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('7')">
+								<img name="node7img" id ="node7img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node7title" id ="node7title">node_name</h2>
+								<p name="node7description" id ="node7description">IP</p>
+								<p name="node7status" id ="node7status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node8" style="display:none;" id ="node8"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('8')">
+								<img name="node8img" id ="node8img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node8title" id ="node8title">node_name</h2>
+								<p name="node8description" id ="node8description">IP</p>
+								<p name="node8status" id ="node8status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node9" style="display:none;" id ="node9"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('9')">
+								<img name="node9img" id ="node9img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node9title" id ="node9title">node_name</h2>
+								<p name="node9description" id ="node9description">IP</p>
+								<p name="node9status" id ="node9status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node10" style="display:none;" id ="node10"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('10')">
+								<img name="node10img" id ="node10img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node10title" id ="node10title">node_name</h2>
+								<p name="node10description" id ="node10description">IP</p>
+								<p name="node10status" id ="node10status" class="ui-li-aside">status_text</p>
 							</a></li>
 						</ul>
 			
             </article>
 
-            <footer data-role="footer" data-position="fixed">
+            <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div align="center">debug:  
 					<input type="checkbox" name="flip-debug" id="flip-debug" data-role="flipswitch" data-on-text="be" data-off-text="ki" onchange="debug()" data-wrapper-class="custom-label-flipswitch" >
+					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;" onclick="refreshNodeList()">Frissít</button> 
 				</div>
             </footer>
         </section>
@@ -396,12 +501,12 @@
 								</select>
 							</div>
 							<div style="margin-left:5%;"><h4>kedvenc színek:</h4>
-								<div id="sajatszin1" name="sajatszin1" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
-								<div id="sajatszin2" name="sajatszin2" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
-								<div id="sajatszin3" name="sajatszin3" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
-								<div id="sajatszin4" name="sajatszin4" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
-								<div id="sajatszin5" name="sajatszin5" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
-								<div id="sajatszin6" name="sajatszin6" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin1" onclick="setOwnColor(1)" name="sajatszin1" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin2" onclick="setOwnColor(2)" name="sajatszin2" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin3" onclick="setOwnColor(3)" name="sajatszin3" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin4" onclick="setOwnColor(4)" name="sajatszin4" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin5" onclick="setOwnColor(5)" name="sajatszin5" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin6" onclick="setOwnColor(6)" name="sajatszin6" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
 							</div>
 						</div>
 						
@@ -506,7 +611,7 @@
             </article>
 
             <footer data-role="footer" data-position="fixed">
-                <h4>node-hoz tartozó lábléc</h4>
+				<h4>node-hoz tartozó lábléc</h4> 
             </footer>
 
         </section>
