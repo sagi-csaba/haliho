@@ -296,21 +296,21 @@
 				
 				function showNode(nodeID) {
 					loading('show');
-					//var nodetitle = document.getElementById("node" + nodeID + "title").innerHTML;
+					var nodetitle = document.getElementById("node" + nodeID + "title").innerHTML;
 					//var nodedescription = document.getElementById("node" + nodeID + "description").innerHTML;
 					//var descriptionsplit = nodedescription.split("|");
-						if (nodedescription.indexOf("_RGBW") != -1){
-							document.getElementById("nodenameRGBW").innerHTML = document.getElementById("node" + nodeID + "title").innerHTML;
-							document.getElementById("rgbNodeName").innerHTML = document.getElementById("node" + nodeID + "title").innerHTML;
+						if (nodetitle.indexOf("_RGBW") != -1){
+							document.getElementById("nodenameRGBW").innerHTML = nodetitle;
+							document.getElementById("rgbNodeName").innerHTML = nodetitle;
 							document.getElementById("rgbNodeIP").innerHTML = document.getElementById("node" + nodeID + "description").innerHTML;
 							loading('hide');
 							window.location.href = '#pageRGBW';
 						}
 						
-						if (nodedescription.indexOf("_WS") != -1){
-							//document.getElementById("nodenameWS").innerHTML = document.getElementById("node" + nodeID + "title").innerHTML;
-							//document.getElementById("wsNodeName").innerHTML = document.getElementById("node" + nodeID + "title").innerHTML;
-							//document.getElementById("wsNodeIP").innerHTML = document.getElementById("node" + nodeID + "description").innerHTML;
+						if (nodetitle.indexOf("_WS") != -1){
+							document.getElementById("nodenameWS").innerHTML = nodetitle;
+							document.getElementById("wsNodeName").innerHTML = nodetitle;
+							document.getElementById("wsNodeIP").innerHTML = document.getElementById("node" + nodeID + "description").innerHTML;
 							loading('hide');
 							window.location.href = '#pageWEATHER';
 						}	
@@ -471,7 +471,7 @@
         </section>
 
         <section data-role="page" id="pageRGBW" data-theme="b" data-transition="slidefade">
-				<header data-role="header" data-position="fixed" >
+				<header data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<h2 name="nodenameRGBW" id ="nodenameRGBW">RGBW: </h2>
 					<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 					<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
@@ -546,14 +546,14 @@
 
 				</article>
 
-				<footer data-role="footer" data-position="fixed">
+				<footer data-role="footer" data-position="fixed" data-tap-toggle="false">
 					<h4>node-hoz tartozó lábléc</h4>
 				</footer>
         </section>
 		
 		
 		<section data-role="page" id="pageWEATHER" data-theme="b" data-transition="slidefade">
-            <header data-role="header" data-position="fixed"  data-add-back-btn="true">
+            <header data-role="header" data-position="fixed"  data-add-back-btn="true" data-tap-toggle="false">
                 <h1 name="nodenameWS" id ="nodenameWS" >WS: </h1>
 				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
@@ -628,7 +628,7 @@
 				
             </article>
 
-            <footer data-role="footer" data-position="fixed">
+            <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
 				<h4>node-hoz tartozó lábléc</h4> 
             </footer>
 
