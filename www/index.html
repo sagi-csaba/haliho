@@ -184,12 +184,7 @@
 											document.getElementById(nodedesc).innerHTML = ipv4addresstt;
 											var nodestatus = 'node' + listID + 'status';
 											document.getElementById(nodestatus).innerHTML = "frissítés...";
-											var nodeimage = 'node' + listID + 'img';
 											
-											if (namett.includes("_WS")) {document.getElementById(nodeimage).src="img/icon_WS.svg";}
-											if (namett.includes("_RGBW")) {document.getElementById(nodeimage).src="img/icon_RGBW.svg";}
-											if (namett.includes("_SP")) {document.getElementById(nodeimage).src="img/icon_SP.svg";}
-											if (namett.includes("_RF")) {document.getElementById(nodeimage).src="img/icon_RF.svg";}
 											
 											document.getElementById(nodeIDchk).style.display = 'block';
 											document.getElementById("content2").innerHTML += "a listában az alábbi helyre kerül be: " + nodeIDchk;
