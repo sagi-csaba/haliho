@@ -183,7 +183,14 @@
 											var nodedesc = 'node' + listID + 'description';
 											document.getElementById(nodedesc).innerHTML = ipv4addresstt;
 											var nodestatus = 'node' + listID + 'status';
-											document.getElementById(nodestatus).innerHTML = "ide jön a státusz";
+											document.getElementById(nodestatus).innerHTML = "frissítés...";
+											var nodeimage = 'node' + listID + 'img';
+											
+											if (namett.includes("_WS")) {document.getElementById(nodeimage).src="img/icon_WS.svg";}
+											if (namett.includes("_RGBW")) {document.getElementById(nodeimage).src="img/icon_RGBW.svg";}
+											if (namett.includes("_SP")) {document.getElementById(nodeimage).src="img/icon_SP.svg";}
+											if (namett.includes("_RF")) {document.getElementById(nodeimage).src="img/icon_RF.svg";}
+											
 											document.getElementById(nodeIDchk).style.display = 'block';
 											document.getElementById("content2").innerHTML += "a listában az alábbi helyre kerül be: " + nodeIDchk;
 											return;//ki kell lepni
@@ -287,21 +294,21 @@
 				
 				function showNode(nodeID) {
 					loading('show');
-					var nodetitle = document.getElementById("node" + nodeID + "title").innerHTML;
-					var nodedescription = document.getElementById("node" + nodeID + "description").innerHTML;
-					var descriptionsplit = nodedescription.split("|");
-						if (nodedescription.indexOf("RGBW") != -1){
-							document.getElementById("nodenameRGBW").innerHTML = "RGBW | " + nodetitle;
-							document.getElementById("rgbNodeName").innerHTML = descriptionsplit[0];
-							document.getElementById("rgbNodeIP").innerHTML = descriptionsplit[1];
+					//var nodetitle = document.getElementById("node" + nodeID + "title").innerHTML;
+					//var nodedescription = document.getElementById("node" + nodeID + "description").innerHTML;
+					//var descriptionsplit = nodedescription.split("|");
+						if (nodedescription.indexOf("_RGBW") != -1){
+							document.getElementById("nodenameRGBW").innerHTML = document.getElementById("node" + nodeID + "title").innerHTML;
+							document.getElementById("rgbNodeName").innerHTML = document.getElementById("node" + nodeID + "title").innerHTML;
+							document.getElementById("rgbNodeIP").innerHTML = document.getElementById("node" + nodeID + "description").innerHTML;
 							loading('hide');
 							window.location.href = '#pageRGBW';
 						}
 						
-						if (nodedescription.indexOf("WS") != -1){
-							document.getElementById("nodenameWS").innerHTML = "WS | " + nodetitle;
-							document.getElementById("wsNodeName").innerHTML = descriptionsplit[0];
-							document.getElementById("wsNodeIP").innerHTML = descriptionsplit[1];
+						if (nodedescription.indexOf("_WS") != -1){
+							document.getElementById("nodenameWS").innerHTML = document.getElementById("node" + nodeID + "title").innerHTML;
+							document.getElementById("wsNodeName").innerHTML = document.getElementById("node" + nodeID + "title").innerHTML;
+							document.getElementById("wsNodeIP").innerHTML = document.getElementById("node" + nodeID + "description").innerHTML;
 							loading('hide');
 							window.location.href = '#pageWEATHER';
 						}	
@@ -390,19 +397,19 @@
 				<!--<a href="#pageRGBW" name="linkRGBW" id="linkRGBW" style="diplay:none" data-transition="flip"> --><!-- ez a linkes megoldás a click-el hívható meg -->
 				<ul data-role="listview" data-inset="true">
 							<li name="node1" style="display:none;" id ="node1"><a href="javascript:void(0)" data-transition="slidefade" onclick="showNode('1')">
-								<img name="node1img" id ="node1img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/icon_RGBW.svg">
+								<img name="node1img" id ="node1img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
 								<h2 style="margin-top:20px;" name="node1title" id ="node1title">node_name</h2>
 								<p name="node1description" id ="node1description">IP</p>
 								<p name="node1status" id ="node1status" class="ui-li-aside">status_text</p>
 							</a></li>
 							<li name="node2" style="display:none;" id ="node2"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('2')">
-								<img name="node2img" id ="node2img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/icon_WS.svg">
+								<img name="node2img" id ="node2img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
 								<h2 style="margin-top:20px;" name="node2title" id ="node2title">node_name</h2>
 								<p name="node2description" id ="node2description">IP</p>
 								<p name="node2status" id ="node2status" class="ui-li-aside">status_text</p>
 							</a></li>
 							<li name="node3" style="display:none;" id ="node3"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('3')">
-								<img name="node3img" id ="node3img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/icon_SP.svg">
+								<img name="node3img" id ="node3img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
 								<h2 style="margin-top:20px;" name="node3title" id ="node3title">node_name </h2>
 								<p name="node3description" id ="node3description">IP</p>
 								<p name="node3status" id ="node3status" class="ui-li-aside">status_text</p>
