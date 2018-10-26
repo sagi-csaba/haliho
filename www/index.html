@@ -183,6 +183,7 @@
 											var nodedesc = 'node' + listID + 'description';
 											document.getElementById(nodedesc).innerHTML = ipv4addresstt;
 											var nodestatus = 'node' + listID + 'status';
+											document.getElementById(nodestatus).style.color = '#000';
 											document.getElementById(nodestatus).innerHTML = "frissítés...";
 											var nodeimage = 'node' + listID + 'img';
 											
@@ -230,6 +231,8 @@
 																					if (valasz == '0') {resSP = 'kikapcsolva';}
 																					if (valasz == '1') {resSP = 'bekapcsolva';}
 																					document.getElementById(nodestatus).innerHTML = resSP;
+																					if (valasz == '0') {document.getElementById(nodestatus).style.color = '#CC1111';}
+																					if (valasz == '0') {document.getElementById(nodestatus).style.color = '#55CC55';}
 																				}  
 															
 																			}
