@@ -113,25 +113,19 @@
 				}
 				
 				function onLoad() {
-					alert('a');
 					var request = new XMLHttpRequest();
-					alert('b');
-						
-						alert('c');
-						request.onreadystatechange = function(){
-						alert('readystate: ' + request.readyState);
-							if(request.readyState == 4)
+					
+					request.onreadystatechange = function(){
+					if(request.readyState == 4)
 							{ 
-								alert('4');
-								alert(request.status);
 								if(request.status == 200 || request.status == 0){
-									alert('5');
-									alert('6' + request.status);
-									alert('7');
+									
+									alert('valasz:' + request.responseText);
+									
 									//parse_events(JSON.parse( request.responseText ));
 									//alert(valasz);
 								}  
-								alert('8 -- ' + request.status);								
+			
 							}
 						}
 					
