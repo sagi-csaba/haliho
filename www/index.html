@@ -114,7 +114,19 @@
 				
 				function onLoad() {
 					alert('1');
-					
+					var xhr = XMLHttpRequest();
+					alert('2');
+					xhr.addEventListener("loadend", function(evt)
+					 {
+					   alert('4');
+					   var data = this.responseText;
+					   alert(data);
+					   //document.getElementById("myregion").innerHtml = data;
+					 });
+					 alert('3');
+					xhr.open("GET", "htt://192.168.1.238/actual.txt");
+					xhr.send();
+					alert('5');
 					document.addEventListener("deviceready", onDeviceReady, false);
 				}
 				onLoad();
