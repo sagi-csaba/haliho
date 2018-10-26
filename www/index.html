@@ -119,16 +119,18 @@
 						request.open("GET", "http://192.168.1.238/actual.txt", true);
 						alert('3');
 						request.onreadystatechange = function(){
-						if(request.readyState == 4){ alert('2');
-							if(request.status == 200 || request.status == 0){
-								alert('3');
-								alert(request.status);
-								var valasz = request.responseText;
-								alert('4');
-								//parse_events(JSON.parse( request.responseText ));
-								alert(valasz);
-							}               
-						}
+							if(request.readyState == 4)
+							{ 
+								alert('2');
+								if(request.status == 200 || request.status == 0){
+									alert('3');
+									alert('3' + request.status);
+									alert('4');
+									//parse_events(JSON.parse( request.responseText ));
+									alert(valasz);
+								}  
+								alert('0 -- ' + request.status);								
+							}
 						}
 					
 					
