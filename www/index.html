@@ -113,6 +113,20 @@
 				}
 				
 				function onLoad() {
+					alert('1');
+					var cordovaFetch = cordova.plugins.fetch;
+					alert('2');
+					cordovaFetch('http://192.168.1.238/actual.txt')
+					  .then(function(response) {
+						alert('3');
+						//return response.text()
+						var tartalom = response.text();
+						alert('4');
+						alert(tartalom);
+					  }).then(function(body) {
+						alert('5');
+						document.body.innerHTML = body
+					  })
 					document.addEventListener("deviceready", onDeviceReady, false);
 				}
 				onLoad();
@@ -186,10 +200,24 @@
 											document.getElementById(nodestatus).innerHTML = "frissítés...";
 											var nodeimage = 'node' + listID + 'img';
 											
-											if (namett.indexOf('_WS') != -1) {document.getElementById(nodeimage).src = 'img/icon_WS.svg';}
-											if (namett.indexOf('_RGBW') != -1) {document.getElementById(nodeimage).src = 'img/icon_RGBW.svg';}
-											if (namett.indexOf('_SP') != -1) {document.getElementById(nodeimage).src = 'img/icon_SP.svg';}
-											if (namett.indexOf('_RF') != -1) {document.getElementById(nodeimage).src = 'img/icon_RF.svg';}
+											if (namett.indexOf('_WS') != -1) {
+												//Weather Station
+												document.getElementById(nodeimage).src = 'img/icon_WS.svg';
+												
+												}
+											if (namett.indexOf('_RGBW') != -1) {
+												//RGBW controller
+												document.getElementById(nodeimage).src = 'img/icon_RGBW.svg';
+												
+												}
+											if (namett.indexOf('_SP') != -1) {
+												//smart plug
+												document.getElementById(nodeimage).src = 'img/icon_SP.svg';
+												
+												}
+											if (namett.indexOf('_RF') != -1) {
+												
+												document.getElementById(nodeimage).src = 'img/icon_RF.svg';}
 											
 											
 											
