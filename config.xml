@@ -19,5 +19,4 @@
     <engine name="browser" spec="^5.0.4" />
     <plugin name="cordova-plugin-zeroconf" source="npm" />
     <icon src="icon.png" />
-    <plugin name="cordova-plugin-fetch" spec="https://github.com/aporat/cordova-plugin-fetch.git" />
 </widget>
