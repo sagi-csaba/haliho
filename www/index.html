@@ -114,19 +114,21 @@
 				
 				function onLoad() {
 					alert('1');
-					var xhr = XMLHttpRequest();
+					var request = new XMLHttpRequest();
 					alert('2');
-					xhr.addEventListener("loadend", function(evt)
-					 {
-					   alert('4');
-					   var data = this.responseText;
-					   alert(data);
-					   //document.getElementById("myregion").innerHtml = data;
-					 });
-					 alert('3');
-					xhr.open("GET", "htt://192.168.1.238/actual.txt");
-					xhr.send();
-					alert('5');
+						request.open("GET", "http://192.168.1.238/actual.txt", true);
+						alert('3');
+						request.onreadystatechange = function(){
+						if(request.readyState == 4){ alert('2');
+							if(request.status == 200 || request.status == 0){
+								alert('3');
+								var valasz = request.responseText;
+								alert('4');
+								//parse_events(JSON.parse( request.responseText ));
+								alert(valasz);
+							}               
+						}
+						}
 					document.addEventListener("deviceready", onDeviceReady, false);
 				}
 				onLoad();
