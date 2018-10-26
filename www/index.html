@@ -200,7 +200,7 @@
 																					var valasz = request.responseText;
 																					var valaszStr = String(valasz);
 																					var valaszArray = valaszStr.split(';');
-																					document.getElementById(nodestatus).innerHTML = valaszArray[0] + '&#8451; | ' + valaszArray[1] + '% | ' + valaszArray[2] + 'hPa';
+																					document.getElementById(nodestatus).innerHTML = valaszArray[0] + '&#x2103; | ' + valaszArray[1] + '% | ' + valaszArray[2] + 'hPa';
 																				}  
 															
 																			}
@@ -232,7 +232,7 @@
 																					if (valasz == '1') {resSP = 'bekapcsolva';}
 																					document.getElementById(nodestatus).innerHTML = resSP;
 																					if (valasz == '0') {document.getElementById(nodestatus).style.color = '#CC1111';}
-																					if (valasz == '0') {document.getElementById(nodestatus).style.color = '#55CC55';}
+																					if (valasz == '1') {document.getElementById(nodestatus).style.color = '#55CC55';}
 																				}  
 															
 																			}
