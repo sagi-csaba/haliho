@@ -17,10 +17,10 @@
     <engine name="android" spec="~7.0.0" />
     <engine name="browser" spec="^5.0.4" />
     <plugin name="cordova-plugin-zeroconf" source="npm" />
-	<plugin name="cordova-plugin-whitelist" source="npm" />
-	<allow-navigation href="*" />
-	<allow-intent href="*" />
-	<access origin="*" />
+    <plugin name="cordova-plugin-whitelist" source="npm" />
+    <allow-navigation href="*" />
+    <allow-intent href="*" />
+    <access origin="*" />
     <icon src="icon.png" />
-    
+    <plugin name="cordova-plugin-advanced-http" source="npm" />
 </widget>
