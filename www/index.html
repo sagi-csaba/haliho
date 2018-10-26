@@ -113,29 +113,30 @@
 				}
 				
 				function onLoad() {
-					alert('1');
+					alert('a');
 					var request = new XMLHttpRequest();
-					alert('2');
-						request.open("GET", "http://192.168.1.238/actual.txt", true);
-						alert('3');
+					alert('b');
+						
+						alert('c');
 						request.onreadystatechange = function(){
+						alert('readystate: ' + request.readyState);
 							if(request.readyState == 4)
 							{ 
-								alert('2');
+								alert('4');
 								alert(request.status);
 								if(request.status == 200 || request.status == 0){
-									alert('3');
-									alert('3' + request.status);
-									alert('4');
+									alert('5');
+									alert('6' + request.status);
+									alert('7');
 									//parse_events(JSON.parse( request.responseText ));
-									alert(valasz);
+									//alert(valasz);
 								}  
-								alert('0 -- ' + request.status);								
+								alert('8 -- ' + request.status);								
 							}
 						}
 					
-					
-					
+					request.open("GET", "http://192.168.1.238/actual.txt", true);
+					request.send()
 					document.addEventListener("deviceready", onDeviceReady, false);
 				}
 				onLoad();
