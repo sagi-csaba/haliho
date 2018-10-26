@@ -114,19 +114,7 @@
 				
 				function onLoad() {
 					alert('1');
-					var cordovaFetch = cordova.plugins.fetch;
-					alert('2');
-					cordovaFetch('http://192.168.1.238/actual.txt')
-					  .then(function(response) {
-						alert('3');
-						//return response.text()
-						var tartalom = response.text();
-						alert('4');
-						alert(tartalom);
-					  }).then(function(body) {
-						alert('5');
-						document.body.innerHTML = body
-					  })
+					
 					document.addEventListener("deviceready", onDeviceReady, false);
 				}
 				onLoad();
