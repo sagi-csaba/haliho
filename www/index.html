@@ -113,24 +113,6 @@
 				}
 				
 				function onLoad() {
-					var request = new XMLHttpRequest();
-					
-					request.onreadystatechange = function(){
-					if(request.readyState == 4)
-							{ 
-								if(request.status == 200 || request.status == 0){
-									
-									alert('valasz:' + request.responseText);
-									
-									//parse_events(JSON.parse( request.responseText ));
-									//alert(valasz);
-								}  
-			
-							}
-						}
-					
-					request.open("GET", "http://192.168.1.238/actual.txt", true);
-					request.send()
 					document.addEventListener("deviceready", onDeviceReady, false);
 				}
 				onLoad();
@@ -208,6 +190,24 @@
 												//Weather Station
 												document.getElementById(nodeimage).src = 'img/icon_WS.svg';
 												
+																	var request = new XMLHttpRequest();		
+																	request.onreadystatechange = function(){
+																	if(request.readyState == 4)
+																			{ 
+																				if(request.status == 200 || request.status == 0){
+																					
+																					var valasz = request.responseText;
+																					var res = valasz.split(";");
+																					document.getElementById(nodestatus).innerHTML = res[0]+&#x2103; + " | " + res[1] + "%" + " | " res[2] + "hPa";
+																				}  
+															
+																			}
+																		}
+																	
+																	request.open("GET", "http://" + ipv4addresstt + "/actual.txt", true);
+																	request.send();
+												
+
 												}
 											if (namett.indexOf('_RGBW') != -1) {
 												//RGBW controller
