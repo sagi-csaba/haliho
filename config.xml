@@ -22,5 +22,4 @@
     <allow-intent href="*" />
     <access origin="*" />
     <icon src="icon.png" />
-    <plugin name="cordova-plugin-advanced-http" source="npm" />
 </widget>
