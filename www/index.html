@@ -169,7 +169,6 @@
 				
 					document.getElementById("content").innerHTML = "snode eszközök felderítése a hálózaton...";
 						var zeroconf = cordova.plugins.zeroconf;
-						zeroconf.unwatch('_http._tcp.', 'local.');
 						zeroconf.reInit();
 						zeroconf.watch('_http._tcp.', 'local.', function(result) {
 							var action = result.action;
@@ -1028,7 +1027,7 @@
 				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
-				<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>
+				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
 				
             </header>
 
@@ -1071,7 +1070,7 @@
 				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
-				<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>
+				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
             </header>
 
             <article role="main" class="ui-content">
