@@ -351,23 +351,42 @@
 				
 				function showNode(nodeID) {
 					loading('show');
-					var nodetitle = document.getElementById("node" + nodeID + "title").innerHTML;
-					//var nodedescription = document.getElementById("node" + nodeID + "description").innerHTML;
-					//var descriptionsplit = nodedescription.split("|");
-						if (nodetitle.indexOf("_RGBW") != -1){
-							document.getElementById("nodenameRGBW").innerHTML = nodetitle;
-							document.getElementById("rgbNodeName").innerHTML = nodetitle;
-							document.getElementById("rgbNodeIP").innerHTML = document.getElementById("node" + nodeID + "description").innerHTML;
-							loading('hide');
-							window.location.href = '#pageRGBW';
-						}
+					var nodeNAME = document.getElementById("node" + nodeID + "title").innerHTML;
+					var nodeIP = document.getElementById("node" + nodeID + "description").innerHTML;
+					
+					//**********     just for development  ************
+					nodeNAME = "nappali_WS";
+					nodeIP = "192.168.1.238";
+					//*************************************************
+					
+						if (nodeNAME.indexOf("_WS") != -1){
+							document.getElementById("nodenameWS").innerHTML = nodeNAME;
+							document.getElementById("wsNodeName").innerHTML = nodeNAME;
+							document.getElementById("wsNodeIP").innerHTML = nodeIP;
 						
-						if (nodetitle.indexOf("_WS") != -1){
-							document.getElementById("nodenameWS").innerHTML = nodetitle;
-							document.getElementById("wsNodeName").innerHTML = nodetitle;
-							document.getElementById("wsNodeIP").innerHTML = document.getElementById("node" + nodeID + "description").innerHTML;
+							//get actual weather data
+							var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var valaszArray = valaszStr.split(';');
+											document.getElementById("actualTemp").innerHTML = valaszArray[0];
+											document.getElementById("actualHumidity").innerHTML = valaszArray[1];
+											document.getElementById("actualPressure").innerHTML = valaszArray[2];
+										}  
+									}
+								}
+						request.open('GET', 'http://' + nodeIP + '/actual.txt', true);
+						request.send();
+							
+							
+							
+							
 							loading('hide');
-							window.location.href = '#pageWEATHER';
+							//window.location.href = '#pageWEATHER';
 						}	
 					
 				}
@@ -613,13 +632,14 @@
 				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
+				<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>
 				
             </header>
 
             <article role="main" class="ui-content">
-                <div style="display:inline-block;font-size:4em;">26 C</div><br>
-				relatív páratartalom:  <div center style="display:inline-block;font-size:2em;">62%</div><br> 
-				      légköri nyomás:  <div style="display:inline-block;font-size:1.5em;">1012 hpa</div>
+                <div id="actualTemp" name="actualTemp" style="display:inline-block;font-size:4em;">--</div>&#x2103;<br>
+				relatív páratartalom:  <div id="actualHumidity" name="actualHumidity" center style="display:inline-block;font-size:2em;">--</div>%<br> 
+				      légköri nyomás:  <div id="actualPressure" name="actualPressure" style="display:inline-block;font-size:1.5em;">---</div>hPa
 				
 				<div id="" name="" style="max-width:90%;margin-left:5%;margin-top:35px;" data-role="navbar">
 					<ul>
