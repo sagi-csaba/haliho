@@ -169,6 +169,7 @@
 				
 					document.getElementById("content").innerHTML = "snode eszközök felderítése a hálózaton...";
 						var zeroconf = cordova.plugins.zeroconf;
+						zeroconf.unwatch('_http._tcp.', 'local.');
 						zeroconf.reInit();
 						zeroconf.watch('_http._tcp.', 'local.', function(result) {
 							var action = result.action;
