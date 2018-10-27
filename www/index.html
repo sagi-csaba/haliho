@@ -381,7 +381,7 @@
 								}
 						request.open('GET', 'http://' + nodeIP + '/actual.txt', true);
 						request.send();
-							
+						document.getElementById("WS_log").innerHTML = "aktuális adatok";
 							loading('hide');
 							window.location.href = '#pageWEATHER';
 						}	
@@ -390,6 +390,7 @@
 				
 				function ws_showLast24h() {
 					loading('show');
+					document.getElementById("WS_log").innerHTML = "adatok lekérdezése...";
 					var nodeIP = document.getElementById("wsNodeIP").innerHTML;
 					
 						var request = new XMLHttpRequest();		
@@ -471,11 +472,12 @@
 								}
 						request.open('GET', 'http://' + nodeIP + '/data.txt', true);
 						request.send();			
-					
+					document.getElementById("WS_log").innerHTML = "utolsó 24 óra adatai";
 					loading('hide');
 				}
 				
 				function ws_showLast3d() {
+					document.getElementById("WS_log").innerHTML = "adatok lekérdezése...";
 					loading('show');
 					var nodeIP = document.getElementById("wsNodeIP").innerHTML;
 					
@@ -560,11 +562,12 @@
 						request.send();			
 					
 					loading('hide');
-				
+					document.getElementById("WS_log").innerHTML = "utolsó 3 nap adatai";
 				
 				}
 
 				function ws_showLast7d() {
+					document.getElementById("WS_log").innerHTML = "adatok lekérdezése...";
 					loading('show');
 					var nodeIP = document.getElementById("wsNodeIP").innerHTML;
 					
@@ -650,7 +653,7 @@
 						request.send();			
 					
 					loading('hide');
-				
+					document.getElementById("WS_log").innerHTML = "utolsó 7 nap adatai";
 				
 				}
 				
@@ -927,7 +930,7 @@
             </article>
 
             <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
-				<h4>node-hoz tartozó lábléc</h4> 
+				<h4 id="WS_log" name="WS_log">node-hoz tartozó lábléc</h4> 
             </footer>
 
         </section>
