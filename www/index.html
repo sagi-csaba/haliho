@@ -66,6 +66,32 @@
 								}
 				});
 				
+				$(document).bind( "change",'#flip-2', function(event, ui, e) {
+					var sss = $( '#flip-2').val();
+					var nodeIP = document.getElementById("spNodeIP").innerHTML;
+					if (sss == 'on')
+					{
+						var ws = new WebSocket('ws://' + nodeIP + ':8009');
+							document.getElementById("content").innerHTML += "deklarálva ";
+							ws.onopen = function () {
+								//document.getElementById("content").innerHTML += "onopen ";
+								ws.send('bekapcsol');
+								ws.close();
+							}
+					}
+					if (sss == 'off')
+					{
+						var ws = new WebSocket('ws://' + nodeIP + ':8009');
+							document.getElementById("content").innerHTML += "deklarálva ";
+							ws.onopen = function () {
+								//document.getElementById("content").innerHTML += "onopen ";
+								ws.send('kikapcsol');
+								ws.close();
+							}
+					}
+					
+				});
+				
 				function showLEDtype() {
 					document.getElementById("ledType").classList.remove("hide");
 				}
@@ -114,6 +140,7 @@
 				
 				function onLoad() {
 					document.addEventListener("deviceready", onDeviceReady, false);
+					
 				}
 				onLoad();
 				
@@ -268,7 +295,6 @@
 				
 				function onDeviceReady() {
 					refreshNodeList();
-					
 				 }
 
 				function ws1()
@@ -358,8 +384,8 @@
 					var nodeIP = document.getElementById("node" + nodeID + "description").innerHTML;
 					
 					//**********     just for development  ************
-					nodeNAME = "nappali_WS";
-					nodeIP = "192.168.1.238";
+					//nodeNAME = "nightlight_SP";
+					//nodeIP = "192.168.1.202";
 					//*************************************************
 					
 						if (nodeNAME.indexOf("_WS") != -1){
@@ -388,6 +414,62 @@
 							loading('hide');
 							window.location.href = '#pageWEATHER';
 						}	
+					
+						if (nodeNAME.indexOf("_SP") != -1){
+							document.getElementById("nodenameSP").innerHTML = nodeNAME;
+							document.getElementById("spNodeName").innerHTML = nodeNAME;
+							document.getElementById("spNodeIP").innerHTML = nodeIP;
+						
+							//get serieal number and firmware version
+							var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var sorozatszam = valaszStr.split('sorozatszám: <i>');
+											var firmware  = valaszStr.split('firmware: <i>');
+											document.getElementById("spNodeSN").innerHTML = sorozatszam[1].substring(0,8) + " | Firmware: " + firmware[1].substring(0,3);
+										}  
+									}
+								}
+						
+							request.open('GET', 'http://' + nodeIP, true);
+							request.send();
+							
+							//get status of smart plug
+							var request2 = new XMLHttpRequest();		
+								request2.onreadystatechange = function(){
+									if(request2.readyState == 4)
+									{ 
+										if(request2.status == 200 || request2.status == 0){										
+											var valasz = request2.responseText;
+											var valaszStr = String(valasz);
+											if (valaszStr == '0') 
+											{
+												
+												//document.getElementById("flip-2").value = 'off';
+												$("#flip-2").val('off').slider('refresh');
+												//alert('kikapcsolva');
+											}
+											if (valaszStr == '1')
+											{
+												//document.getElementById("flip-2").value = 'on';
+												$("#flip-2").val('on').slider('refresh');
+												//alert('bekapcsolva');
+											}
+										}  
+									}
+								}
+						
+							request2.open('GET', 'http://' + nodeIP + '/status.txt', true);
+							request2.send();
+						
+						
+							loading('hide');
+							window.location.href = '#pageSMARTPLUG';
+						}
 					
 				}
 				
@@ -981,6 +1063,44 @@
             </footer>
 
         </section>
+		
+		<section data-role="page" id="pageSMARTPLUG" data-theme="b" data-transition="slidefade">
+            <header data-role="header" data-position="fixed"  data-add-back-btn="true" data-tap-toggle="false">
+                <h1 name="nodenameSP" id ="nodenameSP" >SP: </h1>
+				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+				
+				<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>
+            </header>
+
+            <article role="main" class="ui-content">
+                
+<center><form style="margin-left:auto;margin-right:auto;margin-top:30px;">
+    <label for="flip-2">okos konnektor állapota:</label>
+    <select name="flip-2" id="flip-2" data-role="slider" data-track-theme="b" data-theme="b">
+        <option value="off">ki</option>
+        <option value="on">be</option>
+    </select>
+</form>
+</center>
+				
+				<hr style="margin-top:50px;margin-bottom:50px;margin-left:20px;margin-right:20px;">
+						<h2>Node adatok</h2>
+						<div style="margin-left:50px;">
+							Név:<div id="spNodeName" name="spNodeName">...</div><br>
+							Szériaszám:<div id="spNodeSN" name="spNodeSN">...</div><br>
+							IP cím:<div id="spNodeIP" name="spNodeIP">...</div>
+						</div>
+				
+            </article>
+
+            <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
+				<h4 id="WS_log" name="WS_log">snode Smart Plug</h4> 
+            </footer>
+
+        </section>
+		
+		
 		
     </body>
 </html>
