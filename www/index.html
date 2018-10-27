@@ -349,14 +349,17 @@
 					
 				}
 				
+				
+				var wsChart;
+				
 				function showNode(nodeID) {
 					loading('show');
 					var nodeNAME = document.getElementById("node" + nodeID + "title").innerHTML;
 					var nodeIP = document.getElementById("node" + nodeID + "description").innerHTML;
 					
 					//**********     just for development  ************
-					//nodeNAME = "nappali_WS";
-					//nodeIP = "192.168.1.238";
+					nodeNAME = "nappali_WS";
+					nodeIP = "192.168.1.238";
 					//*************************************************
 					
 						if (nodeNAME.indexOf("_WS") != -1){
@@ -428,8 +431,17 @@
 											
 											
 											//es most chart rajzolasa
-											var ctx = document.getElementById('myChart');
-											new Chart(ctx, {
+											var ctx = document.getElementById('myChart').getContext("2d");
+											if (wsChart != null) 
+											{
+												//wsChart.destroy();
+												wsChart.data.labels = felirat;
+												wsChart.data.datasets[0].data = ertekek_homerseklet;
+												wsChart.data.datasets[1].data = ertekek_paratartalom;
+												wsChart.update();
+												return;
+											}
+											wsChart = new Chart(ctx, {
 											  type: 'line',
 											  data: {
 												labels: felirat,
@@ -438,17 +450,24 @@
 												  borderColor: 'rgba(0, 255, 0, 0.6)',
 												  backgroundColor: 'rgba(0, 255, 0, 0.1)',
 												  yAxisID: 'A',
-												  data: ertekek_homerseklet
+												  data: ertekek_homerseklet,
+												  pointRadius: 0
 												}, {
 												  label: 'páratartalom [%]',
 												  yAxisID: 'B',
 												  borderColor: 'rgba(255, 255, 255, 0.6)',
 												  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-												  data: ertekek_paratartalom
+												  data: ertekek_paratartalom,
+												  pointRadius: 0
 												}]
 											  },
 											  options: {
 											  responsive: true,
+											  stacked: false,
+											  animation: {
+												duration: 1000,
+												easing: 'easeInOutExpo',
+											  },
 											  hoverMode: 'index',
 											  stacked: false,
 												scales: {
@@ -517,7 +536,15 @@
 											
 											//es most chart rajzolasa
 											var ctx = document.getElementById('myChart');
-											new Chart(ctx, {
+											if (wsChart != null) 
+											{
+												wsChart.data.labels = felirat;
+												wsChart.data.datasets[0].data = ertekek_homerseklet;
+												wsChart.data.datasets[1].data = ertekek_paratartalom;
+												wsChart.update();
+												return;
+											}
+											wsChart = new Chart(ctx, {
 											  type: 'line',
 											  data: {
 												labels: felirat,
@@ -526,19 +553,25 @@
 												  borderColor: 'rgba(0, 255, 0, 0.6)',
 												  backgroundColor: 'rgba(0, 255, 0, 0.1)',
 												  yAxisID: 'A',
-												  data: ertekek_homerseklet
+												  data: ertekek_homerseklet,
+												  pointRadius: 0
 												}, {
 												  label: 'páratartalom [%]',
 												  yAxisID: 'B',
 												  borderColor: 'rgba(255, 255, 255, 0.6)',
 												  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-												  data: ertekek_paratartalom
+												  data: ertekek_paratartalom,
+												  pointRadius: 0
 												}]
 											  },
 											  options: {
 											  responsive: true,
-											  hoverMode: 'index',
 											  stacked: false,
+											  animation: {
+												duration: 1000,
+												easing: 'easeInOutExpo',
+											  },
+											  hoverMode: 'index',
 												scales: {
 												  yAxes: [{
 													id: 'A',
@@ -608,7 +641,15 @@
 											
 											//es most chart rajzolasa
 											var ctx = document.getElementById('myChart');
-											new Chart(ctx, {
+											if (wsChart != null) 
+											{
+												wsChart.data.labels = felirat;
+												wsChart.data.datasets[0].data = ertekek_homerseklet;
+												wsChart.data.datasets[1].data = ertekek_paratartalom;
+												wsChart.update();
+												return;
+											}
+											wsChart = new Chart(ctx, {
 											  type: 'line',
 											  data: {
 												labels: felirat,
@@ -617,19 +658,25 @@
 												  borderColor: 'rgba(0, 255, 0, 0.6)',
 												  backgroundColor: 'rgba(0, 255, 0, 0.1)',
 												  yAxisID: 'A',
-												  data: ertekek_homerseklet
+												  data: ertekek_homerseklet,
+												  pointRadius: 0
 												}, {
 												  label: 'páratartalom [%]',
 												  yAxisID: 'B',
 												  borderColor: 'rgba(255, 255, 255, 0.6)',
 												  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-												  data: ertekek_paratartalom
+												  data: ertekek_paratartalom,
+												  pointRadius: 0
 												}]
 											  },
 											  options: {
 											  responsive: true,
-											  hoverMode: 'index',
 											  stacked: false,
+											  animation: {
+												duration: 1000,
+												easing: 'easeInOutExpo',
+											  },
+											  hoverMode: 'index',
 												scales: {
 												  yAxes: [{
 													id: 'A',
