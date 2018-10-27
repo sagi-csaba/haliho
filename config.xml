@@ -26,19 +26,20 @@
     <plugin name="cordova-plugin-splashscreen" source="npm">
 	  <preference name="SplashScreen" value="screen" />
       <preference name="AutoHideSplashScreen" value="true" />
-      <preference name="SplashScreenDelay" value="5000" />
+      <preference name="SplashScreenDelay" value="3000" />
       <preference name="SplashMaintainAspectRatio" value="true" />
       <preference name="FadeSplashScreen" value="false"/>
       <preference name="ShowSplashScreenSpinner" value="false" />
 	  <splash src="splash.png" />
+	  <gap:splash src="splash.png"/>
 	</plugin>
 	 <preference name="SplashScreen" value="screen" />
       <preference name="AutoHideSplashScreen" value="true" />
-      <preference name="SplashScreenDelay" value="5000" />
+      <preference name="SplashScreenDelay" value="3000" />
       <preference name="SplashMaintainAspectRatio" value="true" />
       <preference name="FadeSplashScreen" value="false"/>
       <preference name="ShowSplashScreenSpinner" value="false" />
-	
+	<gap:splash src="splash.png"/>
 	<splash src="splash.png" />
 	<platform name="android">
 		<!-- you can use any density that exists in the Android project -->
