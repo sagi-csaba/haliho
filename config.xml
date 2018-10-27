@@ -24,7 +24,8 @@
     <icon src="icon.png" />
     <plugin name="cordova-plugin-splashscreen" source="npm" />
 	<preference name="SplashScreen" value="splash" />
-	<preference name="SplashScreenDelay" value="3000" />
+	<preference name="SplashScreenDelay" value="5000" />
+	<preference name="ShowSplashScreenSpinner" value="true"/>
 	<splash src="splash.png" />
 
 	<platform name="android">
