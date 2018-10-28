@@ -91,6 +91,60 @@
 					
 				});
 				
+				var lastSelectedRGBWmode='out';
+				
+				$(document).bind( "change","input[name= 'radio-choice-h-2']", function(event, ui, e) {
+					var nodeIP = document.getElementById("rgbNodeIP").innerHTML;
+					var sss = $("#rgbwSelector :radio:checked").val();
+					
+					if (lastSelectedRGBWmode == sss) { return; }
+					
+					if (sss == "ki")
+					{
+						lastSelectedRGBWmode = 'ki';
+						
+						document.getElementById("rgbPicker").classList.add("hide");
+						document.getElementById("whiteLEDBrightness").classList.add("hide");
+						
+						var ws1 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws1.onopen = function () {
+											ws1.send('kikapcsolrgb');
+											ws1.close();
+										}
+						var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws2.onopen = function () {
+											ws2.send('kikapcsolw');
+											ws2.close();
+										}
+					}
+					if (sss == "rgb")
+					{
+						lastSelectedRGBWmode = 'rgb';
+						
+						document.getElementById("rgbPicker").classList.remove("hide");
+						document.getElementById("whiteLEDBrightness").classList.add("hide");
+						var ws3 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws3.onopen = function () {
+											ws3.send('bekapcsolrgb');
+											ws3.close();
+										}
+						
+					}
+					if (sss == "white")
+					{
+						
+						lastSelectedRGBWmode = 'white';
+						document.getElementById("whiteLEDBrightness").classList.remove("hide");
+						document.getElementById("rgbPicker").classList.add("hide");
+						var ws4 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws4.onopen = function () {
+											ws4.send('bekapcsolw');
+											ws4.close();
+										}
+					}
+					
+				});
+				
 				function showLEDtype() {
 					document.getElementById("ledType").classList.remove("hide");
 				}
@@ -263,8 +317,6 @@
 																		if(request3.status == 200 || request3.status == 0){
 																			var valasz2 = request3.responseText;
 																			stateW = String(valasz2);
-																			
-																			alert('stateRGB: ' + stateRGB + 'stateW: ' + stateW);
 																			
 																			if (stateRGB == "0" && stateW == "0") 
 																			{
@@ -449,9 +501,106 @@
 					var nodeIP = document.getElementById("node" + nodeID + "description").innerHTML;
 					
 					//**********     just for development  ************
-					//nodeNAME = "nightlight_SP";
-					//nodeIP = "192.168.1.202";
+					//nodeNAME = "nappali_RGBW";
+					//nodeIP = "192.168.1.210";
 					//*************************************************
+					
+						if (nodeNAME.indexOf("_RGBW") != -1) {
+							document.getElementById("nodenameRGBW").innerHTML = nodeNAME;
+							document.getElementById("rgbNodeName").innerHTML = nodeNAME;
+							//document.getElementById("rgbCurrentName").innerHTML = nodeNAME;
+							document.getElementById("rgbNodeIP").innerHTML = nodeIP;
+						
+							//get serieal number and firmware version
+							var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var sorozatszam = valaszStr.split('sorozatszám: <i>');
+											var firmware  = valaszStr.split('firmware: <i>');
+											document.getElementById("rgbNodeSN").innerHTML = sorozatszam[1].substring(0,8) + " | Firmware: " + firmware[1].substring(0,3);
+										}  
+									}
+								}
+						
+							request.open('GET', 'http://' + nodeIP, true);
+							request.send()
+						
+							//select the actual status : off / RGB / white
+												var stateRGB = "dummy";
+												var stateW = "dummy";
+													var request7 = new XMLHttpRequest();		
+														request7.onreadystatechange = function(){
+														if(request.readyState == 4)
+														{ 
+															if(request7.status == 200 || request7.status == 0){
+																var valasz = request7.responseText;
+																stateRGB = String(valasz);
+																
+																var request8 = new XMLHttpRequest();		
+																	request8.onreadystatechange = function(){
+																	if(request8.readyState == 4)
+																	{ 
+																		if(request8.status == 200 || request8.status == 0){
+																			var valasz2 = request8.responseText;
+																			stateW = String(valasz2);
+																			
+																			if (stateRGB == "0" && stateW == "0") 
+																			{
+																				//set off
+																				//alert('off');
+																				$('#radio-choice-h-2a').prop('checked',true).checkboxradio('refresh');
+																				$('#radio-choice-h-2b').removeAttr('checked').checkboxradio('refresh');
+																				$('#radio-choice-h-2c').removeAttr('checked').checkboxradio('refresh');
+																				document.getElementById("rgbPicker").classList.add("hide");
+																				document.getElementById("whiteLEDBrightness").classList.add("hide");
+																				
+																			}
+																			
+																			if (stateRGB == "1")
+																			{
+																				//set rgb
+																				//alert('rgb');
+																				$('#radio-choice-h-2a').removeAttr('checked').checkboxradio('refresh');
+																				$('#radio-choice-h-2b').prop('checked',true).checkboxradio('refresh');
+																				$('#radio-choice-h-2c').removeAttr('checked').checkboxradio('refresh');
+																				document.getElementById("rgbPicker").classList.remove("hide");
+																				document.getElementById("whiteLEDBrightness").classList.add("hide");
+																			}
+																			
+																			if (stateW == "1")
+																			{
+																				//set white
+																				//alert('white');
+																				$('#radio-choice-h-2a').removeAttr('checked').checkboxradio('refresh');
+																				$('#radio-choice-h-2b').removeAttr('checked').checkboxradio('refresh');
+																				$('#radio-choice-h-2c').prop('checked',true).checkboxradio('refresh');
+																				document.getElementById("rgbPicker").classList.add("hide");
+																				document.getElementById("whiteLEDBrightness").classList.remove("hide");
+																			}
+																			
+																		}  
+																			
+																	}
+																}	
+																request8.open("GET", "http://" + nodeIP + "/statew.txt", true);
+																request8.send();
+																
+															}  
+																
+														}
+													}					
+													request7.open("GET", "http://" + nodeIP + "/statergb.txt", true);
+													request7.send();
+						
+
+						
+							loading('hide');
+							window.location.href = '#pageRGBW';
+						}
 					
 						if (nodeNAME.indexOf("_WS") != -1){
 							document.getElementById("nodenameWS").innerHTML = nodeNAME;
@@ -868,29 +1017,13 @@
 						ws.close();
 					}
 				}
-				
-				function updateWhiteCode(ertek)
-				{
-					var newcode = "alap";
-					newcode = "0-0-0-" + ertek;
-					document.getElementById("rgbValueToChange2").innerHTML = newcode;
-					
-					var ws = new WebSocket("ws://192.168.1.238:8009");
-					ws.onopen = function () {
-						//document.getElementById("content").innerHTML += "onopen ";
-						ws.send(newcode);
-						ws.close();
-					}
-				}
+			
 				
 				function loading(showOrHide) {
 					setTimeout(function(){
 						$.mobile.loading(showOrHide);
 					}, 1); 
 				}
-				
-				
-			
 				
 				$(document).bind( "change",'#select-custom-3', function(event, ui) {
 					var szinazonosit = $( '#select-custom-3' ).val();
@@ -915,12 +1048,22 @@
 					}
 				}
 				
+				function hexToRgb(hex) {
+					var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+					return result ? {
+						r: parseInt(result[1], 16),
+						g: parseInt(result[2], 16),
+						b: parseInt(result[3], 16)
+					} : null;
+				}
+				
 				function setOwnColor(sajatSzinID)
 				{
 					var col = document.getElementById( 'sajatszin' + sajatSzinID ).style.background;
 					var colHEX = rgbToHex(col);
 					//alert(colHEX);
 					document.getElementById('rgbPickerValue').jscolor.fromString(colHEX);
+					setRGBcolorNew();
 				}
 				
 				function sp_broadcast(status)
@@ -1256,7 +1399,47 @@
 					  
 				});
 				
+				function setRGBcolorNew(){
+					var nodeIP = document.getElementById("rgbNodeIP").innerHTML;
+					var ertek = $('#rgbPickerValue').val();
+					var piros = parseInt(ertek.substring(0,2),16);
+					var zold = parseInt(ertek.substring(2,4),16);
+					var kek = parseInt(ertek.substring(4,6),16);
+										
+					var newcode = piros + '-' + zold + '-' + kek + '-0';
+					
+					var ws = new WebSocket('ws://' + nodeIP + ':8009');
+					ws.onopen = function () {
+						ws.send(newcode);
+						ws.close();
+					}
+					
+					var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
+					ws2.onopen = function () {
+						ws2.send('allapotmentesrgb');
+						ws2.close();
+					}
+					
+				}
 				
+				function updateWhiteCodeNew() {
+					var nodeIP = document.getElementById("rgbNodeIP").innerHTML;
+					var actualVal = $('#slider-8').val();
+					var newcode = '0-0-0-' + actualVal;
+					
+					var ws = new WebSocket('ws://' + nodeIP + ':8009');
+					ws.onopen = function () {
+						ws.send(newcode);
+						ws.close();
+					}
+					
+					var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
+					ws2.onopen = function () {
+						ws2.send('allapotmentesw');
+						ws2.close();
+					}
+				
+				}
 			</script>
 			
 				<!-- DEBUG -->
@@ -1346,13 +1529,14 @@
 					<h2 name="nodenameRGBW" id ="nodenameRGBW">RGBW: </h2>
 					<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 					<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+					<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
 				</header>
 
 				<article role="main" class="ui-content">
 					
-						<div id="powerButton" name="powerButton" onclick="powerButtonPressed()" class="btn btn-blob"><div style="margin-top:-15px;" class="icono-power"></div></div>
+						<!--<div id="powerButton" name="powerButton" onclick="powerButtonPressed()" class="btn btn-blob"><div style="margin-top:-15px;" class="icono-power"></div></div>-->
 						
-						<h2 id="powerState" name="powerState" align="center">kikapcsolva</h2>
+						<!--<h2 id="powerState" name="powerState" align="center">kikapcsolva</h2>-->
 						
 						<!--<form id="ledType" style="margin-bottom:20px;" name="ledType" class="lathato hide">
 							<fieldset data-role="controlgroup" data-theme="b" data-type="horizontal">
@@ -1364,6 +1548,19 @@
 							</fieldset>
 						</form>-->
 						
+						
+						<center><form style="margin-bottom:50px;">
+							<fieldset data-role="controlgroup" data-type="horizontal" name="rgbwSelector" id="rgbwSelector">
+								<legend style="font-size:1.3em;">Vezérlés állapota:</legend>
+								<input name="radio-choice-h-2" id="radio-choice-h-2a" value="ki" checked="checked" type="radio">
+								<label for="radio-choice-h-2a" style="width:20vw;margin-top:15px;text-align:center;"> ki </label>
+								<input name="radio-choice-h-2" id="radio-choice-h-2b" value="rgb" type="radio">
+								<label for="radio-choice-h-2b" style="width:20vw;margin-top:15px;text-align:center;"> RGB </label>
+								<input name="radio-choice-h-2" id="radio-choice-h-2c" value="white" type="radio">
+								<label for="radio-choice-h-2c" style="width:20vw;margin-top:15px;text-align:center;"> fehér </label>
+							</fieldset>
+						</form></center>
+						
 						<div id="ledType" name="ledType" style="max-width:90%;margin-left:5%;margin-top:10px; margin-bottom:35px;" class="lathato hide" data-role="navbar">
 							<h3>Fényforrás:</h3>
 							<ul>
@@ -1374,11 +1571,14 @@
 						
 						
 						<div id="rgbPicker" name="rgbPicker" style="margin-right:5%;" class="lathato hide">
+							<button name="setRGBcolorBtnNew" id="setRGBcolorBtnNew" style="margin-left:5%;max-width:95%;" onclick="setRGBcolorNew()">kiválasztott szín beállítása</button> 
 							<div style="display:inline-block;margin-left:5%;">Szín és fényerő: </div>
 							<div  style="display:inline-block;font-size:0.8em;float:right;margin-top:5px;">RGB kód: <div name="rgbValueToChange" id="rgbValueToChange" style="display:inline-block;font-size:0.7em;"> </div></div>
-							<div style="margin-left:65px;"><input id="rgbPickerValue" name="rgbPickerValue" class="jscolor {onFineChange: 'updateRGBcode(this)'}" value="009900" readonly></div>
-
-							<div style="margin-left:5%;" class="ui-field-contain">
+							<div style="margin-left:65px;"><input id="rgbPickerValue" name="rgbPickerValue" class="jscolor" value="009900" readonly></div>
+							
+							
+							
+							<div style="margin-left:5%;margin-top:55px;" class="ui-field-contain">
 								<select name="select-custom-3" id="select-custom-3" data-native-menu="false" data-iconpos="left">
 									<option value="0">hozzáadás a kedvenc színekhez...</option>
 									<option value="1">Kedvenc szín 1</option>
@@ -1400,12 +1600,16 @@
 						</div>
 						
 						
-						
-						<form class="lathato hide" style="margin-right:5%;" id="whiteLEDBrightness" name="whiteLEDBrightness" >
-							<label for="slider-2" style="display:inline-block;margin-left:5%;" >Fényerő:</label>
-							<div  style="display:inline-block;font-size:0.8em;float:right;margin-top:5px;">RGB kód: <div name="rgbValueToChange2" id="rgbValueToChange2" style="display:inline-block;font-size:0.7em;"> </div></div>
-							<input name="slider-2" id="slider-2" oninput="updateWhiteCode(this.value)" onchange="updateWhiteCode(this.value)" data-highlight="true" data-track-theme="a" data-theme="a" min="0" max="1023" value="50" type="range">
+						<div class="lathato hide" style="margin-right:5%;" id="whiteLEDBrightness" name="whiteLEDBrightness">
+						<form  >
+							<label for="slider-8" style="display:inline-block;margin-left:5%;" >Fényerő:</label> 
+							<input name="slider-8" id="slider-8" data-highlight="true" data-track-theme="a" data-theme="a" min="0" max="1023" value="50" type="range">
+								
 						</form>
+						<button name="setWhitecolorBtnNew" id="setWhitecolorBtnNew" style="margin-left:5%;max-width:95%;" onclick="updateWhiteCodeNew()">kiválasztott fényerő beállítása</button>
+						</div>
+						
+						
 						<hr style="margin-top:50px;margin-bottom:50px;margin-left:20px;margin-right:20px;">
 						<h2>Node adatok</h2>
 						<div style="margin-left:50px;">
