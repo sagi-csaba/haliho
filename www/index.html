@@ -858,14 +858,17 @@
 				
 				function sp_broadcast(status)
 				{
+					var nodeNev = document.getElementById('node1title').innerHTML;
+					var nodeIP = document.getElementById('node1description').innerHTML;
+					var parancsjellege = "alap";
+					if (status == 'be') {parancsjellege='bekapcsolva';}
+					if (status == 'ki') {parancsjellege='kikapcsolva';}
+					var lista = "Az alábbi konnektorok "+ parancsjellege + ' : ';
+										
 					for (var i = 1; i < 10; i++)
 					{
-						var nodeNev = document.getElementById('node' + i + 'title').innerHTML;
-						var nodeIP = document.getElementById('node' + i + 'description').innerHTML;
-						var parancsjellege = "alap";
-						if (status == 'be') {parancsjellege='bekapcsolva';}
-						if (status == 'ki') {parancsjellege='kikapcsolva';}
-						var lista = "Az alábbi konnektorok "+ parancsjellege + ' : ';
+						nodeNev = document.getElementById('node' + i + 'title').innerHTML;
+						nodeIP = document.getElementById('node' + i + 'description').innerHTML;
 						
 						if (nodeNev.indexOf("_SP") != -1)
 						{
@@ -888,11 +891,10 @@
 											document.getElementById("SP_log").innerHTML = "boadcast parancs: KI";
 										}
 								}
-						
-						
+
 						}
-						alert(lista);
 					}
+					alert(lista);
 				}
 				
 			</script>
