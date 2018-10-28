@@ -538,13 +538,14 @@ var jsc = {
 		if (target._jscLinkedInstance) {
 			if (target._jscLinkedInstance.showOnClick) {
 				target._jscLinkedInstance.show();
-			}
+			}		
 		} else if (target._jscControlName) {
 			jsc.onControlPointerStart(e, target, target._jscControlName, 'touch');
 		} else {
 			if (jsc.picker && jsc.picker.owner) {
 				jsc.picker.owner.hide();
 			}
+
 		}
 	},
 
@@ -988,17 +989,17 @@ var jsc = {
 		// Color Picker options
 		//
 		
-		var szelesseg = $( window).width()/6*4;
-		var magassag = $( window ).height()/4;
+		var szelesseg = $( window).width()/10*5;
+		var magassag = $( window ).height()/10*5;
 		this.width = szelesseg; // width of color palette (in px)
 		this.height = magassag; // height of color palette (in px)
 		this.showOnClick = true; // whether to display the color picker when user clicks on its target element
 		this.mode = 'HSV'; // HSV | HVS | HS | HV - layout of the color picker controls
-		this.position = 'bottom'; // left | right | top | bottom - position relative to the target element
+		this.position = 'top'; // left | right | top | bottom - position relative to the target element
 		this.smartPosition = true; // automatically change picker position when there is not enough space for it
 		this.sliderSize = 50; // px
 		this.crossSize = 12; // px
-		this.closable = false; // whether to display the Close button
+		this.closable = true; // whether to display the Close button
 		this.closeText = 'OK';
 		this.buttonColor = '#000000'; // CSS color
 		this.buttonHeight = 18; // px
@@ -1030,11 +1031,13 @@ var jsc = {
 		this.hide = function () {
 			if (isPickerOwner()) {
 				detachPicker();
+				document.ontouchmove = function(e){ return true; }
 			}
 		};
 
 
 		this.show = function () {
+			document.ontouchmove = function(e){ e.preventDefault(); }
 			drawPicker();
 		};
 
