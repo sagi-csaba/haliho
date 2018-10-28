@@ -859,9 +859,9 @@
 				function sp_broadcast(status)
 				{
 					var parancsjellege = "alap";
-					if (status == 'be') {parancsjellege='bekapcsolva'; document.getElementById("SP_log").innerHTML = "broadcast parancs: BE";}
-					if (status == 'ki') {parancsjellege='kikapcsolva'; document.getElementById("SP_log").innerHTML = "broadcast parancs: KI";}
-					var lista = "Az alábbi konnektorok "+ parancsjellege + ' : \r\n';
+					if (status == 'be') {parancsjellege='Az alábbi snode okos konnektorok bekapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: BE";}
+					if (status == 'ki') {parancsjellege='Az alábbi snode okos konnektorok kikapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: KI";}
+					var lista = " \r\n';
 
 					var nodeNev = document.getElementById('node1title').innerHTML;
 					var nodeIP = document.getElementById('node1description').innerHTML;
@@ -1104,6 +1104,9 @@
 					}
 					
 					//alert(lista);
+					document.getElementById('SPmessageHeader').innerHTML = parancsjellege;
+					document.getElementById('SPbroadcastList').innerHTML = lista;
+					window.location.href = '#popupDialogSP'; //show dialog
 				}
 				
 			</script>
@@ -1321,7 +1324,8 @@
 				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
-				<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>
+				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
+				<!--<a href="#popupDialogSP" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">Delete page...</a>-->
             </header>
 
             <article role="main" class="ui-content">
@@ -1359,6 +1363,19 @@
 				
             </article>
 
+			
+			<div data-role="popup" id="popupDialogSP" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:70vw;">
+				<div data-role="header" data-theme="a">
+				<center><div style="padding:5px;font-size:1.3em;">Boradcast parancs</div></center>
+				</div>
+				<div role="main" class="ui-content">
+					<h3 id="SPmessageHeader" name ="SPmessageHeader" class="ui-title">parancs jellege</h3>
+					<p id="SPbroadcastList" name="SPbroadcastList">sp lista</p>
+					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">OK</a>
+					
+				</div>
+			</div>
+			
             <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
 				<h4 id="SP_log" name="SP_log">snode Smart Plug</h4> 
             </footer>
