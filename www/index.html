@@ -858,18 +858,20 @@
 				
 				function sp_broadcast(status)
 				{
-					
 					for (var i = 1; i < 10; i++)
 					{
-						alert (i);
 						var nodeNev = document.getElementById('node' + i + 'title').innerHTML;
 						var nodeIP = document.getElementById('node' + i + 'description').innerHTML;
-						alert('sor: ' + nodeNev + ' melynek IP-je' + nodeIP);
-						if (nodeNev.indexOf("_SP") != -1){
-							alert('találat: ' + nodeNev + ' melynek IP-je' + nodeIP);
+						var parancsjellege = "alap";
+						if (status == 'be') {parancsjellege='bekapcsolva';}
+						if (status == 'ki') {parancsjellege='kikapcsolva';}
+						var lista = "Az alábbi konnektorok "+ parancsjellege + ' : ';
+						
+						if (nodeNev.indexOf("_SP") != -1)
+						{
+							lista = lista + nodeNev + ' ';
 							if (status == 'be')
 								{
-									alert('bekapcsol mind');
 									var ws = new WebSocket('ws://' + nodeIP + ':8009');
 										ws.onopen = function () {
 											ws.send('bekapcsol');
@@ -879,7 +881,6 @@
 								}
 								if (status == 'ki')
 								{
-									alert('kikapcsol mind');
 									var ws = new WebSocket('ws://' + nodeIP + ':8009');
 										ws.onopen = function () {
 											ws.send('kikapcsol');
@@ -890,6 +891,7 @@
 						
 						
 						}
+						alert(lista);
 					}
 				}
 				
@@ -1108,7 +1110,7 @@
 				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
-				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
+				<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>
             </header>
 
             <article role="main" class="ui-content">
