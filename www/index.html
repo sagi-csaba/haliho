@@ -417,6 +417,7 @@
 						if (nodeNAME.indexOf("_SP") != -1){
 							document.getElementById("nodenameSP").innerHTML = nodeNAME;
 							document.getElementById("spNodeName").innerHTML = nodeNAME;
+							document.getElementById("spCurrentName").innerHTML = nodeNAME;
 							document.getElementById("spNodeIP").innerHTML = nodeIP;
 						
 							//get serieal number and firmware version
@@ -864,13 +865,13 @@
 												document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";}
 					if (status == 'ki') {parancsjellege='Az alábbi snode okos konnektorok kikapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: KI";$("#flip-2").val('off').slider('refresh');
 												document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";}
-					var lista = 'alap \r\n';
+					var lista = '<br>';
 
 					var nodeNev = document.getElementById('node1title').innerHTML;
 					var nodeIP = document.getElementById('node1description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws = new WebSocket('ws://' + nodeIP + ':8009');
@@ -894,7 +895,7 @@
 					nodeIP = document.getElementById('node2description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -918,7 +919,7 @@
 					nodeIP = document.getElementById('node3description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws3 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -942,7 +943,7 @@
 					nodeIP = document.getElementById('node4description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws4 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -966,7 +967,7 @@
 					nodeIP = document.getElementById('node5description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws5 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -990,7 +991,7 @@
 					nodeIP = document.getElementById('node6description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws6 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -1014,7 +1015,7 @@
 					nodeIP = document.getElementById('node7description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws7 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -1038,7 +1039,7 @@
 					nodeIP = document.getElementById('node8description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws8 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -1062,7 +1063,7 @@
 					nodeIP = document.getElementById('node9description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws9 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -1086,7 +1087,7 @@
 					nodeIP = document.getElementById('node10description').innerHTML;
 					if (nodeNev.indexOf("_SP") != -1)
 					{
-						lista = lista + nodeNev + '\r\n';
+						lista = lista + nodeNev + '<br>';
 						if (status == 'be')
 								{
 									var ws10 = new WebSocket('ws://' + nodeIP + ':8009');
@@ -1136,7 +1137,19 @@
 					  
 					  document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val().replace(/[^0-9a-z]/gi, '') + '_SP';
 					  $('#SPnewNodeName').val($('#SPnewNodeName').val().replace(/[^0-9a-z]/gi, ''));
-				  
+					  if ($('#SPnewNodeName').val().length < 6)
+						{
+							document.getElementById('spNodeCriteria').innerHTML = "eszköznév túl rövid!"; 
+							document.getElementById('spNodeCriteria').style.color = '#CC1111';
+							document.getElementById('saveSPnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled';
+						}
+					  else 
+						{
+							document.getElementById('spNodeCriteria').innerHTML = "az eszköznév szintaktikailag megfelel"; 
+							document.getElementById('spNodeCriteria').style.color = '#55CC55';
+							document.getElementById('saveSPnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b';
+						}
+					  
 				});
 				
 				
@@ -1400,7 +1413,7 @@
 			
 			<div data-role="popup" id="popupDialogSP" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:70vw;">
 				<div data-role="header" data-theme="a">
-				<center><div style="padding:5px;font-size:1.3em;">Boradcast parancs</div></center>
+				<center><div style="padding:5px;font-size:1.3em;">Broadcast parancs</div></center>
 				</div>
 				<div role="main" class="ui-content">
 					<h3 id="SPmessageHeader" name ="SPmessageHeader" class="ui-title">parancs jellege</h3>
@@ -1415,19 +1428,20 @@
 				<center><div style="padding:5px;font-size:1.3em;">eszköz nevének megváltoztatása</div></center>
 				</div>
 				<div role="main" class="ui-content">
-					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div style="display:inline-block;font-size:0.9em;">222</div>
-					<p style="font-size:0.8em;margin-left:3vw;">Az eszköz nevének megadásánál csak alfanumerikus karakterek használata megengedett. Speciális karakterek használata nem lehetséges!<br>Az eszköz nevének a hálózaton egyedinek kell lennie, azaz két egyforma nevű eszköz egy időben nem lehet a hálózaton!</p>
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="spCurrentName" name="spCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<p style="font-size:0.8em;margin-left:20px;">Az eszköz nevének megadásánál csak alfanumerikus karakterek használata megengedett. Speciális karakterek használata nem lehetséges!<br>Az eszköz nevének a hálózaton egyedinek kell lennie, azaz két egyforma nevű eszköz egy időben nem lehet a hálózaton!</p>
 					
 					
 					<form style="margin-top:20px;">
 						 <label for="text-3">Új név: </label>
-						 <input data-clear-btn="true" id="SPnewNodeName" name="SPnewNodeName" value="" type="text">
+						 <input style="margin-left:20px;" data-clear-btn="true" id="SPnewNodeName" name="SPnewNodeName" value="" type="text">
 					</form>
 					
 					<div style="display:inline-block;font-size:1.1em;">Eszköz új neve: </div><div id="spNewName" name="spNewName" style="display:inline-block;font-size:0.9em;"> </div>
+					<div style="margin-left:20px;" id='spNodeCriteria' name='spNodeCriteria'></div>
 					<br>
-					<a href="#" style="margin-top:25px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
-					<a href="#" style="margin-top:25px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mentés</a>
+					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
+					<a href="#" id="saveSPnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
 				</div>
 			</div>
 		
