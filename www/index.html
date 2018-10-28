@@ -858,14 +858,16 @@
 				
 				function sp_broadcast(status)
 				{
+					alert ('indul a móka');
 					for (var i = 0; i < 10; i++)
 					{
 						var nodeNev = document.getElementById('node' + i + 'title').innerHTML;
 						var nodeIP = document.getElementById('node' + i + 'description').innerHTML;
 						if (nodeNev.indexOf("_SP") != -1){
-						
+							alert('találat: ' + nodeNev + ' melynek IP-je' + nodeIP);
 							if (status == 'be')
 								{
+									alert('bekapcsol mind');
 									var ws = new WebSocket('ws://' + nodeIP + ':8009');
 										ws.onopen = function () {
 											ws.send('bekapcsol');
@@ -875,6 +877,7 @@
 								}
 								if (status == 'ki')
 								{
+									alert('kikapcsol mind');
 									var ws = new WebSocket('ws://' + nodeIP + ':8009');
 										ws.onopen = function () {
 											ws.send('kikapcsol');
