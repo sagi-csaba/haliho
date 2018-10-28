@@ -253,6 +253,46 @@
 															if(request.status == 200 || request.status == 0){
 																var valasz = request.responseText;
 																stateRGB = String(valasz);
+																
+																
+																
+																var request3 = new XMLHttpRequest();		
+																	request3.onreadystatechange = function(){
+																	if(request3.readyState == 4)
+																	{ 
+																		if(request3.status == 200 || request3.status == 0){
+																			var valasz2 = request3.responseText;
+																			stateW = String(valasz2);
+																			
+																			alert('stateRGB: ' + stateRGB + 'stateW: ' + stateW);
+																			
+																			if (stateRGB == "0" && stateW == "0") 
+																			{
+																				document.getElementById(nodestatus).innerHTML = 'kikapcsolva'; 
+																				document.getElementById(nodestatus).style.color = '#CC1111';
+																			}
+																			
+																			if (stateRGB == "1")
+																			{
+																				document.getElementById(nodestatus).innerHTML = 'RGB bekapcsolva'; 
+																				document.getElementById(nodestatus).style.color = '#55CC55';
+																			}
+																			
+																			if (stateW == "1")
+																			{
+																				document.getElementById(nodestatus).innerHTML = 'Fehér bekapcsolva'; 
+																				document.getElementById(nodestatus).style.color = '#55CC55';
+																			}
+																			
+																		}  
+																			
+																	}
+																}	
+																request3.open("GET", "http://" + ipv4addresstt + "/statew.txt", true);
+																request3.send();
+																
+																
+																
 															}  
 																
 														}
@@ -260,39 +300,12 @@
 													request.open("GET", "http://" + ipv4addresstt + "/statergb.txt", true);
 													request.send();
 												
-													var request3 = new XMLHttpRequest();		
-														request3.onreadystatechange = function(){
-														if(request3.readyState == 4)
-														{ 
-															if(request3.status == 200 || request3.status == 0){
-																var valasz = request3.responseText;
-																stateW = String(valasz);
-															}  
-																
-														}
-													}					
-													request3.open("GET", "http://" + ipv4addresstt + "/statew.txt", true);
-													request3.send();
-												
-													alert('stateRGB: ' + stateRGB + 'stateW: ' + stateW);
-												
-													if (stateRGB == "0" && stateW == "0") 
-													{
-														document.getElementById(nodestatus).innerHTML = 'kikapcsolva'; 
-														document.getElementById(nodestatus).style.color = '#CC1111';
-													}
+																	
 													
-													if (stateRGB == "1")
-													{
-														document.getElementById(nodestatus).innerHTML = 'RGB bekapcsolva'; 
-														document.getElementById(nodestatus).style.color = '#55CC55';
-													}
+												
 													
-													if (stateW == "1")
-													{
-														document.getElementById(nodestatus).innerHTML = 'Fehér bekapcsolva'; 
-														document.getElementById(nodestatus).style.color = '#55CC55';
-													}
+												
+													
 												
 												}
 											if (namett.indexOf('_SP') != -1) {
