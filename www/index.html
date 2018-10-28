@@ -241,6 +241,58 @@
 												//RGBW controller
 												document.getElementById(nodeimage).src = 'img/icon_RGBW.svg';
 												
+												//státuszok lekérdezése
+												var stateRGB = "dummy";
+												var stateW = "dummy";
+												
+													var request = new XMLHttpRequest();		
+														request.onreadystatechange = function(){
+														if(request.readyState == 4)
+														{ 
+															if(request.status == 200 || request.status == 0){
+																		
+																var valasz = request.responseText;
+																var stateRGB = String(valasz);
+															}  
+																
+														}
+													}					
+													request.open("GET", "http://" + ipv4addresstt + "/statergb.txt", true);
+													request.send();
+												
+													var request3 = new XMLHttpRequest();		
+														request3.onreadystatechange = function(){
+														if(request3.readyState == 4)
+														{ 
+															if(request3.status == 200 || request3.status == 0){
+																		
+																var valasz = request3.responseText;
+																var stateW = String(valasz);
+															}  
+																
+														}
+													}					
+													request3.open("GET", "http://" + ipv4addresstt + "/statew.txt", true);
+													request3.send();
+												
+													if (stateRGB == "0" && stateW == "0") 
+													{
+														document.getElementById(nodestatus).innerHTML = 'kikapcsolva'; 
+														document.getElementById(nodestatus).style.color = '#CC1111';
+													}
+													
+													if (stateRGB == "1")
+													{
+														document.getElementById(nodestatus).innerHTML = 'RGB bekapcsolva'; 
+														document.getElementById(nodestatus).style.color = '#55CC55';
+													}
+													
+													if (stateW == "1")
+													{
+														document.getElementById(nodestatus).innerHTML = 'Fehér bekapcsolva'; 
+														document.getElementById(nodestatus).style.color = '#55CC55';
+													}
+												
 												}
 											if (namett.indexOf('_SP') != -1) {
 												//smart plug
@@ -1137,7 +1189,7 @@
 					  
 					  document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val().replace(/[^0-9a-z]/gi, '') + '_SP';
 					  $('#SPnewNodeName').val($('#SPnewNodeName').val().replace(/[^0-9a-z]/gi, ''));
-					  if ($('#SPnewNodeName').val().length < 6)
+					  if ($('#SPnewNodeName').val().length < 5)
 						{
 							document.getElementById('spNodeCriteria').innerHTML = "eszköznév túl rövid!"; 
 							document.getElementById('spNodeCriteria').style.color = '#CC1111';
@@ -1152,7 +1204,43 @@
 					  
 				});
 				
-				
+				$(document).on("input", "#WSnewNodeName", function (e) {
+					  
+					  var str = $.trim( $(this).val() );
+					  var regx = /^[A-Za-z0-9]/;
+					  var keyCode = e.keyCode;
+					  
+					  if(e.keyCode == 8 || e.keyCode == 46) {
+							document.getElementById('wsNewName').innerHTML = $('#WSnewNodeName').val() + "_WS";
+							
+							return;
+						}      
+					  if (String.fromCharCode(keyCode).match(regx)) {
+						document.getElementById('wsNewName').innerHTML = $('#WSnewNodeName').val() + "_WS";
+						return;
+						}
+					  else
+					  {
+							document.getElementById('wsNewName').innerHTML = $('#WSnewNodeName').val() + "_WS";
+							e.preventDefault();
+					  }
+					  
+					  document.getElementById('wsNewName').innerHTML = $('#WSnewNodeName').val().replace(/[^0-9a-z]/gi, '') + '_WS';
+					  $('#WSnewNodeName').val($('#WSnewNodeName').val().replace(/[^0-9a-z]/gi, ''));
+					  if ($('#WSnewNodeName').val().length < 5)
+						{
+							document.getElementById('wsNodeCriteria').innerHTML = "eszköznév túl rövid!"; 
+							document.getElementById('wsNodeCriteria').style.color = '#CC1111';
+							document.getElementById('saveWSnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled';
+						}
+					  else 
+						{
+							document.getElementById('wsNodeCriteria').innerHTML = "az eszköznév szintaktikailag megfelel"; 
+							document.getElementById('wsNodeCriteria').style.color = '#55CC55';
+							document.getElementById('saveWSnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b';
+						}
+					  
+				});
 				
 				
 			</script>
@@ -1325,7 +1413,7 @@
             <header data-role="header" data-position="fixed"  data-add-back-btn="true" data-tap-toggle="false">
                 <h1 name="nodenameWS" id ="nodenameWS" >WS: </h1>
 				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
-				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+				<a href="#popupDialogWSnodeNameChange" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
 				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
 				
@@ -1357,6 +1445,31 @@
 						</div>
 				
             </article>
+			
+			<div data-role="popup" id="popupDialogWSnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+				<div data-role="header" data-theme="a">
+				<center><div style="padding:5px;font-size:1.3em;">időjárás állomás nevének megváltoztatása</div></center>
+				</div>
+				<div role="main" class="ui-content">
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="spCurrentName" name="spCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
+					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
+					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
+					<div style="font-size:0.7em;margin-left:25px;">- legalább 5 karakter hosszúnak kell lennie</div>
+					
+					
+					<form style="margin-top:20px;">
+						 <label for="text-3">Új név: </label>
+						 <input style="margin-left:20px;" data-clear-btn="true" id="WSnewNodeName" name="WSnewNodeName" value="" type="text">
+					</form>
+					
+					<div style="display:inline-block;font-size:1.1em;">Eszköz új neve: </div><div id="wsNewName" name="wsNewName" style="display:inline-block;font-size:0.9em;color:yellow;"> </div>
+					<div style="margin-left:20px;" id='wsNodeCriteria' name='wsNodeCriteria'></div>
+					<br>
+					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
+					<a href="#" id="saveWSnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
+				</div>
+			</div>
 
             <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
 				<h4 id="WS_log" name="WS_log">node-hoz tartozó lábléc</h4> 
@@ -1425,11 +1538,14 @@
 			
 			<div data-role="popup" id="popupDialogSPnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
 				<div data-role="header" data-theme="a">
-				<center><div style="padding:5px;font-size:1.3em;">eszköz nevének megváltoztatása</div></center>
+				<center><div style="padding:5px;font-size:1.3em;">okos konnektor nevének megváltoztatása</div></center>
 				</div>
 				<div role="main" class="ui-content">
 					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="spCurrentName" name="spCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
-					<p style="font-size:0.8em;margin-left:20px;">Az eszköz nevének megadásánál csak alfanumerikus karakterek használata megengedett. Speciális karakterek használata nem lehetséges!<br>Az eszköz nevének a hálózaton egyedinek kell lennie, azaz két egyforma nevű eszköz egy időben nem lehet a hálózaton!</p>
+					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
+					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
+					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
+					<div style="font-size:0.7em;margin-left:25px;">- legalább 5 karakter hosszúnak kell lennie</div>
 					
 					
 					<form style="margin-top:20px;">
