@@ -245,36 +245,34 @@
 												var stateRGB = "dummy";
 												var stateW = "dummy";
 												
-												alert('1');
+												
 													var request = new XMLHttpRequest();		
 														request.onreadystatechange = function(){
 														if(request.readyState == 4)
 														{ 
 															if(request.status == 200 || request.status == 0){
 																var valasz = request.responseText;
-																var stateRGB = String(valasz);
+																stateRGB = String(valasz);
 															}  
 																
 														}
 													}					
 													request.open("GET", "http://" + ipv4addresstt + "/statergb.txt", true);
 													request.send();
-												alert('2');
+												
 													var request3 = new XMLHttpRequest();		
 														request3.onreadystatechange = function(){
 														if(request3.readyState == 4)
 														{ 
 															if(request3.status == 200 || request3.status == 0){
 																var valasz = request3.responseText;
-																var stateW = String(valasz);
+																stateW = String(valasz);
 															}  
 																
 														}
 													}					
 													request3.open("GET", "http://" + ipv4addresstt + "/statew.txt", true);
 													request3.send();
-												
-													alert('stateRGB: ' + stateRGB + 'stateW: ' + stateW);
 												
 													if (stateRGB == "0" && stateW == "0") 
 													{
