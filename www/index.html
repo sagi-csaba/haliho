@@ -858,11 +858,13 @@
 				
 				function sp_broadcast(status)
 				{
-					alert ('indul a móka');
-					for (var i = 0; i < 10; i++)
+					
+					for (var i = 1; i < 10; i++)
 					{
+						alert (i);
 						var nodeNev = document.getElementById('node' + i + 'title').innerHTML;
 						var nodeIP = document.getElementById('node' + i + 'description').innerHTML;
+						alert('sor: ' + nodeNev + ' melynek IP-je' + nodeIP);
 						if (nodeNev.indexOf("_SP") != -1){
 							alert('találat: ' + nodeNev + ' melynek IP-je' + nodeIP);
 							if (status == 'be')
