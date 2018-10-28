@@ -274,6 +274,8 @@
 													request3.open("GET", "http://" + ipv4addresstt + "/statew.txt", true);
 													request3.send();
 												
+													alert('stateRGB: ' + stateRGB + 'stateW: ' + stateW);
+												
 													if (stateRGB == "0" && stateW == "0") 
 													{
 														document.getElementById(nodestatus).innerHTML = 'kikapcsolva'; 
