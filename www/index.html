@@ -861,7 +861,7 @@
 					var parancsjellege = "alap";
 					if (status == 'be') {parancsjellege='Az alábbi snode okos konnektorok bekapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: BE";}
 					if (status == 'ki') {parancsjellege='Az alábbi snode okos konnektorok kikapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: KI";}
-					var lista = " \r\n';
+					var lista = 'alap \r\n';
 
 					var nodeNev = document.getElementById('node1title').innerHTML;
 					var nodeIP = document.getElementById('node1description').innerHTML;
@@ -1106,8 +1106,32 @@
 					//alert(lista);
 					document.getElementById('SPmessageHeader').innerHTML = parancsjellege;
 					document.getElementById('SPbroadcastList').innerHTML = lista;
-					window.location.href = '#popupDialogSP'; //show dialog
+					window.location.href = '#popupDialogSP';
 				}
+				
+				$(document).on("keypress", "#SPnewNodeName", function (e) {
+					  
+					  var str = $.trim( $(this).val() );
+					  var regx = /^[A-Za-z0-9]/;
+					  var keyCode = e.keyCode || e.which;
+					  if(e.keyCode == 8 || e.keyCode == 46) {
+							document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + "_SP";
+							
+							return;
+						}      
+					  if (String.fromCharCode(keyCode).match(regx)) {
+						document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + String.fromCharCode(keyCode) + "_SP";
+						return;
+						}
+					  else
+					  {
+							document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + "_SP";
+							e.preventDefault();
+					  }
+					  
+				});
+				
+				
 				
 			</script>
 			
@@ -1322,7 +1346,7 @@
             <header data-role="header" data-position="fixed"  data-add-back-btn="true" data-tap-toggle="false">
                 <h1 name="nodenameSP" id ="nodenameSP" >SP: </h1>
 				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
-				<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+				<a href="#popupDialogSPnodeNameChange" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
 				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
 				<!--<a href="#popupDialogSP" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">Delete page...</a>-->
@@ -1375,6 +1399,28 @@
 					
 				</div>
 			</div>
+			
+			<div data-role="popup" id="popupDialogSPnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+				<div data-role="header" data-theme="a">
+				<center><div style="padding:5px;font-size:1.3em;">eszköz nevének megváltoztatása</div></center>
+				</div>
+				<div role="main" class="ui-content">
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div style="display:inline-block;font-size:0.9em;">222</div>
+					<p style="font-size:0.8em;margin-left:3vw;">Az eszköz nevének megadásánál csak alfanumerikus karakterek használata megengedett. Speciális karakterek használata nem lehetséges!<br>Az eszköz nevének a hálózaton egyedinek kell lennie, azaz két egyforma nevű eszköz egy időben nem lehet a hálózaton!</p>
+					
+					
+					<form style="margin-top:20px;">
+						 <label for="text-3">Új név: </label>
+						 <input data-clear-btn="true" id="SPnewNodeName" name="SPnewNodeName" value="" type="text">
+					</form>
+					
+					<div style="display:inline-block;font-size:1.1em;">Eszköz új neve: </div><div id="spNewName" name="spNewName" style="display:inline-block;font-size:0.9em;"> </div>
+					<br>
+					<a href="#" style="margin-top:25px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
+					<a href="#" style="margin-top:25px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mentés</a>
+				</div>
+			</div>
+		
 			
             <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
 				<h4 id="SP_log" name="SP_log">snode Smart Plug</h4> 
