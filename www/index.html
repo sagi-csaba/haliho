@@ -72,11 +72,10 @@
 					if (sss == 'on')
 					{
 						var ws = new WebSocket('ws://' + nodeIP + ':8009');
-							document.getElementById("content").innerHTML += "deklarálva ";
 							ws.onopen = function () {
-								//document.getElementById("content").innerHTML += "onopen ";
 								ws.send('bekapcsol');
 								ws.close();
+								document.getElementById("SP_log").innerHTML = "konnektor bekapcsolva";
 							}
 					}
 					if (sss == 'off')
@@ -84,9 +83,9 @@
 						var ws = new WebSocket('ws://' + nodeIP + ':8009');
 							document.getElementById("content").innerHTML += "deklarálva ";
 							ws.onopen = function () {
-								//document.getElementById("content").innerHTML += "onopen ";
 								ws.send('kikapcsol');
 								ws.close();
+								document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";
 							}
 					}
 					
@@ -451,12 +450,14 @@
 												
 												//document.getElementById("flip-2").value = 'off';
 												$("#flip-2").val('off').slider('refresh');
+												document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";
 												//alert('kikapcsolva');
 											}
 											if (valaszStr == '1')
 											{
 												//document.getElementById("flip-2").value = 'on';
 												$("#flip-2").val('on').slider('refresh');
+												document.getElementById("SP_log").innerHTML = "konnektor bekapcsolva";
 												//alert('bekapcsolva');
 											}
 										}  
@@ -855,6 +856,38 @@
 					document.getElementById('rgbPickerValue').jscolor.fromString(colHEX);
 				}
 				
+				function sp_broadcast(status)
+				{
+					for (int i= 1; i < 10; i++)
+					{
+						var nodeNev = document.getElementById('node' + i + 'title').innerHTML;
+						var nodeIP = document.getElementById('node' + i + 'description').innerHTML;
+						if (nodeNev.indexOf("_SP") != -1){
+						
+							if (status == 'be')
+								{
+									var ws = new WebSocket('ws://' + nodeIP + ':8009');
+										ws.onopen = function () {
+											ws.send('bekapcsol');
+											ws.close();
+											document.getElementById("SP_log").innerHTML = "broadcast parancs: BE";
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws = new WebSocket('ws://' + nodeIP + ':8009');
+										ws.onopen = function () {
+											ws.send('kikapcsol');
+											ws.close();
+											document.getElementById("SP_log").innerHTML = "boadcast parancs: KI";
+										}
+								}
+						
+						
+						}
+					}
+				}
+				
 			</script>
 			
 				<!-- DEBUG -->
@@ -1075,14 +1108,28 @@
 
             <article role="main" class="ui-content">
                 
-<center><form style="margin-left:auto;margin-right:auto;margin-top:30px;">
-    <label for="flip-2">okos konnektor állapota:</label>
-    <select name="flip-2" id="flip-2" data-role="slider" data-track-theme="b" data-theme="b">
-        <option value="off">ki</option>
-        <option value="on">be</option>
-    </select>
-</form>
-</center>
+				<center><form style="margin-left:auto;margin-right:auto;margin-top:30px;">
+					<label for="flip-2"><h2>okos konnektor állapota:</h2></label>
+					<select name="flip-2" id="flip-2" data-role="slider" data-track-theme="b" data-theme="b">
+						<option value="off">ki</option>
+						<option value="on">be</option>
+					</select>
+				</form>
+				</center>
+				
+				<center>
+				<div style="margin-top:30px;padding-left:15px;padding-right:15px;font-size:0.9em;">
+				Parancs küldése a hálózaton elérhető összes snode okos konnektornak:
+				</div>
+				
+				<div id="" name="" style="max-width:90%;margin-left:5%;margin-top:15px;" data-role="navbar">
+					<ul>
+						<li><a href="#" id="" style="font-size:0.6em;" name="" onclick="sp_broadcast('ki')">kikapcsol</a></li>
+						<li><a href="#" id="" style="font-size:0.6em;" name="" onclick="sp_broadcast('be')">bekapcsol</a></li>
+					</ul>
+				</div>
+				
+				</center>
 				
 				<hr style="margin-top:50px;margin-bottom:50px;margin-left:20px;margin-right:20px;">
 						<h2>Node adatok</h2>
@@ -1095,7 +1142,7 @@
             </article>
 
             <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
-				<h4 id="WS_log" name="WS_log">snode Smart Plug</h4> 
+				<h4 id="SP_log" name="SP_log">snode Smart Plug</h4> 
             </footer>
 
         </section>
