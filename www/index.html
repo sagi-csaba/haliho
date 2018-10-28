@@ -858,9 +858,12 @@
 				
 				function sp_broadcast(status)
 				{
+					
 					var parancsjellege = "alap";
-					if (status == 'be') {parancsjellege='Az alábbi snode okos konnektorok bekapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: BE";}
-					if (status == 'ki') {parancsjellege='Az alábbi snode okos konnektorok kikapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: KI";}
+					if (status == 'be') {parancsjellege='Az alábbi snode okos konnektorok bekapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: BE";$("#flip-2").val('on').slider('refresh');
+												document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";}
+					if (status == 'ki') {parancsjellege='Az alábbi snode okos konnektorok kikapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: KI";$("#flip-2").val('off').slider('refresh');
+												document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";}
 					var lista = 'alap \r\n';
 
 					var nodeNev = document.getElementById('node1title').innerHTML;
@@ -1106,21 +1109,23 @@
 					//alert(lista);
 					document.getElementById('SPmessageHeader').innerHTML = parancsjellege;
 					document.getElementById('SPbroadcastList').innerHTML = lista;
-					window.location.href = '#popupDialogSP';
+					//window.location.href = '#popupDialogSP';
+					$('#showSPpopup')[0].click();
 				}
 				
-				$(document).on("keypress", "#SPnewNodeName", function (e) {
+				$(document).on("keydown", "#SPnewNodeName", function (e) {
 					  
 					  var str = $.trim( $(this).val() );
 					  var regx = /^[A-Za-z0-9]/;
-					  var keyCode = e.keyCode || e.which;
+					  var keyCode = e.keyCode;
+					 
 					  if(e.keyCode == 8 || e.keyCode == 46) {
 							document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + "_SP";
 							
 							return;
 						}      
 					  if (String.fromCharCode(keyCode).match(regx)) {
-						document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + String.fromCharCode(keyCode) + "_SP";
+						document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + String.fromCharCode(e.keyCode) + "_SP";
 						return;
 						}
 					  else
@@ -1130,6 +1135,7 @@
 					  }
 					  
 				});
+				
 				
 				
 				
@@ -1350,6 +1356,7 @@
 				
 				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
 				<!--<a href="#popupDialogSP" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">Delete page...</a>-->
+				<a href="#popupDialogSP" style="display:none;" id="showSPpopup" name="showSPpopup" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">dummy</a>
             </header>
 
             <article role="main" class="ui-content">
