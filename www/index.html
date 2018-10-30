@@ -1498,7 +1498,7 @@
 						var nodeIP = document.getElementById('node' + nodeID + 'description').innerHTML;
 						//alert('felülvizsgálni: ' + nodeName + ' aminek az IP-je: ' + nodeIP);
 						
-						if (namett.indexOf('_WS') != -1) {
+						if (nodeName.indexOf('_WS') != -1) {
 							//Weather Station
 							
 							var request = new XMLHttpRequest();		
@@ -1519,17 +1519,16 @@
 							request.send();
 							}
 							
-						if (namett.indexOf('_SP') != -1) {
+						if (nodeName.indexOf('_SP') != -1) {
 							//smart plug
-							document.getElementById(nodeimage).src = 'img/icon_SP.svg';
-												
-							var request = new XMLHttpRequest();		
-							request.onreadystatechange = function(){
-							if(request.readyState == 4)
+																		
+							var request2 = new XMLHttpRequest();		
+							request2.onreadystatechange = function(){
+							if(request2.readyState == 4)
 							{ 
-								if(request.status == 200 || request.status == 0){
+								if(request2.status == 200 || request2.status == 0){
 																				
-									var valasz = request.responseText;
+									var valasz = request2.responseText;
 									var resSP = 'ismeretlen állapot';
 									if (valasz == '0') {resSP = 'kikapcsolva';}
 									if (valasz == '1') {resSP = 'bekapcsolva';}
@@ -1541,10 +1540,67 @@
 							}
 							}
 																	
-							request.open("GET", "http://" + nodeIP + "/status.txt", true);
-							request.send();
+							request2.open("GET", "http://" + nodeIP + "/status.txt", true);
+							request2.send();
 												
-						}	
+						}
+
+						if (nodeName.indexOf('_RGBW') != -1) {
+							//RGBW controller
+							
+							//státuszok lekérdezése
+							var stateRGB = "dummy";
+							var stateW = "dummy";
+												
+							var request4 = new XMLHttpRequest();		
+							request4.onreadystatechange = function(){
+							if(request4.readyState == 4)
+							{ 
+								if(request4.status == 200 || request4.status == 0){
+									var valasz = request4.responseText;
+									stateRGB = String(valasz);
+																
+									var request5 = new XMLHttpRequest();		
+									request5.onreadystatechange = function(){
+									if(request5.readyState == 4)
+									{ 
+										if(request5.status == 200 || request5.status == 0){
+											var valasz2 = request5.responseText;
+											stateW = String(valasz2);
+																		
+											if (stateRGB == "0" && stateW == "0") 
+											{
+												document.getElementById(nodestatus).innerHTML = 'kikapcsolva'; 
+												document.getElementById(nodestatus).style.color = '#CC1111';
+											}
+																			
+											if (stateRGB == "1")
+											{
+												document.getElementById(nodestatus).innerHTML = 'RGB bekapcsolva'; 
+												document.getElementById(nodestatus).style.color = '#55CC55';
+											}
+																			
+											if (stateW == "1")
+											{
+												document.getElementById(nodestatus).innerHTML = 'Fehér bekapcsolva'; 
+												document.getElementById(nodestatus).style.color = '#55CC55';
+											}
+																			
+										}  
+																			
+									}
+									}	
+									request5.open("GET", "http://" + nodeIP + "/statew.txt", true);
+									request5.send();
+
+								}  
+																
+							}
+							}					
+							request4.open("GET", "http://" + nodeIP + "/statergb.txt", true);
+							request4.send();
+											
+						}
 							
 					}
 				}
