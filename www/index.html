@@ -1489,16 +1489,42 @@
 					var nodeDiv= 'node' + nodeID;
 					if (document.getElementById(nodeDiv).style.display != 'none')
 					{
-						var nodestatus = 'node' + listID + 'status';
+						var nodestatus = 'node' + nodeID + 'status';
 						document.getElementById(nodestatus).style.color = '#000';
 						document.getElementById(nodestatus).innerHTML = "frissítés...";
 						
-						//ha nincs elrejtve, akkor mehet a móka
 						var nodeName = document.getElementById('node' + nodeID + 'title').innerHTML;
 						var nodeIP = document.getElementById('node' + nodeID + 'description').innerHTML;
-						//alert('felülvizsgálni: ' + nodeName + ' aminek az IP-je: ' + nodeIP);
-						
-						if (nodeName.indexOf('_WS') != -1) {
+							
+							if (nodeName.indexOf('_SP') != -1) {
+								//smart plug
+																			
+								var request2 = new XMLHttpRequest();		
+								request2.onreadystatechange = function(){
+								if(request2.readyState == 4)
+								{ 
+									if(request2.status == 200 || request2.status == 0){
+																					
+										var valasz = request2.responseText;
+										var resSP = 'ismeretlen állapot';
+										if (valasz == '0') {resSP = 'kikapcsolva';}
+										if (valasz == '1') {resSP = 'bekapcsolva';}
+										document.getElementById(nodestatus).innerHTML = resSP;
+										if (valasz == '0') {document.getElementById(nodestatus).style.color = '#CC1111';}
+										if (valasz == '1') {document.getElementById(nodestatus).style.color = '#55CC55';}
+									}  
+																
+								}
+								}
+																		
+								request2.open("GET", "http://" + nodeIP + "/status.txt", true);
+								request2.send();
+													
+							}
+							
+							
+							
+							if (nodeName.indexOf('_WS') != -1) {
 							//Weather Station
 							
 							var request = new XMLHttpRequest();		
@@ -1519,33 +1545,8 @@
 							request.send();
 							}
 							
-						if (nodeName.indexOf('_SP') != -1) {
-							//smart plug
-																		
-							var request2 = new XMLHttpRequest();		
-							request2.onreadystatechange = function(){
-							if(request2.readyState == 4)
-							{ 
-								if(request2.status == 200 || request2.status == 0){
-																				
-									var valasz = request2.responseText;
-									var resSP = 'ismeretlen állapot';
-									if (valasz == '0') {resSP = 'kikapcsolva';}
-									if (valasz == '1') {resSP = 'bekapcsolva';}
-									document.getElementById(nodestatus).innerHTML = resSP;
-									if (valasz == '0') {document.getElementById(nodestatus).style.color = '#CC1111';}
-									if (valasz == '1') {document.getElementById(nodestatus).style.color = '#55CC55';}
-								}  
-															
-							}
-							}
-																	
-							request2.open("GET", "http://" + nodeIP + "/status.txt", true);
-							request2.send();
-												
-						}
-
-						if (nodeName.indexOf('_RGBW') != -1) {
+							
+							if (nodeName.indexOf('_RGBW') != -1) {
 							//RGBW controller
 							
 							//státuszok lekérdezése
