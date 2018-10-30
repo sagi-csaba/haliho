@@ -1509,7 +1509,7 @@
 										var resSP = 'ismeretlen állapot';
 										if (valasz == '0') {resSP = 'kikapcsolva';}
 										if (valasz == '1') {resSP = 'bekapcsolva';}
-										var nodestatusNEW = nodestatus;
+										var nodestatusNEW = nodestatus.substring(0);
 										document.getElementById(nodestatusNEW).innerHTML = resSP;
 										if (valasz == '0') {document.getElementById(nodestatusNEW).style.color = '#CC1111';}
 										if (valasz == '1') {document.getElementById(nodestatusNEW).style.color = '#55CC55';}
@@ -1536,7 +1536,7 @@
 									var valasz = request.responseText;
 									var valaszStr = String(valasz);
 									var valaszArray = valaszStr.split(';');
-									var nodestatusNEW = nodestatus;
+									var nodestatusNEW = nodestatus.substring(0);
 									document.getElementById(nodestatusNEW).innerHTML = valaszArray[0] + '&#x2103; | ' + valaszArray[1] + '% | ' + valaszArray[2] + 'hPa';
 								}  
 															
@@ -1570,7 +1570,7 @@
 										if(request5.status == 200 || request5.status == 0){
 											var valasz2 = request5.responseText;
 											stateW = String(valasz2);
-											var nodestatusNEW = nodestatus;							
+											var nodestatusNEW = nodestatus.substring(0);							
 											if (stateRGB == "0" && stateW == "0") 
 											{
 												document.getElementById(nodestatusNEW).innerHTML = 'kikapcsolva'; 
