@@ -1483,20 +1483,73 @@
 				//ez fogja a listábn szereplő összes vezérlő státuszát felülvizsgálni
 				//a back-re kerül meghívásra
 				
-				alert('megvan');
+				loading('show');
 				for (var nodeID = 1; nodeID < 10; nodeID++)
 				{
 					var nodeDiv= 'node' + nodeID;
 					if (document.getElementById(nodeDiv).style.display != 'none')
 					{
+						var nodestatus = 'node' + listID + 'status';
+						document.getElementById(nodestatus).style.color = '#000';
+						document.getElementById(nodestatus).innerHTML = "frissítés...";
+						
 						//ha nincs elrejtve, akkor mehet a móka
 						var nodeName = document.getElementById('node' + nodeID + 'title').innerHTML;
 						var nodeIP = document.getElementById('node' + nodeID + 'description').innerHTML;
-						alert('felülvizsgálni: ' + nodeName + ' aminek az IP-je: ' + nodeIP);
+						//alert('felülvizsgálni: ' + nodeName + ' aminek az IP-je: ' + nodeIP);
+						
+						if (namett.indexOf('_WS') != -1) {
+							//Weather Station
+							
+							var request = new XMLHttpRequest();		
+							request.onreadystatechange = function(){
+							if(request.readyState == 4)
+							{ 
+								if(request.status == 200 || request.status == 0){								
+									var valasz = request.responseText;
+									var valaszStr = String(valasz);
+									var valaszArray = valaszStr.split(';');
+									document.getElementById(nodestatus).innerHTML = valaszArray[0] + '&#x2103; | ' + valaszArray[1] + '% | ' + valaszArray[2] + 'hPa';
+								}  
+															
+							}
+							}
+																	
+							request.open("GET", "http://" + nodeIP + "/actual.txt", true);
+							request.send();
+							}
+							
+						if (namett.indexOf('_SP') != -1) {
+							//smart plug
+							document.getElementById(nodeimage).src = 'img/icon_SP.svg';
+												
+							var request = new XMLHttpRequest();		
+							request.onreadystatechange = function(){
+							if(request.readyState == 4)
+							{ 
+								if(request.status == 200 || request.status == 0){
+																				
+									var valasz = request.responseText;
+									var resSP = 'ismeretlen állapot';
+									if (valasz == '0') {resSP = 'kikapcsolva';}
+									if (valasz == '1') {resSP = 'bekapcsolva';}
+									document.getElementById(nodestatus).innerHTML = resSP;
+									if (valasz == '0') {document.getElementById(nodestatus).style.color = '#CC1111';}
+									if (valasz == '1') {document.getElementById(nodestatus).style.color = '#55CC55';}
+								}  
+															
+							}
+							}
+																	
+							request.open("GET", "http://" + nodeIP + "/status.txt", true);
+							request.send();
+												
+						}	
+							
 					}
 				}
 				
-				
+				loading('hide');
 				
 				}
 				
@@ -1579,7 +1632,8 @@
             <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div align="center">debug:  
 					<input type="checkbox" name="flip-debug" id="flip-debug" data-role="flipswitch" data-on-text="be" data-off-text="ki" onchange="debug()" data-wrapper-class="custom-label-flipswitch" >
-					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;" onclick="refreshNodeList()">Frissít</button> 
+					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;" onclick="refreshNodeList()">Keres</button> 
+					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;" onclick="refreshMainListStatus()">Frissít</button> 
 				</div>
             </footer>
         </section>
