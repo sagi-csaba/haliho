@@ -1509,9 +1509,10 @@
 										var resSP = 'ismeretlen állapot';
 										if (valasz == '0') {resSP = 'kikapcsolva';}
 										if (valasz == '1') {resSP = 'bekapcsolva';}
-										document.getElementById(nodestatus).innerHTML = resSP;
-										if (valasz == '0') {document.getElementById(nodestatus).style.color = '#CC1111';}
-										if (valasz == '1') {document.getElementById(nodestatus).style.color = '#55CC55';}
+										var nodestatusNEW = nodestatus;
+										document.getElementById(nodestatusNEW).innerHTML = resSP;
+										if (valasz == '0') {document.getElementById(nodestatusNEW).style.color = '#CC1111';}
+										if (valasz == '1') {document.getElementById(nodestatusNEW).style.color = '#55CC55';}
 									}  
 																
 								}
@@ -1535,7 +1536,8 @@
 									var valasz = request.responseText;
 									var valaszStr = String(valasz);
 									var valaszArray = valaszStr.split(';');
-									document.getElementById(nodestatus).innerHTML = valaszArray[0] + '&#x2103; | ' + valaszArray[1] + '% | ' + valaszArray[2] + 'hPa';
+									var nodestatusNEW = nodestatus;
+									document.getElementById(nodestatusNEW).innerHTML = valaszArray[0] + '&#x2103; | ' + valaszArray[1] + '% | ' + valaszArray[2] + 'hPa';
 								}  
 															
 							}
@@ -1568,23 +1570,23 @@
 										if(request5.status == 200 || request5.status == 0){
 											var valasz2 = request5.responseText;
 											stateW = String(valasz2);
-																		
+											var nodestatusNEW = nodestatus;							
 											if (stateRGB == "0" && stateW == "0") 
 											{
-												document.getElementById(nodestatus).innerHTML = 'kikapcsolva'; 
-												document.getElementById(nodestatus).style.color = '#CC1111';
+												document.getElementById(nodestatusNEW).innerHTML = 'kikapcsolva'; 
+												document.getElementById(nodestatusNEW).style.color = '#CC1111';
 											}
 																			
 											if (stateRGB == "1")
 											{
-												document.getElementById(nodestatus).innerHTML = 'RGB bekapcsolva'; 
-												document.getElementById(nodestatus).style.color = '#55CC55';
+												document.getElementById(nodestatusNEW).innerHTML = 'RGB bekapcsolva'; 
+												document.getElementById(nodestatusNEW).style.color = '#55CC55';
 											}
 																			
 											if (stateW == "1")
 											{
-												document.getElementById(nodestatus).innerHTML = 'Fehér bekapcsolva'; 
-												document.getElementById(nodestatus).style.color = '#55CC55';
+												document.getElementById(nodestatusNEW).innerHTML = 'Fehér bekapcsolva'; 
+												document.getElementById(nodestatusNEW).style.color = '#55CC55';
 											}
 																			
 										}  
