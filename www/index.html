@@ -596,7 +596,21 @@
 													request7.open("GET", "http://" + nodeIP + "/statergb.txt", true);
 													request7.send();
 						
-
+							//egyedi színek beolvasása
+							var storage = window.localStorage;
+							//storage.setItem('owncolor'+szinazonosit, szin);
+							var value1 = storage.getItem('owncolor1');
+							if (value1 != null) {document.getElementById( 'sajatszin1' ).style.background = "#" + value1;}
+							var value2 = storage.getItem('owncolor2');
+							if (value2 != null) {document.getElementById( 'sajatszin2' ).style.background = "#" + value2;}
+							var value3 = storage.getItem('owncolor3');
+							if (value3 != null) {document.getElementById( 'sajatszin3' ).style.background = "#" + value3;}
+							var value4 = storage.getItem('owncolor4');
+							if (value4 != null) {document.getElementById( 'sajatszin4' ).style.background = "#" + value4;}
+							var value5 = storage.getItem('owncolor5');
+							if (value5 != null) {document.getElementById( 'sajatszin5' ).style.background = "#" + value5;}
+							var value6 = storage.getItem('owncolor6');
+							if (value6 != null) {document.getElementById( 'sajatszin6' ).style.background = "#" + value6;}
 						
 							loading('hide');
 							window.location.href = '#pageRGBW';
@@ -1030,13 +1044,11 @@
 					var szin = $( '#rgbPickerValue' ).val();
 					document.getElementById( 'sajatszin' + szinazonosit ).style.background = "#" + szin;
 					$('#select-custom-3').val(0).selectmenu('refresh');
-					alert('elkezdte');
+					
 					var storage = window.localStorage;
-					alert('beállítás');
-					storage.setItem('owncolor'+szinazonosit, 'elso');
-					alert('hohho ez kész!');
-					var value = storage.getItem('owncolor'+szinazonosit);
-					alert(value);
+					storage.setItem('owncolor'+szinazonosit, szin);
+					//var value1 = storage.getItem('owncolor1');
+					
 					//TODO: itt most még el kell menteni, hogy telefon újraindítás után is vissza lehessen kapni
 					//TODO: a DIV-ekre kattintva vissza kell állítani a háttérszínt a jscolor-nak megadni; ha nincs, akkor nem csinál semmit sem
 				});
