@@ -1482,19 +1482,32 @@
 				function refreshMainListStatus() {
 				//ez fogja a listábn szereplő összes vezérlő státuszát felülvizsgálni
 				//a back-re kerül meghívásra
-				
+				alert('kezdődik a lista frissítése');
 				loading('show');
-				for (var nodeID = 1; nodeID < 10; nodeID++)
-				{
-					var nodeDiv= 'node' + nodeID;
+				getStatusFromID('1');
+				getStatusFromID('2');
+				getStatusFromID('3');
+				getStatusFromID('4');
+				getStatusFromID('5');
+				getStatusFromID('6');
+				getStatusFromID('7');
+				getStatusFromID('8');
+				getStatusFromID('9');
+				getStatusFromID('10');
+				loading('hide');
+				
+				}
+				
+				function getStatusFromID(id) {
+					var nodeDiv= 'node' + id;
 					if (document.getElementById(nodeDiv).style.display != 'none')
 					{
-						var nodestatus = 'node' + nodeID + 'status';
+						var nodestatus = 'node' + id + 'status';
 						document.getElementById(nodestatus).style.color = '#000';
 						document.getElementById(nodestatus).innerHTML = "frissítés...";
 						
-						var nodeName = document.getElementById('node' + nodeID + 'title').innerHTML;
-						var nodeIP = document.getElementById('node' + nodeID + 'description').innerHTML;
+						var nodeName = document.getElementById('node' + id + 'title').innerHTML;
+						var nodeIP = document.getElementById('node' + id + 'description').innerHTML;
 							
 							if (nodeName.indexOf('_SP') != -1) {
 								//smart plug
@@ -1606,9 +1619,6 @@
 						}
 							
 					}
-				}
-				
-				loading('hide');
 				
 				}
 				
