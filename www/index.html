@@ -1399,6 +1399,44 @@
 					  
 				});
 				
+				$(document).on("input", "#RGBWnewNodeName", function (e) {
+					  
+					  var str = $.trim( $(this).val() );
+					  var regx = /^[A-Za-z0-9]/;
+					  var keyCode = e.keyCode;
+					  
+					  if(e.keyCode == 8 || e.keyCode == 46) {
+							document.getElementById('rgbwNewName').innerHTML = $('#RGBWnewNodeName').val() + "_RGBW";
+							
+							return;
+						}      
+					  if (String.fromCharCode(keyCode).match(regx)) {
+						document.getElementById('rgbwNewName').innerHTML = $('#RGBWnewNodeName').val() + "_RGBW";
+						return;
+						}
+					  else
+					  {
+							document.getElementById('rgbwNewName').innerHTML = $('#RGBWnewNodeName').val() + "_RGBW";
+							e.preventDefault();
+					  }
+					  
+					  document.getElementById('rgbwNewName').innerHTML = $('#RGBWnewNodeName').val().replace(/[^0-9a-z]/gi, '') + '_RGBW';
+					  $('#RGBWnewNodeName').val($('#RGBWnewNodeName').val().replace(/[^0-9a-z]/gi, ''));
+					  if ($('#RGBWnewNodeName').val().length < 5)
+						{
+							document.getElementById('rgbwNodeCriteria').innerHTML = "eszköznév túl rövid!"; 
+							document.getElementById('rgbwNodeCriteria').style.color = '#CC1111';
+							document.getElementById('saveRGBWnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled';
+						}
+					  else 
+						{
+							document.getElementById('rgbwNodeCriteria').innerHTML = "az eszköznév szintaktikailag megfelel"; 
+							document.getElementById('rgbwNodeCriteria').style.color = '#55CC55';
+							document.getElementById('saveRGBWnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b';
+						}
+					  
+				});
+				
 				function setRGBcolorNew(){
 					var nodeIP = document.getElementById("rgbNodeIP").innerHTML;
 					var ertek = $('#rgbPickerValue').val();
@@ -1440,6 +1478,28 @@
 					}
 				
 				}
+				
+				function refreshMainListStatus() {
+				//ez fogja a listábn szereplő összes vezérlő státuszát felülvizsgálni
+				//a back-re kerül meghívásra
+				
+				alert('megvan');
+				for (var nodeID = 1; nodeID < 10; nodeID++)
+				{
+					var nodeDiv= 'node' + nodeID;
+					if (document.getElementById(nodeDiv).style.display != 'none')
+					{
+						//ha nincs elrejtve, akkor mehet a móka
+						var nodeName = document.getElementById('node' + nodeID + 'title').innerHTML;
+						var nodeIP = document.getElementById('node' + nodeID + 'description').innerHTML;
+						alert('felülvizsgálni: ' + nodeName + ' aminek az IP-je: ' + nodeIP);
+					}
+				}
+				
+				
+				
+				}
+				
 			</script>
 			
 				<!-- DEBUG -->
@@ -1527,8 +1587,9 @@
         <section data-role="page" id="pageRGBW" data-theme="b" data-transition="slidefade">
 				<header data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<h2 name="nodenameRGBW" id ="nodenameRGBW">RGBW: </h2>
-					<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
-					<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+					<a href="./" onclick="refreshMainListStatus()" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+					<a href="#popupDialogRGBWnodeNameChange" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+					<!--<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>-->
 					<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
 				</header>
 
@@ -1553,11 +1614,11 @@
 							<fieldset data-role="controlgroup" data-type="horizontal" name="rgbwSelector" id="rgbwSelector">
 								<legend style="font-size:1.3em;">Vezérlés állapota:</legend>
 								<input name="radio-choice-h-2" id="radio-choice-h-2a" value="ki" checked="checked" type="radio">
-								<label for="radio-choice-h-2a" style="margin-top:15px;text-align:center;"> ki </label>
+								<label for="radio-choice-h-2a" style="margin-top:15px;text-align:center;font-size:1.3em;"> ki </label>
 								<input name="radio-choice-h-2" id="radio-choice-h-2b" value="rgb" type="radio">
-								<label for="radio-choice-h-2b" style="margin-top:15px;text-align:center;"> RGB </label>
+								<label for="radio-choice-h-2b" style="margin-top:15px;text-align:center;font-size:1.3em;"> RGB </label>
 								<input name="radio-choice-h-2" id="radio-choice-h-2c" value="white" type="radio">
-								<label for="radio-choice-h-2c" style="margin-top:15px;text-align:center;"> fehér </label>
+								<label for="radio-choice-h-2c" style="margin-top:15px;text-align:center;font-size:1.3em;"> fehér </label>
 							</fieldset>
 						</form></center>
 						
@@ -1621,6 +1682,32 @@
 
 				</article>
 
+			<div data-role="popup" id="popupDialogRGBWnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+				<div data-role="header" data-theme="a">
+				<center><div style="padding:5px;font-size:1.3em;">RGBW vezérlő nevének megváltoztatása</div></center>
+				</div>
+				<div role="main" class="ui-content">
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="rgbwCurrentName" name="rgbwCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
+					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
+					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
+					<div style="font-size:0.7em;margin-left:25px;">- legalább 5 karakter hosszúnak kell lennie</div>
+					
+					
+					<form style="margin-top:20px;">
+						 <label for="text-3">Új név: </label>
+						 <input style="margin-left:20px;" data-clear-btn="true" id="RGBWnewNodeName" name="RGBWnewNodeName" value="" type="text">
+					</form>
+					
+					<div style="display:inline-block;font-size:1.1em;">Eszköz új neve: </div><div id="rgbwNewName" name="rgbwNewName" style="display:inline-block;font-size:0.9em;color:yellow;"> </div>
+					<div style="margin-left:20px;" id='rgbwNodeCriteria' name='rgbwNodeCriteria'></div>
+					<br>
+					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
+					<a href="#" id="saveRGBWnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
+				</div>
+			</div>
+				
+				
 				<footer data-role="footer" data-position="fixed" data-tap-toggle="false">
 					<h4>node-hoz tartozó lábléc</h4>
 				</footer>
@@ -1630,7 +1717,7 @@
 		<section data-role="page" id="pageWEATHER" data-theme="b" data-transition="slidefade">
             <header data-role="header" data-position="fixed"  data-add-back-btn="true" data-tap-toggle="false">
                 <h1 name="nodenameWS" id ="nodenameWS" >WS: </h1>
-				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+				<a href="./" onclick="refreshMainListStatus()" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 				<a href="#popupDialogWSnodeNameChange" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
 				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
@@ -1698,7 +1785,7 @@
 		<section data-role="page" id="pageSMARTPLUG" data-theme="b" data-transition="slidefade">
             <header data-role="header" data-position="fixed"  data-add-back-btn="true" data-tap-toggle="false">
                 <h1 name="nodenameSP" id ="nodenameSP" >SP: </h1>
-				<a href="./" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+				<a href="./" onclick="refreshMainListStatus()" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
 				<a href="#popupDialogSPnodeNameChange" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
 				
 				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
