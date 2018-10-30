@@ -1030,6 +1030,13 @@
 					var szin = $( '#rgbPickerValue' ).val();
 					document.getElementById( 'sajatszin' + szinazonosit ).style.background = "#" + szin;
 					$('#select-custom-3').val(0).selectmenu('refresh');
+					alert('elkezdte');
+					var storage = window.localStorage;
+					alert('beállítás');
+					storage.setItem('owncolor'+szinazonosit, 'elso');
+					alert('hohho ez kész!');
+					var value = storage.getItem('owncolor'+szinazonosit);
+					alert(value);
 					//TODO: itt most még el kell menteni, hogy telefon újraindítás után is vissza lehessen kapni
 					//TODO: a DIV-ekre kattintva vissza kell állítani a háttérszínt a jscolor-nak megadni; ha nincs, akkor nem csinál semmit sem
 				});
@@ -1482,7 +1489,6 @@
 				function refreshMainListStatus() {
 				//ez fogja a listábn szereplő összes vezérlő státuszát felülvizsgálni
 				//a back-re kerül meghívásra
-				alert('kezdődik a lista frissítése');
 				loading('show');
 				getStatusFromID('1');
 				getStatusFromID('2');
