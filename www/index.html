@@ -527,7 +527,7 @@
 								}
 						
 							request.open('GET', 'http://' + nodeIP, true);
-							request.send()
+							request.send();
 						
 							//select the actual status : off / RGB / white
 												var stateRGB = "dummy";
@@ -620,6 +620,24 @@
 							document.getElementById("nodenameWS").innerHTML = nodeNAME;
 							document.getElementById("wsNodeName").innerHTML = nodeNAME;
 							document.getElementById("wsNodeIP").innerHTML = nodeIP;
+						
+							//get serieal number and firmware version
+							var requesta = new XMLHttpRequest();		
+								requesta.onreadystatechange = function(){
+									if(requesta.readyState == 4)
+									{ 
+										if(requesta.status == 200 || requesta.status == 0){										
+											var valasz = requesta.responseText;
+											var valaszStr = String(valasz);
+											var sorozatszam = valaszStr.split('sorozatszám: <i>');
+											var firmware  = valaszStr.split('firmware: <i>');
+											document.getElementById("rgbNodeSN").innerHTML = sorozatszam[1].substring(0,8) + " | Firmware: " + firmware[1].substring(0,3);
+										}  
+									}
+								}
+						
+							requesta.open('GET', 'http://' + nodeIP, true);
+							requesta.send();
 						
 							//get actual weather data
 							var request = new XMLHttpRequest();		
