@@ -627,11 +627,11 @@
 									if(requesta.readyState == 4)
 									{ 
 										if(requesta.status == 200 || requesta.status == 0){										
-											var valasz = requesta.responseText;
-											var valaszStr = String(valasz);
-											var sorozatszam = valaszStr.split('sorozatszám: <i>');
-											var firmware  = valaszStr.split('firmware: <i>');
-											document.getElementById("rgbNodeSN").innerHTML = sorozatszam[1].substring(0,8) + " | Firmware: " + firmware[1].substring(0,3);
+											var valasza = requesta.responseText;
+											var valaszStra = String(valasza);
+											var sorozatszama = valaszStra.split('sorozatszám: <i>');
+											var firmwarea  = valaszStra.split('firmware: <i>');
+											document.getElementById("rgbNodeSN").innerHTML = sorozatszama[1].substring(0,8) + " | Firmware: " + firmwarea[1].substring(0,3);
 										}  
 									}
 								}
@@ -654,12 +654,12 @@
 										}  
 									}
 								}
-						request.open('GET', 'http://' + nodeIP + '/actual.txt', true);
-						request.send();
-						document.getElementById("WS_log").innerHTML = "aktuális adatok";
-							loading('hide');
-							window.location.href = '#pageWEATHER';
-						}	
+							request.open('GET', 'http://' + nodeIP + '/actual.txt', true);
+							request.send();
+							document.getElementById("WS_log").innerHTML = "aktuális adatok";
+								loading('hide');
+								window.location.href = '#pageWEATHER';
+							}	
 					
 						if (nodeNAME.indexOf("_SP") != -1){
 							document.getElementById("nodenameSP").innerHTML = nodeNAME;
