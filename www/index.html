@@ -116,6 +116,7 @@
 											ws2.send('kikapcsolw');
 											ws2.close();
 										}
+						document.getElementById("RGBW_log").innerHTML = "RGBW: vezérlő kikapcsolva";
 					}
 					if (sss == "rgb")
 					{
@@ -128,7 +129,7 @@
 											ws3.send('bekapcsolrgb');
 											ws3.close();
 										}
-						
+						document.getElementById("RGBW_log").innerHTML = "RGBW: szín beállítások";
 					}
 					if (sss == "white")
 					{
@@ -141,6 +142,7 @@
 											ws4.send('bekapcsolw');
 											ws4.close();
 										}
+						document.getElementById("RGBW_log").innerHTML = "RGBW: fehér fényerő beállítása";
 					}
 					
 				});
@@ -557,7 +559,7 @@
 																				$('#radio-choice-h-2c').removeAttr('checked').checkboxradio('refresh');
 																				document.getElementById("rgbPicker").classList.add("hide");
 																				document.getElementById("whiteLEDBrightness").classList.add("hide");
-																				
+																				document.getElementById("RGBW_log").innerHTML = "RGBW vezérlő kikapcsolva";
 																			}
 																			
 																			if (stateRGB == "1")
@@ -569,6 +571,7 @@
 																				$('#radio-choice-h-2c').removeAttr('checked').checkboxradio('refresh');
 																				document.getElementById("rgbPicker").classList.remove("hide");
 																				document.getElementById("whiteLEDBrightness").classList.add("hide");
+																				document.getElementById("RGBW_log").innerHTML = "RGBW: színes üzemmód bekapcsolva";
 																			}
 																			
 																			if (stateW == "1")
@@ -580,6 +583,7 @@
 																				$('#radio-choice-h-2c').prop('checked',true).checkboxradio('refresh');
 																				document.getElementById("rgbPicker").classList.add("hide");
 																				document.getElementById("whiteLEDBrightness").classList.remove("hide");
+																				document.getElementById("RGBW_log").innerHTML = "RGBW: fehér üzemmód bekapcsolva";
 																			}
 																			
 																		}  
@@ -1494,7 +1498,7 @@
 						ws2.send('allapotmentesrgb');
 						ws2.close();
 					}
-					
+					document.getElementById("RGBW_log").innerHTML = "RGBW: szín beállítva";
 				}
 				
 				function updateWhiteCodeNew() {
@@ -1513,7 +1517,7 @@
 						ws2.send('allapotmentesw');
 						ws2.close();
 					}
-				
+					document.getElementById("RGBW_log").innerHTML = "RGBW: fehér fényerő beállítva";
 				}
 				
 				function refreshMainListStatus() {
@@ -1868,7 +1872,7 @@
 				
 				
 				<footer data-role="footer" data-position="fixed" data-tap-toggle="false">
-					<h4>node-hoz tartozó lábléc</h4>
+					<h4 id="RGBW_log" name="RGBW_log">snode RGBW vezérlő</h4> 
 				</footer>
         </section>
 		
