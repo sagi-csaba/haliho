@@ -23,22 +23,19 @@
     <allow-intent href="*" />
     <access origin="*" />
     <icon src="icon.png" />
-    
-	<preference name="SplashScreen" value="screen" />
-	<preference name="AutoHideSplashScreen" value="false" />
-	<preference name="SplashScreenDelay" value="6000" />
-	<preference name="SplashShowOnlyFirstTime" value="false" />
-	<splash src="www/splash.png" />
-	
+    	
     <platform name="android">   
-		<splash density="land-hdpi" src="www/splash.png" />
-        <splash density="land-ldpi" src="www/splash.png" />
-        <splash density="land-mdpi" src="www/splash.png" />
-        <splash density="land-xhdpi" src="www/splash.png" />
-        <splash density="port-hdpi" src="www/splash.png" />
-        <splash density="port-ldpi" src="www/splash.png" />
-        <splash density="port-mdpi" src="www/splash.png" />
-        <splash density="port-xhdpi" src="www/splash.png" />
+		<splash src="splash.png" density="land-hdpi"  />
+        <splash src="splash.png" src="www/splash.png" />
+        <splash src="splash.png" src="www/splash.png" />
+        <splash src="splash.png" src="www/splash.png" />
+        <splash src="splash.png" src="www/splash.png" />
+        <splash src="splash.png" src="www/splash.png" />
+        <splash src="splash.png" src="www/splash.png" />
+        <splash src="splash.png" src="www/splash.png" />
     </platform>
-    
+    <preference name="AutoHideSplashScreen" value="true" />
+	<preference name="SplashScreenDelay" value="8000" />
+	<preference name="SplashShowOnlyFirstTime" value="false" />
+	<preference name="ShowSplashScreenSpinner" value="false" />
 </widget>
