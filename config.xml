@@ -23,15 +23,16 @@
     <allow-intent href="*" />
     <access origin="*" />
     <icon src="icon.png" />
-    <splash src="splash.png" />
-    <preference name="SplashScreen" value="splash" />
-    <preference name="AutoHideSplashScreen" value="false" />
-	<preference name="SplashScreenDelay" value="6000" />
-    <preference name="ShowSplashScreenSpinner" value="false"/>
-	<preference name="SplashMaintainAspectRatio" value="true" />
-	<preference name="SplashShowOnlyFirstTime" value="false" />
+    
     <platform name="android">
-        <splash density="land-hdpi" src="splash.png" />
+        <preference name="SplashScreen" value="splash" />
+		<preference name="AutoHideSplashScreen" value="false" />
+		<preference name="SplashScreenDelay" value="6000" />
+		<preference name="ShowSplashScreenSpinner" value="false"/>
+		<preference name="SplashMaintainAspectRatio" value="true" />
+		<preference name="SplashShowOnlyFirstTime" value="false" />
+		<splash src="splash.png" />
+		<splash density="land-hdpi" src="splash.png" />
         <splash density="land-ldpi" src="splash.png" />
         <splash density="land-mdpi" src="splash.png" />
         <splash density="land-xhdpi" src="splash.png" />
