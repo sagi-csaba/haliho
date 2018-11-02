@@ -24,22 +24,21 @@
     <access origin="*" />
     <icon src="icon.png" />
     
-    <platform name="android">
-        <preference name="SplashScreen" value="splash" />
-		<preference name="AutoHideSplashScreen" value="false" />
-		<preference name="SplashScreenDelay" value="6000" />
-		<preference name="ShowSplashScreenSpinner" value="false"/>
-		<preference name="SplashMaintainAspectRatio" value="true" />
-		<preference name="SplashShowOnlyFirstTime" value="false" />
-		<splash src="splash.png" />
-		<splash density="land-hdpi" src="splash.png" />
-        <splash density="land-ldpi" src="splash.png" />
-        <splash density="land-mdpi" src="splash.png" />
-        <splash density="land-xhdpi" src="splash.png" />
-        <splash density="port-hdpi" src="splash.png" />
-        <splash density="port-ldpi" src="splash.png" />
-        <splash density="port-mdpi" src="splash.png" />
-        <splash density="port-xhdpi" src="splash.png" />
+	<preference name="SplashScreen" value="screen" />
+	<preference name="AutoHideSplashScreen" value="false" />
+	<preference name="SplashScreenDelay" value="6000" />
+	<preference name="SplashShowOnlyFirstTime" value="false" />
+	<splash src="www/splash.png" />
+	
+    <platform name="android">   
+		<splash density="land-hdpi" src="www/splash.png" />
+        <splash density="land-ldpi" src="www/splash.png" />
+        <splash density="land-mdpi" src="www/splash.png" />
+        <splash density="land-xhdpi" src="www/splash.png" />
+        <splash density="port-hdpi" src="www/splash.png" />
+        <splash density="port-ldpi" src="www/splash.png" />
+        <splash density="port-mdpi" src="www/splash.png" />
+        <splash density="port-xhdpi" src="www/splash.png" />
     </platform>
     
 </widget>
