@@ -217,16 +217,14 @@
 					nodeNames = ["name", "dummy"];
 				}
 				
-				var zeroconf = cordova.plugins.zeroconf;
-				
 				function refreshNodeList() {
 				
 					resetnodeList();
 					hideNodeRecords();
 				
 					document.getElementById("content").innerHTML = "snode eszközök felderítése a hálózaton...";
-						
-						zeroconf.reInit();
+						var zeroconf = cordova.plugins.zeroconf;
+						//zeroconf.reInit();
 						zeroconf.watch('_http._tcp.', 'local.', function(result) {
 							var action = result.action;
 							var service = result.service;
