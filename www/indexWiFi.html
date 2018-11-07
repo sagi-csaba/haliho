@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>snode</title>
+		<meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
+		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+		<link rel="stylesheet" href="css/fonts.css">
+		<link rel="stylesheet" href="css/csagi.css">
+		<link rel="stylesheet" href="css/icono.min.css">
+		<link rel="stylesheet" href="css/grid_listview-grid.css">
+		<style type="text/css" media="screen">
+	
+			html, body, div, span, applet, object, iframe,
+			p, blockquote, pre,
+			a, abbr, acronym, address, big, cite, code,
+			del, dfn, em, img, ins, kbd, q, s, samp,
+			small, strike, strong, sub, sup, tt, var,
+			b, u, i, center,
+			dl, dt, dd, ol, ul, li,
+			fieldset, form, label, legend,
+			table, caption, tbody, tfoot, thead, tr, th, td,
+			article, aside, canvas, details, embed, 
+			figure, figcaption, footer, header, hgroup, 
+			menu, nav, output, ruby, section, summary,
+			time, mark, audio, video {font-family: 'Jura' !important; font-weight: 400 !important;}
+			h1 {font-family: 'Jura' !important; font-weight: 700 !important;}
+			h2 {font-family: 'Jura' !important; font-weight: 600 !important;}
+			h3 {font-family: 'Jura' !important; font-weight: 500 !important;}
+			h4,h5,h6 {font-family: 'Jura' !important; font-weight: 300 !important;}
+			article {font-family: 'Jura';}
+			
+		</style>
+    </head>
+	
+    <body>
+        <script type="text/javascript" src="cordova.js"></script>
+		<script src="js/jquery-1.11.1.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+		<script src="js/jscolor.js"></script>
+		<script src="js/Chart.min.js"></script>
+		<script src="js/moment.js"></script>
+		<section data-role="page" id="first" data-theme="a">
+			<header data-role="header" data-position="fixed" data-tap-toggle="false">
+				<div style="height:60px;margin-left:auto;margin-right:auto;"><img name="headerlogo" id ="headerlogo" style="height:50px;margin:auto;padding-top:5px;display:block;" src="img/logo_snode_dark_easy_final.svg"></div>
+			</header>
+
+			<article role="main" class="ui-content my-page" >
+         <h2>elérhető Node-ok:</h2>
+			
+		<script type="text/javascript">
+				var nodeList = ["name|ip|statusTxt","dummy|dummy|dummy"]; //initial state
+				var nodeNames = ["name", "dummy"];
+				
+				$('#ledType').change(function(){
+								var selected_value = $("input[name='radio-choice-t-6']:checked").val();
+								if (selected_value == "on")
+								{
+									document.getElementById("rgbPicker").classList.remove("hide");
+									document.getElementById("whiteLEDBrightness").classList.add("hide");
+								}
+								else
+								{
+									document.getElementById("rgbPicker").classList.add("hide");
+									document.getElementById("whiteLEDBrightness").classList.remove("hide");
+								}
+				});
+				
+				$(document).bind( "change",'#flip-2', function(event, ui, e) {
+					var sss = $( '#flip-2').val();
+					var nodeIP = document.getElementById("spNodeIP").innerHTML;
+					if (sss == 'on')
+					{
+						var ws = new WebSocket('ws://' + nodeIP + ':8009');
+							ws.onopen = function () {
+								ws.send('bekapcsol');
+								ws.close();
+								document.getElementById("SP_log").innerHTML = "konnektor bekapcsolva";
+							}
+					}
+					if (sss == 'off')
+					{
+						var ws = new WebSocket('ws://' + nodeIP + ':8009');
+							document.getElementById("content").innerHTML += "deklarálva ";
+							ws.onopen = function () {
+								ws.send('kikapcsol');
+								ws.close();
+								document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";
+							}
+					}
+					
+				});
+				
+				var lastSelectedRGBWmode='out';
+				
+				$(document).bind( "change","input[name= 'radio-choice-h-2']", function(event, ui, e) {
+					var nodeIP = document.getElementById("rgbNodeIP").innerHTML;
+					var sss = $("#rgbwSelector :radio:checked").val();
+					
+					if (lastSelectedRGBWmode == sss) { return; }
+					
+					if (sss == "ki")
+					{
+						lastSelectedRGBWmode = 'ki';
+						
+						document.getElementById("rgbPicker").classList.add("hide");
+						document.getElementById("whiteLEDBrightness").classList.add("hide");
+						
+						var ws1 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws1.onopen = function () {
+											ws1.send('kikapcsolrgb');
+											ws1.close();
+										}
+						var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws2.onopen = function () {
+											ws2.send('kikapcsolw');
+											ws2.close();
+										}
+						document.getElementById("RGBW_log").innerHTML = "RGBW: vezérlő kikapcsolva";
+					}
+					if (sss == "rgb")
+					{
+						lastSelectedRGBWmode = 'rgb';
+						
+						document.getElementById("rgbPicker").classList.remove("hide");
+						document.getElementById("whiteLEDBrightness").classList.add("hide");
+						var ws3 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws3.onopen = function () {
+											ws3.send('bekapcsolrgb');
+											ws3.close();
+										}
+						document.getElementById("RGBW_log").innerHTML = "RGBW: szín beállítások";
+					}
+					if (sss == "white")
+					{
+						
+						lastSelectedRGBWmode = 'white';
+						document.getElementById("whiteLEDBrightness").classList.remove("hide");
+						document.getElementById("rgbPicker").classList.add("hide");
+						var ws4 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws4.onopen = function () {
+											ws4.send('bekapcsolw');
+											ws4.close();
+										}
+						document.getElementById("RGBW_log").innerHTML = "RGBW: fehér fényerő beállítása";
+					}
+					
+				});
+				
+				function showLEDtype() {
+					document.getElementById("ledType").classList.remove("hide");
+				}
+				
+			
+				function turnOffAnimText() {
+					document.getElementById("ledType").classList.add("hide");
+					document.getElementById("rgbPicker").classList.add("hide");
+					document.getElementById("whiteLEDBrightness").classList.add("hide");
+					document.getElementById("showRgbSetting").classList.remove("ui-btn-active");
+					document.getElementById("showRgbSetting").classList.remove("ui-btn-active");
+					document.getElementById("powerState").innerHTML = "kikapcsolva";
+					//TODO: el kell küldeni a 0-0-0-0 parancsot, hogy kikapcsoljon a system
+				}
+				
+				function powerButtonPressed()
+				{
+					var klasszlista = document.getElementById("powerButton").classList;
+					if (klasszlista == "btn btn-blob")
+					{
+						document.getElementById("powerButton").classList.add("blob");
+						document.getElementById("powerState").innerHTML = "bekapcsolva";
+						//TODO: itt pedig az utolsó színt vissza kell tölteni
+						window.setTimeout(showLEDtype,250);
+					}
+					else
+					{
+						document.getElementById("powerButton").classList.remove("blob");
+						
+						
+						window.setTimeout(turnOffAnimText,250);
+					}
+				}
+				
+				function showRgbSetting()
+				{
+					document.getElementById("rgbPicker").classList.remove("hide");
+					document.getElementById("whiteLEDBrightness").classList.add("hide");
+
+				}
+				
+				function showWhiteSetting() {
+					document.getElementById("rgbPicker").classList.add("hide");
+					document.getElementById("whiteLEDBrightness").classList.remove("hide");
+				}
+				
+				function onLoad() {
+					document.addEventListener("deviceready", onDeviceReady, false);
+					
+				}
+				onLoad();
+				
+				function hideNodeRecords() {
+					document.getElementById("node1").style.display = 'none';
+					document.getElementById("node2").style.display = 'none';
+					document.getElementById("node3").style.display = 'none';
+					document.getElementById("node4").style.display = 'none';
+					document.getElementById("node5").style.display = 'none';
+					document.getElementById("node6").style.display = 'none';
+					document.getElementById("node7").style.display = 'none';
+					document.getElementById("node8").style.display = 'none';
+					document.getElementById("node9").style.display = 'none';
+					document.getElementById("node10").style.display = 'none';
+				}
+				
+				function resetnodeList () {
+					nodeList = ["name|ip|statusTxt","dummy|dummy|dummy"];
+					nodeNames = ["name", "dummy"];
+				}
+				
+				function refreshNodeList() {
+				
+					resetnodeList();
+					hideNodeRecords();
+				
+					document.getElementById("content").innerHTML = "snode eszközök felderítése a hálózaton...";
+						var zeroconf = cordova.plugins.zeroconf;
+						zeroconf.unwatch('_http._tcp.', 'local.');
+						zeroconf.close();
+						zeroconf.reInit();
+						zeroconf.watch('_http._tcp.', 'local.', function(result) {
+							var action = result.action;
+							var service = result.service;
+							document.getElementById("content").innerHTML += (JSON.stringify(result));
+							if (action == 'added') {
+								document.getElementById("content").innerHTML += "service added...: " + service;		
+							} 
+							else if (action == 'resolved') {
+								document.getElementById("content").innerHTML += "service resolved...";
+								
+								var namett = service.name;
+								var ipv4addresstt = service.ipv4Addresses;
+																
+								//check if element is already in the list
+								var containsList = false;
+								for (var i = 0; i < nodeNames.length; i++)
+								{
+									if (nodeNames[i] == namett) {containsList = true;}
+								}
+								
+								//push to list if service is not in the list yet
+								if (containsList == false)
+								{
+									nodeNames.push(namett);
+									nodeList.push(namett + "|" + ipv4addresstt + "|ide_jon_a_statusz");
+									document.getElementById("content2").innerHTML += "<br>ID: " + namett + " IP: " +  ipv4addresstt + " hozzáadva a listához<br>";
+									
+									//add to visible list this device
+									for (var listID = 1; listID < 10; listID++)
+									{
+										var nodeIDchk = 'node' + listID;
+										if (document.getElementById(nodeIDchk).style.display == 'none')
+										{
+											//ide fog bekerulni
+											
+											var nodename = 'node' + listID + 'title';
+											document.getElementById(nodename).innerHTML = namett;
+											var nodedesc = 'node' + listID + 'description';
+											document.getElementById(nodedesc).innerHTML = ipv4addresstt;
+											var nodestatus = 'node' + listID + 'status';
+											document.getElementById(nodestatus).style.color = '#000';
+											document.getElementById(nodestatus).innerHTML = "frissítés...";
+											var nodeimage = 'node' + listID + 'img';
+											
+											if (namett.indexOf('_WS') != -1) {
+												//Weather Station
+												document.getElementById(nodeimage).src = 'img/icon_WS.svg';
+												
+																	var request = new XMLHttpRequest();		
+																	request.onreadystatechange = function(){
+																	if(request.readyState == 4)
+																			{ 
+																				if(request.status == 200 || request.status == 0){
+																					
+																					var valasz = request.responseText;
+																					var valaszStr = String(valasz);
+																					var valaszArray = valaszStr.split(';');
+																					document.getElementById(nodestatus).innerHTML = valaszArray[0] + '&#x2103; | ' + valaszArray[1] + '% | ' + valaszArray[2] + 'hPa';
+																				}  
+															
+																			}
+																		}
+																	
+																	request.open("GET", "http://" + ipv4addresstt + "/actual.txt", true);
+																	request.send();
+												
+
+												}
+											if (namett.indexOf('_RGBW') != -1) {
+												//RGBW controller
+												document.getElementById(nodeimage).src = 'img/icon_RGBW.svg';
+												
+												//státuszok lekérdezése
+												var stateRGB = "dummy";
+												var stateW = "dummy";
+												
+												
+													var request = new XMLHttpRequest();		
+														request.onreadystatechange = function(){
+														if(request.readyState == 4)
+														{ 
+															if(request.status == 200 || request.status == 0){
+																var valasz = request.responseText;
+																stateRGB = String(valasz);
+																
+																
+																
+																var request3 = new XMLHttpRequest();		
+																	request3.onreadystatechange = function(){
+																	if(request3.readyState == 4)
+																	{ 
+																		if(request3.status == 200 || request3.status == 0){
+																			var valasz2 = request3.responseText;
+																			stateW = String(valasz2);
+																			
+																			if (stateRGB == "0" && stateW == "0") 
+																			{
+																				document.getElementById(nodestatus).innerHTML = 'kikapcsolva'; 
+																				document.getElementById(nodestatus).style.color = '#CC1111';
+																			}
+																			
+																			if (stateRGB == "1")
+																			{
+																				document.getElementById(nodestatus).innerHTML = 'RGB bekapcsolva'; 
+																				document.getElementById(nodestatus).style.color = '#55CC55';
+																			}
+																			
+																			if (stateW == "1")
+																			{
+																				document.getElementById(nodestatus).innerHTML = 'Fehér bekapcsolva'; 
+																				document.getElementById(nodestatus).style.color = '#55CC55';
+																			}
+																			
+																		}  
+																			
+																	}
+																}	
+																request3.open("GET", "http://" + ipv4addresstt + "/statew.txt", true);
+																request3.send();
+																
+																
+																
+															}  
+																
+														}
+													}					
+													request.open("GET", "http://" + ipv4addresstt + "/statergb.txt", true);
+													request.send();
+												
+																	
+													
+												
+													
+												
+													
+												
+												}
+											if (namett.indexOf('_SP') != -1) {
+												//smart plug
+												document.getElementById(nodeimage).src = 'img/icon_SP.svg';
+												
+																	var request = new XMLHttpRequest();		
+																	request.onreadystatechange = function(){
+																	if(request.readyState == 4)
+																			{ 
+																				if(request.status == 200 || request.status == 0){
+																					
+																					var valasz = request.responseText;
+																					var resSP = 'ismeretlen állapot';
+																					if (valasz == '0') {resSP = 'kikapcsolva';}
+																					if (valasz == '1') {resSP = 'bekapcsolva';}
+																					document.getElementById(nodestatus).innerHTML = resSP;
+																					if (valasz == '0') {document.getElementById(nodestatus).style.color = '#CC1111';}
+																					if (valasz == '1') {document.getElementById(nodestatus).style.color = '#55CC55';}
+																				}  
+															
+																			}
+																		}
+																	
+																	request.open("GET", "http://" + ipv4addresstt + "/status.txt", true);
+																	request.send();
+												
+												}
+											if (namett.indexOf('_RF') != -1) {
+												
+												document.getElementById(nodeimage).src = 'img/icon_RF.svg';}
+											
+											
+											
+											document.getElementById(nodeIDchk).style.display = 'block';
+											document.getElementById("content2").innerHTML += "a listában az alábbi helyre kerül be: " + nodeIDchk;
+											return;//ki kell lepni
+										}
+									}
+									
+								}
+								else
+								{
+									document.getElementById("content2").innerHTML += "<br>ID: " + namett + " IP: " +  ipv4addresstt + " már benne van a listában<br>";
+								}
+							}
+							else {
+								document.getElementById("content").innerHTML += "service removed...";
+							}
+						});
+				}
+				
+				function onDeviceReady() {
+					refreshNodeList();
+				 }
+
+				function ws1()
+				{
+					document.getElementById("content").innerHTML += "***********ws1 ";
+					if ("WebSocket" in window)
+					{
+						document.getElementById("content").innerHTML += "ws támogatva ";
+					}
+					var ws = new WebSocket("ws://192.168.1.238:8009");
+					document.getElementById("content").innerHTML += "deklarálva ";
+					ws.onopen = function () {
+						//document.getElementById("content").innerHTML += "onopen ";
+						ws.send("hoppszala-mukodik");
+						ws.close();
+					}
+				}
+				
+				function testf2() 
+				{
+					
+					document.getElementById("content2").innerHTML = "funkció meg lett hívva";
+					
+						document.getElementById("content2").innerHTML = "";
+						var zeroconf = cordova.plugins.zeroconf;
+						zeroconf.reInit();
+						zeroconf.watch('_http._tcp.', 'local.', function(result) {
+							var action = result.action;
+							var service = result.service;
+							//document.getElementById("content2").innerHTML += (JSON.stringify(result));
+							if (action == 'added') {
+								
+							} 
+							else if (action == 'resolved') {
+								document.getElementById("content2").innerHTML += "service resolved...";
+								var namett = service.name;
+								var ipv4addresstt = service.ipv4Addresses;
+								document.getElementById("content2").innerHTML += "<br>ID: " + namett + "<br>IP: " +  ipv4addresstt + "<br>";
+								
+							}
+							else {
+								//document.getElementById("content2").innerHTML += "service removed...";
+							}
+						});
+						
+						//document.getElementById("content2").innerHTML += "vége is lett...";
+						
+				
+				
+				}
+				
+				function testf3() 
+				{
+				
+				}
+				
+				function debug() {
+					var allapot = document.getElementById("flip-debug").checked;
+					
+					if (allapot == true)
+					{
+						document.getElementById("content").style.display = "block";
+						document.getElementById("content2").style.display = "block";
+						document.getElementById("content3").style.display = "block";
+						document.getElementById("btn_debug1").style.display = "block";
+						document.getElementById("btn_debug2").style.display = "block";
+						document.getElementById("btn_debug3").style.display = "block";
+					}
+					else
+					{
+						document.getElementById("content").style.display = "none";
+						document.getElementById("content2").style.display = "none";
+						document.getElementById("content3").style.display = "none";
+						document.getElementById("btn_debug1").style.display = "none";
+						document.getElementById("btn_debug2").style.display = "none";
+						document.getElementById("btn_debug3").style.display = "none";
+					}
+					
+				}
+				
+				
+				var wsChart;
+				
+				function showNode(nodeID) {
+					loading('show');
+					var nodeNAME = document.getElementById("node" + nodeID + "title").innerHTML;
+					var nodeIP = document.getElementById("node" + nodeID + "description").innerHTML;
+					
+					//**********     just for development  ************
+					//nodeNAME = "nappali_RGBW";
+					//nodeIP = "192.168.1.210";
+					//*************************************************
+					
+						if (nodeNAME.indexOf("_RGBW") != -1) {
+							document.getElementById("nodenameRGBW").innerHTML = nodeNAME;
+							document.getElementById("rgbNodeName").innerHTML = nodeNAME;
+							//document.getElementById("rgbCurrentName").innerHTML = nodeNAME;
+							document.getElementById("rgbNodeIP").innerHTML = nodeIP;
+						
+							//get serieal number and firmware version
+							var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var sorozatszam = valaszStr.split('sorozatszám: <i>');
+											var firmware  = valaszStr.split('firmware: <i>');
+											document.getElementById("rgbNodeSN").innerHTML = sorozatszam[1].substring(0,8) + " | Firmware: " + firmware[1].substring(0,3);
+										}  
+									}
+								}
+						
+							request.open('GET', 'http://' + nodeIP, true);
+							request.send();
+						
+							//select the actual status : off / RGB / white
+												var stateRGB = "dummy";
+												var stateW = "dummy";
+													var request7 = new XMLHttpRequest();		
+														request7.onreadystatechange = function(){
+														if(request.readyState == 4)
+														{ 
+															if(request7.status == 200 || request7.status == 0){
+																var valasz = request7.responseText;
+																stateRGB = String(valasz);
+																
+																var request8 = new XMLHttpRequest();		
+																	request8.onreadystatechange = function(){
+																	if(request8.readyState == 4)
+																	{ 
+																		if(request8.status == 200 || request8.status == 0){
+																			var valasz2 = request8.responseText;
+																			stateW = String(valasz2);
+																			
+																			if (stateRGB == "0" && stateW == "0") 
+																			{
+																				//set off
+																				//alert('off');
+																				$('#radio-choice-h-2a').prop('checked',true).checkboxradio('refresh');
+																				$('#radio-choice-h-2b').removeAttr('checked').checkboxradio('refresh');
+																				$('#radio-choice-h-2c').removeAttr('checked').checkboxradio('refresh');
+																				document.getElementById("rgbPicker").classList.add("hide");
+																				document.getElementById("whiteLEDBrightness").classList.add("hide");
+																				document.getElementById("RGBW_log").innerHTML = "RGBW vezérlő kikapcsolva";
+																			}
+																			
+																			if (stateRGB == "1")
+																			{
+																				//set rgb
+																				//alert('rgb');
+																				$('#radio-choice-h-2a').removeAttr('checked').checkboxradio('refresh');
+																				$('#radio-choice-h-2b').prop('checked',true).checkboxradio('refresh');
+																				$('#radio-choice-h-2c').removeAttr('checked').checkboxradio('refresh');
+																				document.getElementById("rgbPicker").classList.remove("hide");
+																				document.getElementById("whiteLEDBrightness").classList.add("hide");
+																				document.getElementById("RGBW_log").innerHTML = "RGBW: színes üzemmód bekapcsolva";
+																			}
+																			
+																			if (stateW == "1")
+																			{
+																				//set white
+																				//alert('white');
+																				$('#radio-choice-h-2a').removeAttr('checked').checkboxradio('refresh');
+																				$('#radio-choice-h-2b').removeAttr('checked').checkboxradio('refresh');
+																				$('#radio-choice-h-2c').prop('checked',true).checkboxradio('refresh');
+																				document.getElementById("rgbPicker").classList.add("hide");
+																				document.getElementById("whiteLEDBrightness").classList.remove("hide");
+																				document.getElementById("RGBW_log").innerHTML = "RGBW: fehér üzemmód bekapcsolva";
+																			}
+																			
+																		}  
+																			
+																	}
+																}	
+																request8.open("GET", "http://" + nodeIP + "/statew.txt", true);
+																request8.send();
+																
+															}  
+																
+														}
+													}					
+													request7.open("GET", "http://" + nodeIP + "/statergb.txt", true);
+													request7.send();
+						
+							//egyedi színek beolvasása
+							var storage = window.localStorage;
+							//storage.setItem('owncolor'+szinazonosit, szin);
+							var value1 = storage.getItem('owncolor1');
+							if (value1 != null) {document.getElementById( 'sajatszin1' ).style.background = "#" + value1;}
+							var value2 = storage.getItem('owncolor2');
+							if (value2 != null) {document.getElementById( 'sajatszin2' ).style.background = "#" + value2;}
+							var value3 = storage.getItem('owncolor3');
+							if (value3 != null) {document.getElementById( 'sajatszin3' ).style.background = "#" + value3;}
+							var value4 = storage.getItem('owncolor4');
+							if (value4 != null) {document.getElementById( 'sajatszin4' ).style.background = "#" + value4;}
+							var value5 = storage.getItem('owncolor5');
+							if (value5 != null) {document.getElementById( 'sajatszin5' ).style.background = "#" + value5;}
+							var value6 = storage.getItem('owncolor6');
+							if (value6 != null) {document.getElementById( 'sajatszin6' ).style.background = "#" + value6;}
+						
+							loading('hide');
+							window.location.href = '#pageRGBW';
+						}
+					
+						if (nodeNAME.indexOf("_WS") != -1){
+							document.getElementById("nodenameWS").innerHTML = nodeNAME;
+							document.getElementById("wsNodeName").innerHTML = nodeNAME;
+							document.getElementById("wsNodeIP").innerHTML = nodeIP;
+						
+							//get serieal number and firmware version
+							var requesta = new XMLHttpRequest();		
+								requesta.onreadystatechange = function(){
+									if(requesta.readyState == 4)
+									{ 
+										if(requesta.status == 200 || requesta.status == 0){										
+											var valasza = requesta.responseText;
+											var valaszStra = String(valasza);
+											var sorozatszama = valaszStra.split('sorozatszám: <i>');
+											var firmwarea  = valaszStra.split('firmware: <i>');
+											document.getElementById("wsNodeSN").innerHTML = sorozatszama[1].substring(0,8) + " | Firmware: " + firmwarea[1].substring(0,3);
+										}  
+									}
+								}
+						
+							requesta.open('GET', 'http://' + nodeIP, true);
+							requesta.send();
+						
+							//get actual weather data
+							var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var valaszArray = valaszStr.split(';');
+											document.getElementById("actualTemp").innerHTML = valaszArray[0];
+											document.getElementById("actualHumidity").innerHTML = valaszArray[1];
+											document.getElementById("actualPressure").innerHTML = valaszArray[2];
+										}  
+									}
+								}
+							request.open('GET', 'http://' + nodeIP + '/actual.txt', true);
+							request.send();
+							document.getElementById("WS_log").innerHTML = "aktuális adatok";
+								loading('hide');
+								window.location.href = '#pageWEATHER';
+							}	
+					
+						if (nodeNAME.indexOf("_SP") != -1){
+							document.getElementById("nodenameSP").innerHTML = nodeNAME;
+							document.getElementById("spNodeName").innerHTML = nodeNAME;
+							document.getElementById("spCurrentName").innerHTML = nodeNAME;
+							document.getElementById("spNodeIP").innerHTML = nodeIP;
+						
+							//get serieal number and firmware version
+							var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var sorozatszam = valaszStr.split('sorozatszám: <i>');
+											var firmware  = valaszStr.split('firmware: <i>');
+											document.getElementById("spNodeSN").innerHTML = sorozatszam[1].substring(0,8) + " | Firmware: " + firmware[1].substring(0,3);
+										}  
+									}
+								}
+						
+							request.open('GET', 'http://' + nodeIP, true);
+							request.send();
+							
+							//get status of smart plug
+							var request2 = new XMLHttpRequest();		
+								request2.onreadystatechange = function(){
+									if(request2.readyState == 4)
+									{ 
+										if(request2.status == 200 || request2.status == 0){										
+											var valasz = request2.responseText;
+											var valaszStr = String(valasz);
+											if (valaszStr == '0') 
+											{
+												
+												//document.getElementById("flip-2").value = 'off';
+												$("#flip-2").val('off').slider('refresh');
+												document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";
+												//alert('kikapcsolva');
+											}
+											if (valaszStr == '1')
+											{
+												//document.getElementById("flip-2").value = 'on';
+												$("#flip-2").val('on').slider('refresh');
+												document.getElementById("SP_log").innerHTML = "konnektor bekapcsolva";
+												//alert('bekapcsolva');
+											}
+										}  
+									}
+								}
+						
+							request2.open('GET', 'http://' + nodeIP + '/status.txt', true);
+							request2.send();
+						
+						
+							loading('hide');
+							window.location.href = '#pageSMARTPLUG';
+						}
+					
+				}
+				
+				function ws_showLast24h() {
+					loading('show');
+					document.getElementById("WS_log").innerHTML = "adatok lekérdezése...";
+					var nodeIP = document.getElementById("wsNodeIP").innerHTML;
+					
+						var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var lines = valaszStr.split("\n"); 
+											
+											var ertekek_homerseklet = [];
+											var ertekek_paratartalom = [];
+											var felirat = [];
+											
+											var i = 72;
+											for (i = 72; i > 0; i--) {
+												var feliratInt = i-72;
+												if (feliratInt == 0 ) { felirat[i] = "most";} 
+												else
+												{
+													if (feliratInt % 3 == 0)
+													{
+														felirat[i] = String(feliratInt / 3) + 'ó';
+													}
+													else
+													{
+														felirat[i] = "";
+													}
+												}
+												var reszertek = lines[72-i].split(";");
+												ertekek_homerseklet[i] = reszertek[0];
+												ertekek_paratartalom[i] = reszertek[1];
+											} 
+											
+											
+											//es most chart rajzolasa
+											var ctx = document.getElementById('myChart').getContext("2d");
+											if (wsChart != null) 
+											{
+												//wsChart.destroy();
+												wsChart.data.labels = felirat;
+												wsChart.data.datasets[0].data = ertekek_homerseklet;
+												wsChart.data.datasets[1].data = ertekek_paratartalom;
+												wsChart.update();
+												return;
+											}
+											wsChart = new Chart(ctx, {
+											  type: 'line',
+											  data: {
+												labels: felirat,
+												datasets: [{
+												  label: 'hőmérséklet [Celsius]',
+												  borderColor: 'rgba(0, 255, 0, 0.6)',
+												  backgroundColor: 'rgba(0, 255, 0, 0.1)',
+												  yAxisID: 'A',
+												  data: ertekek_homerseklet,
+												  pointRadius: 0
+												}, {
+												  label: 'páratartalom [%]',
+												  yAxisID: 'B',
+												  borderColor: 'rgba(255, 255, 255, 0.6)',
+												  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+												  data: ertekek_paratartalom,
+												  pointRadius: 0
+												}]
+											  },
+											  options: {
+											  responsive: true,
+											  stacked: false,
+											  animation: {
+												duration: 1000,
+												easing: 'easeInOutExpo',
+											  },
+											  hoverMode: 'index',
+											  stacked: false,
+												scales: {
+												  yAxes: [{
+													id: 'A',
+													type: 'linear',
+													position: 'left',
+												  }, {
+													id: 'B',
+													type: 'linear',
+													position: 'right',
+													
+												  }]
+												}
+											  }
+											});
+											
+											
+										}  
+									}
+								}
+						request.open('GET', 'http://' + nodeIP + '/data.txt', true);
+						request.send();			
+					document.getElementById("WS_log").innerHTML = "utolsó 24 óra adatai";
+					loading('hide');
+				}
+				
+				function ws_showLast3d() {
+					document.getElementById("WS_log").innerHTML = "adatok lekérdezése...";
+					loading('show');
+					var nodeIP = document.getElementById("wsNodeIP").innerHTML;
+					
+						var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var lines = valaszStr.split("\n"); 
+											
+											var ertekek_homerseklet = [];
+											var ertekek_paratartalom = [];
+											var felirat = [];
+											
+											var i = 216;
+											for (i = 216; i > 0; i--) {
+												var feliratInt = i-216;
+												if (feliratInt == 0 ) { felirat[i] = "most";} 
+												else
+												{
+													if (feliratInt % 36 == 0)
+													{
+														felirat[i] = String(feliratInt / 3) + 'ó';
+													}
+													else
+													{
+														felirat[i] = "";
+													}
+												}
+												var reszertek = lines[216-i].split(";");
+												ertekek_homerseklet[i] = reszertek[0];
+												ertekek_paratartalom[i] = reszertek[1];
+											} 
+											
+											
+											//es most chart rajzolasa
+											var ctx = document.getElementById('myChart');
+											if (wsChart != null) 
+											{
+												wsChart.data.labels = felirat;
+												wsChart.data.datasets[0].data = ertekek_homerseklet;
+												wsChart.data.datasets[1].data = ertekek_paratartalom;
+												wsChart.update();
+												return;
+											}
+											wsChart = new Chart(ctx, {
+											  type: 'line',
+											  data: {
+												labels: felirat,
+												datasets: [{
+												  label: 'hőmérséklet [Celsius]',
+												  borderColor: 'rgba(0, 255, 0, 0.6)',
+												  backgroundColor: 'rgba(0, 255, 0, 0.1)',
+												  yAxisID: 'A',
+												  data: ertekek_homerseklet,
+												  pointRadius: 0
+												}, {
+												  label: 'páratartalom [%]',
+												  yAxisID: 'B',
+												  borderColor: 'rgba(255, 255, 255, 0.6)',
+												  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+												  data: ertekek_paratartalom,
+												  pointRadius: 0
+												}]
+											  },
+											  options: {
+											  responsive: true,
+											  stacked: false,
+											  animation: {
+												duration: 1000,
+												easing: 'easeInOutExpo',
+											  },
+											  hoverMode: 'index',
+												scales: {
+												  yAxes: [{
+													id: 'A',
+													type: 'linear',
+													position: 'left',
+												  }, {
+													id: 'B',
+													type: 'linear',
+													position: 'right',
+													
+												  }]
+												}
+											  }
+											});
+											
+											
+										}  
+									}
+								}
+						request.open('GET', 'http://' + nodeIP + '/data.txt', true);
+						request.send();			
+					
+					loading('hide');
+					document.getElementById("WS_log").innerHTML = "utolsó 3 nap adatai";
+				
+				}
+
+				function ws_showLast7d() {
+					document.getElementById("WS_log").innerHTML = "adatok lekérdezése...";
+					loading('show');
+					var nodeIP = document.getElementById("wsNodeIP").innerHTML;
+					
+						var request = new XMLHttpRequest();		
+								request.onreadystatechange = function(){
+									if(request.readyState == 4)
+									{ 
+										if(request.status == 200 || request.status == 0){										
+											var valasz = request.responseText;
+											var valaszStr = String(valasz);
+											var lines = valaszStr.split("\n"); 
+											
+											var ertekek_homerseklet = [];
+											var ertekek_paratartalom = [];
+											var felirat = [];
+											
+											var i = 504;
+											for (i = 504; i > 0; i--) {
+												var feliratInt = i-504;
+												if (feliratInt == 0 ) { felirat[i] = "most";} 
+												else
+												{
+													if (feliratInt % 36 == 0)
+													{
+														//felirat[i] = String(feliratInt / 3) + 'ó';
+														felirat[i] = String(feliratInt / 3 / 24) + 'nap';
+													}
+													else
+													{
+														felirat[i] = "";
+													}
+												}
+												var reszertek = lines[504-i].split(";");
+												ertekek_homerseklet[i] = reszertek[0];
+												ertekek_paratartalom[i] = reszertek[1];
+											} 
+											
+											
+											//es most chart rajzolasa
+											var ctx = document.getElementById('myChart');
+											if (wsChart != null) 
+											{
+												wsChart.data.labels = felirat;
+												wsChart.data.datasets[0].data = ertekek_homerseklet;
+												wsChart.data.datasets[1].data = ertekek_paratartalom;
+												wsChart.update();
+												return;
+											}
+											wsChart = new Chart(ctx, {
+											  type: 'line',
+											  data: {
+												labels: felirat,
+												datasets: [{
+												  label: 'hőmérséklet [Celsius]',
+												  borderColor: 'rgba(0, 255, 0, 0.6)',
+												  backgroundColor: 'rgba(0, 255, 0, 0.1)',
+												  yAxisID: 'A',
+												  data: ertekek_homerseklet,
+												  pointRadius: 0
+												}, {
+												  label: 'páratartalom [%]',
+												  yAxisID: 'B',
+												  borderColor: 'rgba(255, 255, 255, 0.6)',
+												  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+												  data: ertekek_paratartalom,
+												  pointRadius: 0
+												}]
+											  },
+											  options: {
+											  responsive: true,
+											  stacked: false,
+											  animation: {
+												duration: 1000,
+												easing: 'easeInOutExpo',
+											  },
+											  hoverMode: 'index',
+												scales: {
+												  yAxes: [{
+													id: 'A',
+													type: 'linear',
+													position: 'left',
+												  }, {
+													id: 'B',
+													type: 'linear',
+													position: 'right',
+													
+												  }]
+												}
+											  }
+											});
+											
+											
+										}  
+									}
+								}
+						request.open('GET', 'http://' + nodeIP + '/data.txt', true);
+						request.send();			
+					
+					loading('hide');
+					document.getElementById("WS_log").innerHTML = "utolsó 7 nap adatai";
+				
+				}
+				
+				function updateRGBcode(picker) {
+					//document.getElementById("rgbValueToChange").innerHTML = Math.round(picker.rgb[0]) + "," Math.round(picker.rgb[1]) + "," + Math.round(picker.rgb[2]) ;
+					alert("ez műxik!");
+					var newcode = "alap";
+					newcode = Math.round(picker.rgb[0]) + "-" + Math.round(picker.rgb[1]) + "-" + Math.round(picker.rgb[2]) + "-0";
+					document.getElementById("rgbValueToChange").innerHTML = newcode;
+					
+					var ws = new WebSocket("ws://192.168.1.238:8009");
+					ws.onopen = function () {
+						//document.getElementById("content").innerHTML += "onopen ";
+						ws.send(newcode);
+						ws.close();
+					}
+				}
+			
+				
+				function loading(showOrHide) {
+					setTimeout(function(){
+						$.mobile.loading(showOrHide);
+					}, 1); 
+				}
+				
+				$(document).bind( "change",'#select-custom-3', function(event, ui) {
+					var szinazonosit = $( '#select-custom-3' ).val();
+					var szin = $( '#rgbPickerValue' ).val();
+					document.getElementById( 'sajatszin' + szinazonosit ).style.background = "#" + szin;
+					$('#select-custom-3').val(0).selectmenu('refresh');
+					
+					var storage = window.localStorage;
+					storage.setItem('owncolor'+szinazonosit, szin);
+					//var value1 = storage.getItem('owncolor1');
+					
+					//TODO: itt most még el kell menteni, hogy telefon újraindítás után is vissza lehessen kapni
+					//TODO: a DIV-ekre kattintva vissza kell állítani a háttérszínt a jscolor-nak megadni; ha nincs, akkor nem csinál semmit sem
+				});
+
+				function rgbToHex(col)
+				{
+					if(col.charAt(0)=='r')
+					{
+						col=col.replace('rgb(','').replace(')','').split(',');
+						var r=parseInt(col[0], 10).toString(16);
+						var g=parseInt(col[1], 10).toString(16);
+						var b=parseInt(col[2], 10).toString(16);
+						r=r.length==1?'0'+r:r; g=g.length==1?'0'+g:g; b=b.length==1?'0'+b:b;
+						var colHex=r+g+b;
+						return colHex;
+					}
+				}
+				
+				function hexToRgb(hex) {
+					var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+					return result ? {
+						r: parseInt(result[1], 16),
+						g: parseInt(result[2], 16),
+						b: parseInt(result[3], 16)
+					} : null;
+				}
+				
+				function setOwnColor(sajatSzinID)
+				{
+					var col = document.getElementById( 'sajatszin' + sajatSzinID ).style.background;
+					var colHEX = rgbToHex(col);
+					//alert(colHEX);
+					document.getElementById('rgbPickerValue').jscolor.fromString(colHEX);
+					setRGBcolorNew();
+				}
+				
+				function sp_broadcast(status)
+				{
+					
+					var parancsjellege = "alap";
+					if (status == 'be') {parancsjellege='Az alábbi snode okos konnektorok bekapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: BE";$("#flip-2").val('on').slider('refresh');
+												document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";}
+					if (status == 'ki') {parancsjellege='Az alábbi snode okos konnektorok kikapcsolva:'; document.getElementById("SP_log").innerHTML = "broadcast parancs: KI";$("#flip-2").val('off').slider('refresh');
+												document.getElementById("SP_log").innerHTML = "konnektor kikapcsolva";}
+					var lista = '<br>';
+
+					var nodeNev = document.getElementById('node1title').innerHTML;
+					var nodeIP = document.getElementById('node1description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws = new WebSocket('ws://' + nodeIP + ':8009');
+										ws.onopen = function () {
+											ws.send('bekapcsol');
+											ws.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws = new WebSocket('ws://' + nodeIP + ':8009');
+										ws.onopen = function () {
+											ws.send('kikapcsol');
+											ws.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node2title').innerHTML;
+					nodeIP = document.getElementById('node2description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws2.onopen = function () {
+											ws2.send('bekapcsol');
+											ws2.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws2.onopen = function () {
+											ws2.send('kikapcsol');
+											ws2.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node3title').innerHTML;
+					nodeIP = document.getElementById('node3description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws3 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws3.onopen = function () {
+											ws3.send('bekapcsol');
+											ws3.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws3 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws3.onopen = function () {
+											ws3.send('kikapcsol');
+											ws3.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node4title').innerHTML;
+					nodeIP = document.getElementById('node4description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws4 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws4.onopen = function () {
+											ws4.send('bekapcsol');
+											ws4.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws4 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws4.onopen = function () {
+											ws4.send('kikapcsol');
+											ws4.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node5title').innerHTML;
+					nodeIP = document.getElementById('node5description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws5 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws5.onopen = function () {
+											ws5.send('bekapcsol');
+											ws5.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws5 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws5.onopen = function () {
+											ws5.send('kikapcsol');
+											ws5.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node6title').innerHTML;
+					nodeIP = document.getElementById('node6description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws6 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws6.onopen = function () {
+											ws6.send('bekapcsol');
+											ws6.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws6 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws6.onopen = function () {
+											ws6.send('kikapcsol');
+											ws6.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node7title').innerHTML;
+					nodeIP = document.getElementById('node7description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws7 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws7.onopen = function () {
+											ws7.send('bekapcsol');
+											ws7.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws7 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws7.onopen = function () {
+											ws7.send('kikapcsol');
+											ws7.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node8title').innerHTML;
+					nodeIP = document.getElementById('node8description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws8 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws8.onopen = function () {
+											ws8.send('bekapcsol');
+											ws8.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws8 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws8.onopen = function () {
+											ws8.send('kikapcsol');
+											ws8.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node9title').innerHTML;
+					nodeIP = document.getElementById('node9description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws9 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws9.onopen = function () {
+											ws9.send('bekapcsol');
+											ws9.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws9 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws9.onopen = function () {
+											ws9.send('kikapcsol');
+											ws9.close();
+										}
+								}
+					}
+					
+					nodeNev = document.getElementById('node10title').innerHTML;
+					nodeIP = document.getElementById('node10description').innerHTML;
+					if (nodeNev.indexOf("_SP") != -1)
+					{
+						lista = lista + nodeNev + '<br>';
+						if (status == 'be')
+								{
+									var ws10 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws10.onopen = function () {
+											ws10.send('bekapcsol');
+											ws10.close();
+											
+										}
+								}
+								if (status == 'ki')
+								{
+									var ws10 = new WebSocket('ws://' + nodeIP + ':8009');
+										ws10.onopen = function () {
+											ws10.send('kikapcsol');
+											ws10.close();
+										}
+								}
+					}
+					
+					//alert(lista);
+					document.getElementById('SPmessageHeader').innerHTML = parancsjellege;
+					document.getElementById('SPbroadcastList').innerHTML = lista;
+					//window.location.href = '#popupDialogSP';
+					$('#showSPpopup')[0].click();
+				}
+				
+				$(document).on("input", "#SPnewNodeName", function (e) {
+					  
+					  var str = $.trim( $(this).val() );
+					  var regx = /^[A-Za-z0-9]/;
+					  var keyCode = e.keyCode;
+					  
+					  if(e.keyCode == 8 || e.keyCode == 46) {
+							document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + "_SP";
+							
+							return;
+						}      
+					  if (String.fromCharCode(keyCode).match(regx)) {
+						document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + "_SP";
+						return;
+						}
+					  else
+					  {
+							document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val() + "_SP";
+							e.preventDefault();
+					  }
+					  
+					  document.getElementById('spNewName').innerHTML = $('#SPnewNodeName').val().replace(/[^0-9a-z]/gi, '') + '_SP';
+					  $('#SPnewNodeName').val($('#SPnewNodeName').val().replace(/[^0-9a-z]/gi, ''));
+					  if ($('#SPnewNodeName').val().length < 5)
+						{
+							document.getElementById('spNodeCriteria').innerHTML = "eszköznév túl rövid!"; 
+							document.getElementById('spNodeCriteria').style.color = '#CC1111';
+							document.getElementById('saveSPnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled';
+						}
+					  else 
+						{
+							document.getElementById('spNodeCriteria').innerHTML = "az eszköznév szintaktikailag megfelel"; 
+							document.getElementById('spNodeCriteria').style.color = '#55CC55';
+							document.getElementById('saveSPnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b';
+						}
+					  
+				});
+				
+				$(document).on("input", "#WSnewNodeName", function (e) {
+					  
+					  var str = $.trim( $(this).val() );
+					  var regx = /^[A-Za-z0-9]/;
+					  var keyCode = e.keyCode;
+					  
+					  if(e.keyCode == 8 || e.keyCode == 46) {
+							document.getElementById('wsNewName').innerHTML = $('#WSnewNodeName').val() + "_WS";
+							
+							return;
+						}      
+					  if (String.fromCharCode(keyCode).match(regx)) {
+						document.getElementById('wsNewName').innerHTML = $('#WSnewNodeName').val() + "_WS";
+						return;
+						}
+					  else
+					  {
+							document.getElementById('wsNewName').innerHTML = $('#WSnewNodeName').val() + "_WS";
+							e.preventDefault();
+					  }
+					  
+					  document.getElementById('wsNewName').innerHTML = $('#WSnewNodeName').val().replace(/[^0-9a-z]/gi, '') + '_WS';
+					  $('#WSnewNodeName').val($('#WSnewNodeName').val().replace(/[^0-9a-z]/gi, ''));
+					  if ($('#WSnewNodeName').val().length < 5)
+						{
+							document.getElementById('wsNodeCriteria').innerHTML = "eszköznév túl rövid!"; 
+							document.getElementById('wsNodeCriteria').style.color = '#CC1111';
+							document.getElementById('saveWSnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled';
+						}
+					  else 
+						{
+							document.getElementById('wsNodeCriteria').innerHTML = "az eszköznév szintaktikailag megfelel"; 
+							document.getElementById('wsNodeCriteria').style.color = '#55CC55';
+							document.getElementById('saveWSnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b';
+						}
+					  
+				});
+				
+				$(document).on("input", "#RGBWnewNodeName", function (e) {
+					  
+					  var str = $.trim( $(this).val() );
+					  var regx = /^[A-Za-z0-9]/;
+					  var keyCode = e.keyCode;
+					  
+					  if(e.keyCode == 8 || e.keyCode == 46) {
+							document.getElementById('rgbwNewName').innerHTML = $('#RGBWnewNodeName').val() + "_RGBW";
+							
+							return;
+						}      
+					  if (String.fromCharCode(keyCode).match(regx)) {
+						document.getElementById('rgbwNewName').innerHTML = $('#RGBWnewNodeName').val() + "_RGBW";
+						return;
+						}
+					  else
+					  {
+							document.getElementById('rgbwNewName').innerHTML = $('#RGBWnewNodeName').val() + "_RGBW";
+							e.preventDefault();
+					  }
+					  
+					  document.getElementById('rgbwNewName').innerHTML = $('#RGBWnewNodeName').val().replace(/[^0-9a-z]/gi, '') + '_RGBW';
+					  $('#RGBWnewNodeName').val($('#RGBWnewNodeName').val().replace(/[^0-9a-z]/gi, ''));
+					  if ($('#RGBWnewNodeName').val().length < 5)
+						{
+							document.getElementById('rgbwNodeCriteria').innerHTML = "eszköznév túl rövid!"; 
+							document.getElementById('rgbwNodeCriteria').style.color = '#CC1111';
+							document.getElementById('saveRGBWnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled';
+						}
+					  else 
+						{
+							document.getElementById('rgbwNodeCriteria').innerHTML = "az eszköznév szintaktikailag megfelel"; 
+							document.getElementById('rgbwNodeCriteria').style.color = '#55CC55';
+							document.getElementById('saveRGBWnodeNameBtn').className = 'ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b';
+						}
+					  
+				});
+				
+				function setRGBcolorNew(){
+					var nodeIP = document.getElementById("rgbNodeIP").innerHTML;
+					var ertek = $('#rgbPickerValue').val();
+					var piros = parseInt(ertek.substring(0,2),16);
+					var zold = parseInt(ertek.substring(2,4),16);
+					var kek = parseInt(ertek.substring(4,6),16);
+										
+					var newcode = piros + '-' + zold + '-' + kek + '-0';
+					
+					var ws = new WebSocket('ws://' + nodeIP + ':8009');
+					ws.onopen = function () {
+						ws.send(newcode);
+						ws.close();
+					}
+					
+					var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
+					ws2.onopen = function () {
+						ws2.send('allapotmentesrgb');
+						ws2.close();
+					}
+					document.getElementById("RGBW_log").innerHTML = "RGBW: szín beállítva";
+				}
+				
+				function updateWhiteCodeNew() {
+					var nodeIP = document.getElementById("rgbNodeIP").innerHTML;
+					var actualVal = $('#slider-8').val();
+					var newcode = '0-0-0-' + actualVal;
+					
+					var ws = new WebSocket('ws://' + nodeIP + ':8009');
+					ws.onopen = function () {
+						ws.send(newcode);
+						ws.close();
+					}
+					
+					var ws2 = new WebSocket('ws://' + nodeIP + ':8009');
+					ws2.onopen = function () {
+						ws2.send('allapotmentesw');
+						ws2.close();
+					}
+					document.getElementById("RGBW_log").innerHTML = "RGBW: fehér fényerő beállítva";
+				}
+				
+				function refreshMainListStatus() {
+				//ez fogja a listábn szereplő összes vezérlő státuszát felülvizsgálni
+				//a back-re kerül meghívásra
+				loading('show');
+				getStatusFromID('1');
+				getStatusFromID('2');
+				getStatusFromID('3');
+				getStatusFromID('4');
+				getStatusFromID('5');
+				getStatusFromID('6');
+				getStatusFromID('7');
+				getStatusFromID('8');
+				getStatusFromID('9');
+				getStatusFromID('10');
+				loading('hide');
+				
+				}
+				
+				function getStatusFromID(id) {
+					var nodeDiv= 'node' + id;
+					if (document.getElementById(nodeDiv).style.display != 'none')
+					{
+						var nodestatus = 'node' + id + 'status';
+						document.getElementById(nodestatus).style.color = '#000';
+						document.getElementById(nodestatus).innerHTML = "frissítés...";
+						
+						var nodeName = document.getElementById('node' + id + 'title').innerHTML;
+						var nodeIP = document.getElementById('node' + id + 'description').innerHTML;
+							
+							if (nodeName.indexOf('_SP') != -1) {
+								//smart plug
+																			
+								var request2 = new XMLHttpRequest();		
+								request2.onreadystatechange = function(){
+								if(request2.readyState == 4)
+								{ 
+									if(request2.status == 200 || request2.status == 0){
+																					
+										var valasz = request2.responseText;
+										var resSP = 'ismeretlen állapot';
+										if (valasz == '0') {resSP = 'kikapcsolva';}
+										if (valasz == '1') {resSP = 'bekapcsolva';}
+										var nodestatusNEW = nodestatus.substring(0);
+										document.getElementById(nodestatusNEW).innerHTML = resSP;
+										if (valasz == '0') {document.getElementById(nodestatusNEW).style.color = '#CC1111';}
+										if (valasz == '1') {document.getElementById(nodestatusNEW).style.color = '#55CC55';}
+									}  
+																
+								}
+								}
+																		
+								request2.open("GET", "http://" + nodeIP + "/status.txt", true);
+								request2.send();
+													
+							}
+							
+							
+							
+							if (nodeName.indexOf('_WS') != -1) {
+							//Weather Station
+							
+							var request = new XMLHttpRequest();		
+							request.onreadystatechange = function(){
+							if(request.readyState == 4)
+							{ 
+								if(request.status == 200 || request.status == 0){								
+									var valasz = request.responseText;
+									var valaszStr = String(valasz);
+									var valaszArray = valaszStr.split(';');
+									var nodestatusNEW = nodestatus.substring(0);
+									document.getElementById(nodestatusNEW).innerHTML = valaszArray[0] + '&#x2103; | ' + valaszArray[1] + '% | ' + valaszArray[2] + 'hPa';
+								}  
+															
+							}
+							}
+																	
+							request.open("GET", "http://" + nodeIP + "/actual.txt", true);
+							request.send();
+							}
+							
+							
+							if (nodeName.indexOf('_RGBW') != -1) {
+							//RGBW controller
+							
+							//státuszok lekérdezése
+							var stateRGB = "dummy";
+							var stateW = "dummy";
+												
+							var request4 = new XMLHttpRequest();		
+							request4.onreadystatechange = function(){
+							if(request4.readyState == 4)
+							{ 
+								if(request4.status == 200 || request4.status == 0){
+									var valasz = request4.responseText;
+									stateRGB = String(valasz);
+																
+									var request5 = new XMLHttpRequest();		
+									request5.onreadystatechange = function(){
+									if(request5.readyState == 4)
+									{ 
+										if(request5.status == 200 || request5.status == 0){
+											var valasz2 = request5.responseText;
+											stateW = String(valasz2);
+											var nodestatusNEW = nodestatus.substring(0);							
+											if (stateRGB == "0" && stateW == "0") 
+											{
+												document.getElementById(nodestatusNEW).innerHTML = 'kikapcsolva'; 
+												document.getElementById(nodestatusNEW).style.color = '#CC1111';
+											}
+																			
+											if (stateRGB == "1")
+											{
+												document.getElementById(nodestatusNEW).innerHTML = 'RGB bekapcsolva'; 
+												document.getElementById(nodestatusNEW).style.color = '#55CC55';
+											}
+																			
+											if (stateW == "1")
+											{
+												document.getElementById(nodestatusNEW).innerHTML = 'Fehér bekapcsolva'; 
+												document.getElementById(nodestatusNEW).style.color = '#55CC55';
+											}
+																			
+										}  
+																			
+									}
+									}	
+									request5.open("GET", "http://" + nodeIP + "/statew.txt", true);
+									request5.send();
+
+								}  
+																
+							}
+							}					
+							request4.open("GET", "http://" + nodeIP + "/statergb.txt", true);
+							request4.send();
+											
+						}
+							
+					}
+				
+				}
+				
+			</script>
+			
+				<!-- DEBUG -->
+				 <div name="content" id="content" style="display:none; min-height:25vh;font-size:0.6em;background:white;" >debug info 1</div>
+				 <div name="content2" id="content2" style="display:none; min-height:25vh;font-size:0.6em;background:lightgray;" >debug info 2</div>
+				 <div name="content3" id="content3" style="display:none; min-height:25vh;font-size:0.6em;background:white;" >debug info 3</div>
+				 <button name="btn_debug1" id="btn_debug1" style="display: none;" onclick="testf2()">új testf2</button> 
+				 <button name="btn_debug2" id="btn_debug2" style="display: none;" onclick="testf2()">ismét új testf2</button> 
+				 <button name="btn_debug3" id="btn_debug3" style="display: none;" onclick="ws1()">websocket ip-re</button>
+				<!-- END DEBUG -->    
+				<!--<a href="#pageRGBW" name="linkRGBW" id="linkRGBW" style="diplay:none" data-transition="flip"> --><!-- ez a linkes megoldás a click-el hívható meg -->
+				<ul data-role="listview" data-inset="true">
+							<li name="node1" style="display:none;" id ="node1"><a href="javascript:void(0)" data-transition="slidefade" onclick="showNode('1')">
+								<img name="node1img" id ="node1img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node1title" id ="node1title">node_name</h2>
+								<p name="node1description" id ="node1description">IP</p>
+								<p name="node1status" id ="node1status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node2" style="display:none;" id ="node2"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('2')">
+								<img name="node2img" id ="node2img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node2title" id ="node2title">node_name</h2>
+								<p name="node2description" id ="node2description">IP</p>
+								<p name="node2status" id ="node2status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node3" style="display:none;" id ="node3"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('3')">
+								<img name="node3img" id ="node3img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node3title" id ="node3title">node_name </h2>
+								<p name="node3description" id ="node3description">IP</p>
+								<p name="node3status" id ="node3status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node4" style="display:none;" id ="node4"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('4')">
+								<img name="node4img" id ="node4img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node4title" id ="node4title">node_name</h2>
+								<p name="node4description" id ="node4description">IP</p>
+								<p name="node4status" id ="node4status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node5" style="display:none;" id ="node5"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('5')">
+								<img name="node5img" id ="node5img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node5title" id ="node5title">node_name</h2>
+								<p name="node5description" id ="node5description">IP</p>
+								<p name="node5status" id ="node5status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node6" style="display:none;" id ="node6"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('6')">
+								<img name="node6img" id ="node6img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node6title" id ="node6title">node_name</h2>
+								<p name="node6description" id ="node6description">IP</p>
+								<p name="node6status" id ="node6status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node7" style="display:none;" id ="node7"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('7')">
+								<img name="node7img" id ="node7img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node7title" id ="node7title">node_name</h2>
+								<p name="node7description" id ="node7description">IP</p>
+								<p name="node7status" id ="node7status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node8" style="display:none;" id ="node8"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('8')">
+								<img name="node8img" id ="node8img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node8title" id ="node8title">node_name</h2>
+								<p name="node8description" id ="node8description">IP</p>
+								<p name="node8status" id ="node8status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node9" style="display:none;" id ="node9"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('9')">
+								<img name="node9img" id ="node9img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node9title" id ="node9title">node_name</h2>
+								<p name="node9description" id ="node9description">IP</p>
+								<p name="node9status" id ="node9status" class="ui-li-aside">status_text</p>
+							</a></li>
+							<li name="node10" style="display:none;" id ="node10"><a href="javascript:void(0)" data-transition="slidefade"  onclick="showNode('10')">
+								<img name="node10img" id ="node10img" class="ui-li-thumb" style="height:60%;margin-left:20px;margin-top:20px;display:block;" src="img/logo.svg">
+								<h2 style="margin-top:20px;" name="node10title" id ="node10title">node_name</h2>
+								<p name="node10description" id ="node10description">IP</p>
+								<p name="node10status" id ="node10status" class="ui-li-aside">status_text</p>
+							</a></li>
+						</ul>
+			
+            </article>
+
+            <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
+                <div align="center">debug:  
+					<input type="checkbox" name="flip-debug" id="flip-debug" data-role="flipswitch" data-on-text="be" data-off-text="ki" onchange="debug()" data-wrapper-class="custom-label-flipswitch" >
+					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;" onclick="refreshNodeList()">Keres</button> 
+					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;" onclick="refreshMainListStatus()">Frissít</button> 
+				</div>
+            </footer>
+        </section>
+
+        <section data-role="page" id="pageRGBW" data-theme="b" data-transition="slidefade">
+				<header data-role="header" data-position="fixed" data-tap-toggle="false" >
+					<h2 name="nodenameRGBW" id ="nodenameRGBW">RGBW: </h2>
+					<a href="./" onclick="refreshMainListStatus()" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+					<a href="#popupDialogRGBWnodeNameChange" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+					<!--<a href="javascript:void(0)" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>-->
+					<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
+				</header>
+
+				<article role="main" class="ui-content">
+					
+						<!--<div id="powerButton" name="powerButton" onclick="powerButtonPressed()" class="btn btn-blob"><div style="margin-top:-15px;" class="icono-power"></div></div>-->
+						
+						<!--<h2 id="powerState" name="powerState" align="center">kikapcsolva</h2>-->
+						
+						<!--<form id="ledType" style="margin-bottom:20px;" name="ledType" class="lathato hide">
+							<fieldset data-role="controlgroup" data-theme="b" data-type="horizontal">
+								<h3>Fényforrás:</h3>
+								<input name="radio-choice-t-6" id="radio-choice-t-6a" value="on" checked="true" type="radio">
+								<label for="radio-choice-t-6a">Színes LED</label>
+								<input name="radio-choice-t-6" id="radio-choice-t-6b" value="off" checked="false" type="radio">
+								<label for="radio-choice-t-6b">Fehér LED</label> 
+							</fieldset>
+						</form>-->
+						
+						
+						<center><form style="margin-bottom:50px;">
+							<fieldset data-role="controlgroup" data-type="horizontal" name="rgbwSelector" id="rgbwSelector">
+								<legend style="font-size:1.3em;">Vezérlés állapota:</legend>
+								<input name="radio-choice-h-2" id="radio-choice-h-2a" value="ki" checked="checked" type="radio">
+								<label for="radio-choice-h-2a" style="margin-top:15px;text-align:center;font-size:1.3em;"> ki </label>
+								<input name="radio-choice-h-2" id="radio-choice-h-2b" value="rgb" type="radio">
+								<label for="radio-choice-h-2b" style="margin-top:15px;text-align:center;font-size:1.3em;"> RGB </label>
+								<input name="radio-choice-h-2" id="radio-choice-h-2c" value="white" type="radio">
+								<label for="radio-choice-h-2c" style="margin-top:15px;text-align:center;font-size:1.3em;"> fehér </label>
+							</fieldset>
+						</form></center>
+						
+						<div id="ledType" name="ledType" style="max-width:90%;margin-left:5%;margin-top:10px; margin-bottom:35px;" class="lathato hide" data-role="navbar">
+							<h3>Fényforrás:</h3>
+							<ul>
+								<li><a href="#" id="showRgbSetting" style="font-size:1.2em;" name="showRgbSetting" onclick="showRgbSetting()">Színes LED</a></li>
+								<li><a href="#" id="showWhiteSetting" style="font-size:1.2em;" name="showWhiteSetting" onclick="showWhiteSetting()">Fehér LED</a></li>
+							</ul>
+						</div><!-- /navbar -->
+						
+						
+						<div id="rgbPicker" name="rgbPicker" style="margin-right:5%;" class="lathato hide">
+							<button name="setRGBcolorBtnNew" id="setRGBcolorBtnNew" style="margin-left:5%;max-width:95%;" onclick="setRGBcolorNew()">kiválasztott szín beállítása</button> 
+							<div style="display:inline-block;margin-left:5%;">Szín és fényerő: </div>
+							<div  style="display:inline-block;font-size:0.8em;float:right;margin-top:5px;">RGB kód: <div name="rgbValueToChange" id="rgbValueToChange" style="display:inline-block;font-size:0.7em;"> </div></div>
+							<div style="margin-left:65px;"><input id="rgbPickerValue" name="rgbPickerValue" class="jscolor" value="009900" readonly></div>
+							
+							
+							
+							<div style="margin-left:5%;margin-top:55px;" class="ui-field-contain">
+								<select name="select-custom-3" id="select-custom-3" data-native-menu="false" data-iconpos="left">
+									<option value="0">hozzáadás a kedvenc színekhez...</option>
+									<option value="1">Kedvenc szín 1</option>
+									<option value="2">Kedvenc szín 2</option>
+									<option value="3">Kedvenc szín 3</option>
+									<option value="4">Kedvenc szín 4</option>
+									<option value="5">Kedvenc szín 5</option>
+									<option value="6">Kedvenc szín 6</option>
+								</select>
+							</div>
+							<div style="margin-left:5%;"><h4>kedvenc színek:</h4>
+								<div id="sajatszin1" onclick="setOwnColor(1)" name="sajatszin1" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin2" onclick="setOwnColor(2)" name="sajatszin2" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin3" onclick="setOwnColor(3)" name="sajatszin3" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin4" onclick="setOwnColor(4)" name="sajatszin4" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin5" onclick="setOwnColor(5)" name="sajatszin5" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+								<div id="sajatszin6" onclick="setOwnColor(6)" name="sajatszin6" style="width:10%; height:35px; display: inline-block; margin-right:5%;border-style: solid; border-width:1px;"></div>
+							</div>
+						</div>
+						
+						
+						<div class="lathato hide" style="margin-right:5%;" id="whiteLEDBrightness" name="whiteLEDBrightness">
+						<form  >
+							<label for="slider-8" style="display:inline-block;margin-left:5%;" >Fényerő:</label> 
+							<input name="slider-8" id="slider-8" data-highlight="true" data-track-theme="a" data-theme="a" min="0" max="1023" value="50" type="range">
+								
+						</form>
+						<button name="setWhitecolorBtnNew" id="setWhitecolorBtnNew" style="margin-left:5%;max-width:95%;" onclick="updateWhiteCodeNew()">kiválasztott fényerő beállítása</button>
+						</div>
+						
+						
+						<hr style="margin-top:50px;margin-bottom:50px;margin-left:20px;margin-right:20px;">
+						<h2>Node adatok</h2>
+						<div style="margin-left:50px;">
+							Név:<div id="rgbNodeName" name="rgbNodeName">...</div><br>
+							Szériaszám:<div id="rgbNodeSN" name="rgbNodeSN">...</div><br>
+							IP cím:<div id="rgbNodeIP" name="rgbNodeIP">...</div>
+							
+						</div>
+
+				</article>
+
+			<div data-role="popup" id="popupDialogRGBWnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+				<div data-role="header" data-theme="a">
+				<center><div style="padding:5px;font-size:1.3em;">RGBW vezérlő nevének megváltoztatása</div></center>
+				</div>
+				<div role="main" class="ui-content">
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="rgbwCurrentName" name="rgbwCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
+					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
+					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
+					<div style="font-size:0.7em;margin-left:25px;">- legalább 5 karakter hosszúnak kell lennie</div>
+					
+					
+					<form style="margin-top:20px;">
+						 <label for="text-3">Új név: </label>
+						 <input style="margin-left:20px;" data-clear-btn="true" id="RGBWnewNodeName" name="RGBWnewNodeName" value="" type="text">
+					</form>
+					
+					<div style="display:inline-block;font-size:1.1em;">Eszköz új neve: </div><div id="rgbwNewName" name="rgbwNewName" style="display:inline-block;font-size:0.9em;color:yellow;"> </div>
+					<div style="margin-left:20px;" id='rgbwNodeCriteria' name='rgbwNodeCriteria'></div>
+					<br>
+					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
+					<a href="#" id="saveRGBWnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
+				</div>
+			</div>
+				
+				
+				<footer data-role="footer" data-position="fixed" data-tap-toggle="false">
+					<h4 id="RGBW_log" name="RGBW_log">snode RGBW vezérlő</h4> 
+				</footer>
+        </section>
+		
+		
+		<section data-role="page" id="pageWEATHER" data-theme="b" data-transition="slidefade">
+            <header data-role="header" data-position="fixed"  data-add-back-btn="true" data-tap-toggle="false">
+                <h1 name="nodenameWS" id ="nodenameWS" >WS: </h1>
+				<a href="./" onclick="refreshMainListStatus()" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+				<a href="#popupDialogWSnodeNameChange" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+				
+				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
+				
+            </header>
+
+            <article role="main" class="ui-content">
+                <div id="actualTemp" name="actualTemp" style="display:inline-block;font-size:4em;">--</div>&#x2103;<br>
+				relatív páratartalom:  <div id="actualHumidity" name="actualHumidity" center style="display:inline-block;font-size:2em;">--</div>%<br> 
+				      légköri nyomás:  <div id="actualPressure" name="actualPressure" style="display:inline-block;font-size:1.5em;">---</div>hPa
+				
+				<div id="" name="" style="max-width:90%;margin-left:5%;margin-top:35px;" data-role="navbar">
+					<ul>
+						<li><a href="#" id="" style="font-size:0.6em;" name="" onclick="ws_showLast24h()">utolsó 24 óra</a></li>
+						<li><a href="#" id="" style="font-size:0.6em;" name="" onclick="ws_showLast3d()">utolsó 3 nap</a></li>
+						<li><a href="#" id="" style="font-size:0.6em;" name="" onclick="ws_showLast7d()">utolsó 1 hét</a></li>
+					</ul>
+				</div>
+				
+			
+				<div style="margin-top:35px;"><canvas id="myChart" name="myChart" width="30" height="15"></canvas></div>
+				
+				<hr style="margin-top:50px;margin-bottom:50px;margin-left:20px;margin-right:20px;">
+						<h2>Node adatok</h2>
+						<div style="margin-left:50px;">
+							Név:<div id="wsNodeName" name="wsNodeName">...</div><br>
+							Szériaszám:<div id="wsNodeSN" name="wsNodeSN">...</div><br>
+							IP cím:<div id="wsNodeIP" name="wsNodeIP">...</div>
+							
+						</div>
+				
+            </article>
+			
+			<div data-role="popup" id="popupDialogWSnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+				<div data-role="header" data-theme="a">
+				<center><div style="padding:5px;font-size:1.3em;">időjárás állomás nevének megváltoztatása</div></center>
+				</div>
+				<div role="main" class="ui-content">
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="spCurrentName" name="spCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
+					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
+					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
+					<div style="font-size:0.7em;margin-left:25px;">- legalább 5 karakter hosszúnak kell lennie</div>
+					
+					
+					<form style="margin-top:20px;">
+						 <label for="text-3">Új név: </label>
+						 <input style="margin-left:20px;" data-clear-btn="true" id="WSnewNodeName" name="WSnewNodeName" value="" type="text">
+					</form>
+					
+					<div style="display:inline-block;font-size:1.1em;">Eszköz új neve: </div><div id="wsNewName" name="wsNewName" style="display:inline-block;font-size:0.9em;color:yellow;"> </div>
+					<div style="margin-left:20px;" id='wsNodeCriteria' name='wsNodeCriteria'></div>
+					<br>
+					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
+					<a href="#" id="saveWSnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
+				</div>
+			</div>
+
+            <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
+				<h4 id="WS_log" name="WS_log">node-hoz tartozó lábléc</h4> 
+            </footer>
+
+        </section>
+		
+		<section data-role="page" id="pageSMARTPLUG" data-theme="b" data-transition="slidefade">
+            <header data-role="header" data-position="fixed"  data-add-back-btn="true" data-tap-toggle="false">
+                <h1 name="nodenameSP" id ="nodenameSP" >SP: </h1>
+				<a href="./" onclick="refreshMainListStatus()" data-ajax="false" data-icon="carat-l" data-iconpos="notext" data-rel="back" data-iconshadow="false" data-shadow="false">vissza</a>
+				<a href="#popupDialogSPnodeNameChange" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="edit" data-iconpos="notext" data-iconshadow="false" data-shadow="false"></a>
+				
+				<!--<a href="#" id="" style="font-size:0.6em;" name="" onclick="showNode(1)">developTest</a>-->
+				<!--<a href="#popupDialogSP" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">Delete page...</a>-->
+				<a href="#popupDialogSP" style="display:none;" id="showSPpopup" name="showSPpopup" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">dummy</a>
+            </header>
+
+            <article role="main" class="ui-content">
+                
+				<center><form style="margin-left:auto;margin-right:auto;margin-top:30px;">
+					<label for="flip-2"><h2>okos konnektor állapota:</h2></label>
+					<select name="flip-2" id="flip-2" data-role="slider" data-track-theme="b" data-theme="b">
+						<option value="off">ki</option>
+						<option value="on">be</option>
+					</select>
+				</form>
+				</center>
+				
+				<center>
+				<div style="margin-top:30px;padding-left:15px;padding-right:15px;font-size:0.9em;">
+				Parancs küldése a hálózaton elérhető összes snode okos konnektornak:
+				</div>
+				
+				<div id="" name="" style="max-width:90%;margin-left:5%;margin-top:15px;" data-role="navbar">
+					<ul>
+						<li><a href="#" id="" style="font-size:0.6em;" name="" onclick="sp_broadcast('ki')">kikapcsol</a></li>
+						<li><a href="#" id="" style="font-size:0.6em;" name="" onclick="sp_broadcast('be')">bekapcsol</a></li>
+					</ul>
+				</div>
+				
+				</center>
+				
+				<hr style="margin-top:50px;margin-bottom:50px;margin-left:20px;margin-right:20px;">
+						<h2>Node adatok</h2>
+						<div style="margin-left:50px;">
+							Név:<div id="spNodeName" name="spNodeName">...</div><br>
+							Szériaszám:<div id="spNodeSN" name="spNodeSN">...</div><br>
+							IP cím:<div id="spNodeIP" name="spNodeIP">...</div>
+						</div>
+				
+            </article>
+
+			
+			<div data-role="popup" id="popupDialogSP" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:70vw;">
+				<div data-role="header" data-theme="a">
+				<center><div style="padding:5px;font-size:1.3em;">Broadcast parancs</div></center>
+				</div>
+				<div role="main" class="ui-content">
+					<h3 id="SPmessageHeader" name ="SPmessageHeader" class="ui-title">parancs jellege</h3>
+					<p id="SPbroadcastList" name="SPbroadcastList" style="color:yellow;margin-left:20px;">sp lista</p>
+					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">OK</a>
+					
+				</div>
+			</div>
+			
+			<div data-role="popup" id="popupDialogSPnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+				<div data-role="header" data-theme="a">
+				<center><div style="padding:5px;font-size:1.3em;">okos konnektor nevének megváltoztatása</div></center>
+				</div>
+				<div role="main" class="ui-content">
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="spCurrentName" name="spCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
+					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
+					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
+					<div style="font-size:0.7em;margin-left:25px;">- legalább 5 karakter hosszúnak kell lennie</div>
+					
+					
+					<form style="margin-top:20px;">
+						 <label for="text-3">Új név: </label>
+						 <input style="margin-left:20px;" data-clear-btn="true" id="SPnewNodeName" name="SPnewNodeName" value="" type="text">
+					</form>
+					
+					<div style="display:inline-block;font-size:1.1em;">Eszköz új neve: </div><div id="spNewName" name="spNewName" style="display:inline-block;font-size:0.9em;color:yellow;"> </div>
+					<div style="margin-left:20px;" id='spNodeCriteria' name='spNodeCriteria'></div>
+					<br>
+					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
+					<a href="#" id="saveSPnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
+				</div>
+			</div>
+		
+			
+            <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
+				<h4 id="SP_log" name="SP_log">snode Smart Plug</h4> 
+            </footer>
+
+        </section>
+		
+		
+		
+    </body>
+</html>
