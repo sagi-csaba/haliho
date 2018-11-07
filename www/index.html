@@ -61,23 +61,6 @@
     </head>
 	
     <body style="background-color:black;">
-		<script type="text/javascript" src="cordova.js"></script>
-		<script src="js/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript">
-			function navigateToPage(destination) {
-				if (destination == 'cloud') 
-				{
-					window.location = "indexCloud.html";
-				}
-				if (destination == 'wifi') {
-					document.getElementById('main').className = "animated zoomOut animhossz"
-					setTimeout(function(){
-						window.location = "indexWiFi.html";
-					},500);
-				}
-			}
-				
-		</script>
 		<div id="main" class="bgr w3-animate-opacity">
 		
 		<center>
@@ -89,5 +72,25 @@
 		
 		<!--<div class="animated fadeIn" style="height:15vh;padding-top:10vh;animation-delay:1.5s;animation-duration:1s;text-align:right;"><img alt="logo" style="height:4vh;margin-right:5px;"src="img/logo.svg"> </div>-->
 		</div>
-    </body>
+    
+	<script type="text/javascript" src="cordova.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+	
+		function navigateToPage(destination) {
+			if (destination == 'cloud') 
+			{
+				window.location = "indexCloud.html";
+			}
+			if (destination == 'wifi') {
+				document.getElementById('main').className = "animated zoomOut animhossz"
+				setTimeout(function(){
+				window.location = "indexWiFi.html";
+				},500);
+			}
+			}
+				
+		</script>
+	
+	</body>
 </html>
