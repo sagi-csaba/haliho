@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="css/fonts.css">
 		<link rel="stylesheet" href="css/csagi.css">
 		<link rel="stylesheet" href="css/w3.css">
+		<link rel="stylesheet" href="css/piemenu.css">
 		<link rel="stylesheet" href="css/animate.min.css">
 		<style type="text/css" media="screen">
 			html, body, div, span, applet, object, iframe,
@@ -184,6 +185,7 @@
 		.settingsBtn {
 			display: inline-block;
 			width:50px;
+			height: 28px;
 			padding-bottom: 4px;
 			border-radius: 2px;
 			background: #d6d6d6;
@@ -299,18 +301,36 @@
 		</div>
 		
 		<div id="myModal2" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 0); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
-			<div id="navigation" class="w3-red" style="margin-left:5vw;width:90vw;max-width:60vh;"></div>
+			
 		</div>
 		
 		
 		
 	<script type="text/javascript" src="cordova.js"></script>
 	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/wheelnav.min.js"></script>
-	<script src="js/raphael.min.js"></script>
-	
+	<script src="js/jquery.menu.js"></script>
+	<script src="js/jquery-ui-1.8.20.custom.min.js"></script>
 	<script type="text/javascript">
+			function PieMenuInit(){		
+			$('#outer_container').PieMenu({
+				'starting_angel':$('#s_angle').val(),
+				'angel_difference' : $('#diff_angle').val(),
+				'radius':$('#radius').val(),
+			});			
+		}
+		$(function() {          
+			$("#submit_button").click(function() {reset(); }); 
+			$( "#outer_container" ).draggable();
+			PieMenuInit();
 			
+		});
+		function reset(){
+			if($(".menu_button").hasClass('btn-rotate'))
+			$(".menu_button").trigger('click');
+			
+			$("#info").fadeIn("slow").fadeOut("slow");
+			PieMenuInit();
+			}
 			
 			setTimeout(function(){
 						document.body.style.backgroundColor = '#d9d9d9';
@@ -335,75 +355,7 @@
 				modal2.style.display = "block";
 				modal2.className = "w3-animate-zoom";
 				
-				var wheel = new wheelnav("navigation");
-				wheel.navAngle = 270;
-				wheel.slicePathFunction = slicePath().DonutSlice;
-				wheel.selectedPercent = 1.1;
-				wheel.spreaderEnable = true;
-				wheel.markerEnable = true;
-				wheel.markerAttr = { fill: '#111', stroke: 'none' };
-				wheel.wheelRadius = wheel.wheelRadius * 0.7;
-				wheel.initWheel(['imgsrc:img/icon_DROP.svg', 'imgsrc:img/icon_POWER.svg', 'imgsrc:img/icon_RF.svg', 'imgsrc:img/icon_RGBW.svg', 'imgsrc:img/icon_SP.svg', 'imgsrc:img/icon_WS.svg', "MIND"]);
-				wheel.createWheel();
 				
-				var bbttnn = document.getElementById("btn_settings");
-				var bbttnnImg = document.getElementById("btn_settingsImg");
-				
-				wheel.navItems[0].navigateFunction = function () {
-					bbttnnImg.src = 'img/icon_DROP.svg';
-					bbttnn.style.background = '#ff5555';
-					setTimeout(function(){
-						modal2.style.display = "none";
-					},1500);
-				};
-				
-				wheel.navItems[1].navigateFunction = function () {
-					bbttnnImg.src = 'img/icon_POWER.svg';
-					bbttnn.style.background = '#ff5555';
-					setTimeout(function(){
-						modal2.style.display = "none";
-					},1500);
-				};
-				
-				wheel.navItems[2].navigateFunction = function () {
-					bbttnnImg.src = 'img/icon_RF.svg';
-					bbttnn.style.background = '#ff5555';
-					setTimeout(function(){
-						modal2.style.display = "none";
-					},1500);
-				};
-				
-				wheel.navItems[3].navigateFunction = function () {
-					bbttnnImg.src = 'img/icon_RGBW.svg';
-					bbttnn.style.background = '#ff5555';
-					setTimeout(function(){
-						modal2.style.display = "none";
-					},1500);
-				};
-				
-				wheel.navItems[4].navigateFunction = function () {
-					bbttnnImg.src = 'img/icon_SP.svg';
-					bbttnn.style.background = '#ff5555';
-					setTimeout(function(){
-						modal2.style.display = "none";
-					},1500);
-				};
-				
-				wheel.navItems[5].navigateFunction = function () {
-					bbttnnImg.src = 'img/icon_WS.svg';
-					bbttnn.style.background = '#ff5555';
-					setTimeout(function(){
-						modal2.style.display = "none";
-					},1500);
-				};
-				
-				wheel.navItems[6].navigateFunction = function () {
-					bbttnnImg.src = 'img/filter.svg';
-					bbttnn.style.background = '#d6d6d6';
-					setTimeout(function(){
-						modal2.style.display = "none";
-					},1500);
-				};
 				
 			}
 			
@@ -447,25 +399,39 @@
 				
 				
 				
-				
 			</div>
 		
 
 		
 		<div id="footer" name="footer">
-			<center><div>Kezelőfelület betöltése...</div><center>
+			<div style=" text-align: center;margin-left:-48px;">
+				<div id='outer_container' class="outer_container" style="display: inline-block;">
+					<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>
+					<ul class="menu_option">
+					  <li><a href="#"><span style="background-image:url('img/icon_DROP.svg');">1</span></a></li>
+					  <li><a href="#"><span style="background-image:url('img/icon_POWER.svg');">Item</span></a></li>
+					  <li><a href="#"><span style="background-image:url('img/icon_RF.svg');">Item</span></a></li>
+					  <li><a href="#"><span style="background-image:url('img/icon_RGBW.svg');">Item</span></a></li>
+					  <li><a href="#"><span style="background-image:url('img/icon_SP.svg');">Item</span></a></li>
+					  <li><a href="#"><span style="background-image:url('img/icon_WS.svg');">Item</span></a></li>
+					  <li><a href="#"><span style="background-image:url('img/filter.svg');">Item</span></a></li>
+					</ul>
+				</div>
+				</div>
+			
+			<center><div id="log" name="log">Kezelőfelület betöltése...</div><center>
 		
 			<div style="display: flex;padding-bottom:4px; padding-top:5px;background:#f5f5f5;border-top: 1px solid #d6d6d6;">
 				<div style="flex: 1;text-align:center;">
-					<div name="btn_settings" class="settingsBtn" id="btn_settings" onclick="showWheel()"><img id="btn_settingsImg" src="img/filter.svg" style="height:16px;"></div> 
+					<div name="btn_settings" class="settingsBtn" id="btn_settings" onclick="showWheel()"><img id="btn_settingsImg" src="img/filter.svg" style="height:20px;"></div> 
 				</div>
 				
 				<div style="flex: 1;text-align:center;">
-					<div name="btn_refresh" class="settingsBtn" id="btn_refresh" onclick=""><img alt="node kereses" src="img/refresh.svg" style="height:16px;"></div> 
+					<div name="btn_refresh" class="settingsBtn" id="btn_refresh" onclick=""><img alt="node kereses" src="img/refresh.svg" style="height:20px;"></div> 
 				</div>
 				
 				<div style="flex: 1;text-align:center;">
-					<div name="btn_Wifi" class="settingsBtn" id="btn_Wifi" onclick="switchToWifiService()"><img alt="wifi service" src="img/wifi.svg" style="height:16px;"></div> 
+					<div name="btn_Wifi" class="settingsBtn" id="btn_Wifi" onclick="switchToWifiService()"><img alt="wifi service" src="img/wifi.svg" style="height:20px;"></div> 
 				</div>
 			
 			</div>
