@@ -381,36 +381,70 @@
 				if (nr == 'a')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_DROP.svg)';
+					executeFilter("DROP");
 				}
 				if (nr == 'b')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_POWER.svg)';
+					executeFilter("POWER");
 				}
 				if (nr == 'c')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_RF.svg)';
+					executeFilter("RF");
 				}
 				if (nr == 'd')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_RGBW.svg)';
+					executeFilter("RGBW");
 				}
 				if (nr == 'e')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_SP.svg)';
+					executeFilter("SP");
 				}
 				if (nr == 'f')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_WS.svg)';
+					executeFilter("WS");
 				}
 				if (nr == 'g')
 				{
-					ftb.style.backgroundImage = null;
+					ftb.style.backgroundImage = 'url(img/null.svg)';
+					executeFilter("none");
 				}
 				
 				reset();
 				PieMenuInit();
 			}
 			
+			function executeFilter(type) {
+				for (var i = 1 ; i <= 5; i++)
+				{
+					var kockai = document.getElementById('kocka' + i);
+					var kockatype = document.getElementById('kocka' + i + 'type');
+					if (type == 'none')
+					{
+						
+						kockai.style.display = 'inline-block';
+						kockai.className = "kocka animated bounceIn";
+						
+						
+					}
+					else
+					{
+						if (type == kockatype.innerHTML) 
+						{ 
+							kockai.style.display = 'inline-block'; 
+							kockai.className = "kocka animated bounceIn";
+						}
+						else
+						{
+							kockai.style.display = 'none'; 	
+						}
+					}
+				}
+			}
 	</script>
 		
 		<div id="main" class="w3-animate-opacity">
@@ -422,11 +456,43 @@
 			<div style="min-height:100vh;" class="linewithshadow">
 				
 				<div id="kocka1" name="kocka1" class="kocka">
-					<div id="kocka1type" name="kocka1type" style="display:none"></div>
+					<div id="kocka1type" name="kocka1type" style="display:none">WS</div>
 					<div class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/icon_WS.svg"></div>
 					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">23,3</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">&#x2103;</div>
-					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Eszköz neve</div>
-					<div id="kocka1szoba" name="kocka1szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">SZOBA</div>
+					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Nappali</div>
+					<div id="kocka1szoba" name="kocka1szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka2" name="kocka2" class="kocka">
+					<div id="kocka2type" name="kocka2type" style="display:none">WS</div>
+					<div class="ikon"><img id="kocka2icon" name="kocka2icon" class="ikonImg" src="img/icon_WS.svg"></div>
+					<h1 id="kocka2ertek" name="kocka2ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">22,8</h1><div id="kocka2ertekS" name="kocka2ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">&#x2103;</div>
+					<div id="kocka2nev" name="kocka2nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Hálószoba</div>
+					<div id="kocka2szoba" name="kocka2szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka3" name="kocka3" class="kocka">
+					<div id="kocka3type" name="kocka3type" style="display:none">DROP</div>
+					<div class="ikon"><img id="kocka3icon" name="kocka3icon" class="ikonImg" src="img/icon_DROP.svg"></div>
+					<h1 id="kocka3ertek" name="kocka3ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">58,8</h1><div id="kocka3ertekS" name="kocka3ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">%</div>
+					<div id="kocka3nev" name="kocka3nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Nappali</div>
+					<div id="kocka3szoba" name="kocka3szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka4" name="kocka4" class="kocka">
+					<div id="kocka4type" name="kocka4type" style="display:none">DROP</div>
+					<div class="ikon"><img id="kocka4icon" name="kocka4icon" class="ikonImg" src="img/icon_DROP.svg"></div>
+					<h1 id="kocka4ertek" name="kocka4ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">54,2</h1><div id="kocka4ertekS" name="kocka4ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">%</div>
+					<div id="kocka4nev" name="kocka4nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Hálószoba</div>
+					<div id="kocka4szoba" name="kocka4szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka5" name="kocka5" class="kocka">
+					<div id="kocka5type" name="kocka5type" style="display:none">SP</div>
+					<div class="ikon"><img id="kocka5icon" name="kocka5icon" class="ikonImg" src="img/icon_SP.svg"></div>
+					<h1 id="kocka5ertek" name="kocka5ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">KI</h1><div id="kocka5ertekS" name="kocka5ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka5nev" name="kocka5nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Éjjeli fény</div>
+					<div id="kocka5szoba" name="kocka5szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
 				
@@ -443,7 +509,7 @@
 		<div id="footer" name="footer">
 			<div style=" text-align: center;margin-left:-48px;">
 				<div id='outer_container' class="outer_container" style="display: inline-block;">
-					<a class="menu_button" href="#" title="Toggle"><span id="filterToggleBtn" style="margin-left:-4px;margin-top:-4px;">Menu Toggle</span></a>
+					<a class="menu_button" href="#" title="Toggle"><span id="filterToggleBtn" style="margin-left:-4px;margin-top:-4px;background-image:url('img/null.svg');">Menu Toggle</span></a>
 					<ul class="menu_option">
 					  <li><a href="#"><span onclick="setFilter('a')" style="margin-left:-8px;margin-top:-8px;background-image:url('img/icon_DROP_w.svg');">1</span></a></li>
 					  <li><a href="#"><span onclick="setFilter('b')" style="margin-left:-8px;margin-top:-8px;background-image:url('img/icon_POWER_w.svg');">2</span></a></li>
