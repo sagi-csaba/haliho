@@ -1664,6 +1664,10 @@
 				
 				}
 				
+				function switchToCloudService() {
+					window.location = "indexCloud.html";
+				}
+				
 			</script>
 			
 				<!-- DEBUG -->
@@ -1740,12 +1744,22 @@
 			
             </article>
 
-            <footer data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div align="center">debug:  
-					<input type="checkbox" name="flip-debug" id="flip-debug" data-role="flipswitch" data-on-text="be" data-off-text="ki" onchange="debug()" data-wrapper-class="custom-label-flipswitch" >
-					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;" onclick="refreshNodeList()">Keres</button> 
-					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;" onclick="refreshMainListStatus()">Frissít</button> 
+            <footer data-role="footer" data-position="fixed" data-tap-toggle="false" style="display: flex;">
+                			
+				<div style="flex: 1;text-align:center;">
+					<button name="btn_cloud" id="btn_cloud" style="display: inline-block;width:50px;" onclick="switchToCloudService()"><img alt="wifi service" src="img/cloud2.svg" style="height:16px;"></button> 
 				</div>
+				
+				<div style="flex: 1;text-align:center;">
+					<button name="btn_searchNodes" id="btn_searchNodes" style="display: inline-block;width:50px;" onclick="refreshNodeList()"><img alt="node kereses" src="img/search.svg" style="height:16px;"></button> 
+				</div>
+				
+				<div style="flex: 1;text-align:center;">
+					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;width:50px;" onclick="refreshMainListStatus()"><img alt="wifi service" src="img/refresh.svg" style="height:16px;"></button> 
+				</div>
+				
+				
+				
             </footer>
         </section>
 

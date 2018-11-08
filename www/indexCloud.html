@@ -29,17 +29,47 @@
 			h4,h5,h6 {font-family: 'Jura' !important; font-weight: 300 !important;}
 			article {font-family: 'Jura';}
 		
-		.bgr {
-		  background-color: #000;
-		  height: 200px;
-		  width: 100%;
-		  background: url(img/livingroom.jpg); 
-		  background-position: top center;
-		  background-attachment: fixed;
-		  background-repeat: no-repeat;
-	      background-size: 100%;
+		
+		@media screen and (max-width: 299px) and (min-width: 10px) {
+			.bgr {
+			  background-color: #000;
+			  height: 200px;
+			  width: 100%;
+			  background: url(img/livingroomH.jpg); 
+			  background-position: top center;
+			  background-attachment: fixed;
+			  background-repeat: no-repeat;
+			  background-size: 100%;
+			}
 		}
-				
+		
+		
+		@media screen and (max-width: 629px) and (min-width: 300px) {
+			.bgr {
+			  background-color: #000;
+			  height: 200px;
+			  width: 100%;
+			  background: url(img/livingroom.jpg); 
+			  background-position: top center;
+			  background-attachment: fixed;
+			  background-repeat: no-repeat;
+			  background-size: 100%;
+			}
+		}
+		
+		@media screen and (max-width: 2399px) and (min-width: 630px) {
+			.bgr {
+			  background-color: #000;
+			  height: 200px;
+			  width: 100%;
+			  background: url(img/livingroomw.jpg); 
+			  background-position: top center;
+			  background-attachment: fixed;
+			  background-repeat: no-repeat;
+			  background-size: 100%;
+			}
+		}
+		
 		.animhossz {
 		  animation-duration:1s;
 		}
@@ -109,9 +139,13 @@
 			margin: 10px;
 			transition: all 0.2s ease-in-out;
 			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
 		}
 		
-		.kocka:active {
+		.kocka:active, kocka h1:active {
 			-ms-transform: scale(0.9);
 			-webkit-transform: scale(0.9); 
 			transform: scale(0.9); 
@@ -131,9 +165,13 @@
 			display: block;
 			transition: all 0.2s ease-in-out;
 			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
 		}
 		
-		.beallitasokBtn:active {
+		.beallitasokBtn:active, beallitasokBtn h2:active {
 			-ms-transform: scale(0.9);
 			-webkit-transform: scale(0.9); 
 			transform: scale(0.9); 
@@ -141,6 +179,29 @@
 			background: #ffcccc;
 			cursor: pointer;
 			color: #111;
+		}
+		
+		.settingsBtn {
+			display: inline-block;
+			width:50px;
+			padding-bottom: 4px;
+			border-radius: 2px;
+			background: #d6d6d6;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+			cursor: pointer;
+			transition: all 0.2s ease-in-out;
+		}
+		
+		.settingsBtn:active {
+			transition: all 0.2s ease-in-out;
+			-ms-transform: scale(0.9);
+			-webkit-transform: scale(0.9); 
+			transform: scale(0.9); 
+			transition: all 0.2s ease-in-out;
+			background: #ffcccc;
 		}
 		
 		.ikon {
@@ -162,17 +223,208 @@
 			width: 46px;
 		}
 		
+		.closeX {
+			color: #f1f1f1;
+			display: inline-block;
+			text-align: center;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+			cursor: pointer;
+			width: 100px;
+			padding: 5px;
+			font-size: 22px;
+			font-weight: bold;
+			transition: 0.3s;
+			z-index: 99999;
+			background: #ff5555;
+			border-radius: 3px;
+		}
+
+		.closeX:hover,
+		.closeX:focus {
+			color: #bbb;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		
+		.closeX:active {
+			transition: all 0.2s ease-in-out;
+			-ms-transform: scale(0.8);
+			-webkit-transform: scale(0.8); 
+			transform: scale(0.8); 
+			transition: all 0.2s ease-in-out;
+		}
+		
+		
+		
 		</style>
     </head>
 	
     <body style="background:black;" class="kivalgosodas">
 		
-		<script type="text/javascript">
+		
+		<div id="myModal" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
+			<h2><img src="img/settings.svg" style="height:28px;margin-left:14px;margin-right:10px;">Beállítások</h2>
+			<hr>
+			 <div class="w3-card-4" style="margin:10px;">
+				<div class="w3-container" style="background:#d6d6d6;">
+					<h4><img src="img/cloud.svg" style="height:20px;margin-right:10px;">MQTT felhő szerver</h4>
+				</div>
+				<form class="w3-container">
+					<label>Szerver neve:</label>
+					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px;" type="text">
+
+					<label>Port</label>
+					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px" type="text">
+					
+					<label>Felhasználónév</label>
+					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px" type="text">
+					
+					<label>Jelszó</label>
+					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px" type="text">
+				</form>
+			</div> 
+			
+			
+			<div style="display: flex;margin-top:30px;">
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX">Bezár</span>
+				</div>
+				<div style="flex: 1;text-align:center;">
+					<div class="closeX">Mentés</div>
+				</div>
+			</div>		  
+		</div>
+		
+		<div id="myModal2" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 0); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
+			<div id="navigation" class="w3-red" style="margin-left:5vw;width:90vw;max-width:60vh;"></div>
+		</div>
+		
+		
+		
+	<script type="text/javascript" src="cordova.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/wheelnav.min.js"></script>
+	<script src="js/raphael.min.js"></script>
+	
+	<script type="text/javascript">
+			
+			
 			setTimeout(function(){
 						document.body.style.backgroundColor = '#d9d9d9';
 					},1);
+			function switchToWifiService() {
+				window.location = "indexWiFi.html";
+			}
+			
+			var modal = document.getElementById('myModal');
+			var modal2 = document.getElementById('myModal2');
+			var span = document.getElementsByClassName("closeX")[0];
+			function showSettings() {
+				modal.style.display = "block";
+				modal.className = "w3-animate-zoom";
+			}
+			
+			span.onclick = function() { 
+				modal.style.display = "none";
+			}
+			
+			function showWheel() {
+				modal2.style.display = "block";
+				modal2.className = "w3-animate-zoom";
 				
-		</script>
+				var wheel = new wheelnav("navigation");
+				wheel.navAngle = 270;
+				wheel.slicePathFunction = slicePath().DonutSlice;
+				wheel.selectedPercent = 1.1;
+				wheel.spreaderEnable = true;
+				wheel.markerEnable = true;
+				wheel.markerAttr = { fill: '#111', stroke: 'none' };
+				wheel.wheelRadius = wheel.wheelRadius * 0.7;
+				wheel.initWheel(['imgsrc:img/icon_DROP.svg', 'imgsrc:img/icon_POWER.svg', 'imgsrc:img/icon_RF.svg', 'imgsrc:img/icon_RGBW.svg', 'imgsrc:img/icon_SP.svg', 'imgsrc:img/icon_WS.svg', "MIND"]);
+				wheel.createWheel();
+				
+				var bbttnn = document.getElementById("btn_settings");
+				var bbttnnImg = document.getElementById("btn_settingsImg");
+				
+				wheel.navItems[0].navigateFunction = function () {
+					bbttnnImg.src = 'img/icon_DROP.svg';
+					bbttnn.style.background = '#ff5555';
+					setTimeout(function(){
+						modal2.style.display = "none";
+					},1500);
+				};
+				
+				wheel.navItems[1].navigateFunction = function () {
+					bbttnnImg.src = 'img/icon_POWER.svg';
+					bbttnn.style.background = '#ff5555';
+					setTimeout(function(){
+						modal2.style.display = "none";
+					},1500);
+				};
+				
+				wheel.navItems[2].navigateFunction = function () {
+					bbttnnImg.src = 'img/icon_RF.svg';
+					bbttnn.style.background = '#ff5555';
+					setTimeout(function(){
+						modal2.style.display = "none";
+					},1500);
+				};
+				
+				wheel.navItems[3].navigateFunction = function () {
+					bbttnnImg.src = 'img/icon_RGBW.svg';
+					bbttnn.style.background = '#ff5555';
+					setTimeout(function(){
+						modal2.style.display = "none";
+					},1500);
+				};
+				
+				wheel.navItems[4].navigateFunction = function () {
+					bbttnnImg.src = 'img/icon_SP.svg';
+					bbttnn.style.background = '#ff5555';
+					setTimeout(function(){
+						modal2.style.display = "none";
+					},1500);
+				};
+				
+				wheel.navItems[5].navigateFunction = function () {
+					bbttnnImg.src = 'img/icon_WS.svg';
+					bbttnn.style.background = '#ff5555';
+					setTimeout(function(){
+						modal2.style.display = "none";
+					},1500);
+				};
+				
+				wheel.navItems[6].navigateFunction = function () {
+					bbttnnImg.src = 'img/filter.svg';
+					bbttnn.style.background = '#d6d6d6';
+					setTimeout(function(){
+						modal2.style.display = "none";
+					},1500);
+				};
+				
+			}
+			
+			function onLoad() {
+					document.addEventListener("deviceready", onDeviceReady, false);
+				}
+			onLoad();
+			
+			function onDeviceReady() {
+				
+			}
+			
+			$('#myModal2').on('click', function(e) {
+			  if (e.target !== this)
+				return;
+			  
+			  modal2.style.display = "none";
+			});
+			
+	</script>
+		
 		<div id="main" class="w3-animate-opacity">
 			
 			
@@ -181,22 +433,43 @@
 			<!--<div id="settings2">Beállítások</div>-->
 			<div style="min-height:100vh;" class="linewithshadow">
 				
-				<div class="kocka">
-					<div class="ikon"><img class="ikonImg" src="img/icon_WS.svg"></div>
-					<h1 style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;">23,3 C</h1>
-					<div style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Eszköz neve</div>
-					<div style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;">SZOBA</div>
+				<div id="kocka1" name="kocka1" class="kocka">
+					<div class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/icon_WS.svg"></div>
+					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">23,3</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">&#x2103;</div>
+					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Eszköz neve</div>
+					<div id="kocka1szoba" name="kocka1szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">SZOBA</div>
 				</div>
 				
 				
 				
+									
+				<center><div class="beallitasokBtn" onclick="showSettings()"><h2 style="font-size:16px;">Beállítások...</h2></div></center>
 				
-				<center><div class="beallitasokBtn"><h2 style="font-size:16px;">Beállítások...</h2></div></center>
+				
+				
+				
 			</div>
 		
+
 		
 		<div id="footer" name="footer">
-		<center><div>Kezelőfelület betöltése...</div><center>
+			<center><div>Kezelőfelület betöltése...</div><center>
+		
+			<div style="display: flex;padding-bottom:4px; padding-top:5px;background:#f5f5f5;border-top: 1px solid #d6d6d6;">
+				<div style="flex: 1;text-align:center;">
+					<div name="btn_settings" class="settingsBtn" id="btn_settings" onclick="showWheel()"><img id="btn_settingsImg" src="img/filter.svg" style="height:16px;"></div> 
+				</div>
+				
+				<div style="flex: 1;text-align:center;">
+					<div name="btn_refresh" class="settingsBtn" id="btn_refresh" onclick=""><img alt="node kereses" src="img/refresh.svg" style="height:16px;"></div> 
+				</div>
+				
+				<div style="flex: 1;text-align:center;">
+					<div name="btn_Wifi" class="settingsBtn" id="btn_Wifi" onclick="switchToWifiService()"><img alt="wifi service" src="img/wifi.svg" style="height:16px;"></div> 
+				</div>
+			
+			</div>
+		
 		</div>
 		
 		</div>

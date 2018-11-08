@@ -46,15 +46,37 @@
 		
 		.textDecor {
 			text-shadow: 0px 0px 5px white, 0 0 30px gray, 0 0 15px gray;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+			cursor: default;
 		}
 		
 		.textDecor2 {
 			text-shadow: 0px 0px 5px black, 0 0 20px gray, 0 0 10px gray;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+			cursor: pointer;
 		}
 		
 		.imgShadow {
 			-webkit-filter: drop-shadow(0px 0px 40px #eee);
 			filter: drop-shadow(0px 0px 40px #eee);
+		}
+		
+		.btnscale {
+			transition: all 0.2s ease-in-out;
+		}
+		
+		.btnscale:active {
+			transition: all 0.2s ease-in-out;
+			-ms-transform: scale(0.8);
+			-webkit-transform: scale(0.8); 
+			transform: scale(0.8); 
+			transition: all 0.2s ease-in-out;
 		}
 		
 		</style>
@@ -65,8 +87,8 @@
 		
 		<center>
 			<div class="animated flipInX textDecor" style="height:25vh;padding-top:5vh;padding-left:2vw;padding-right:2vw;font-weight:600;font-size:5vh;-moz-animation-delay: 0.6s;-webkit-animation-delay: 0.6s;-o-animation-delay: 0.6s;animation-delay: 0.6s;">VÁLASSZ<br>VEZÉRLÉSI MÓDOT:</div>
-			<div class="animated bounceIn textDecor2" onclick="navigateToPage('cloud')" style="height:35vh;padding-top:5vh;-moz-animation-delay: 1s;-webkit-animation-delay: 1s;-o-animation-delay: 1s;animation-delay:1s;"><img alt="cloud service" class="" style="height:20vh;"src="img/cloud2.png"><br><span style="font-size:3.3vh;">Felhő Szerver</span></div>
-			<div class="animated bounceIn textDecor2" onclick="navigateToPage('wifi')" style="height:35vh;padding-top:5vh;-moz-animation-delay: 1.2s;-webkit-animation-delay: 1.2s;-o-animation-delay: 1.2s;animation-delay:1.2s;"><img alt="wifi service" class="" style="height:20vh;" src="img/wifi.png"><br><span style="font-size:3.3vh;padding-top:1vh;">Lokális WiFi</span></div>
+			<div class="animated bounceIn textDecor2" onclick="navigateToPage('cloud')" style="height:35vh;padding-top:5vh;-moz-animation-delay: 1s;-webkit-animation-delay: 1s;-o-animation-delay: 1s;animation-delay:1s;"><img alt="cloud service" class="btnscale" style="height:20vh;"src="img/cloud.svg"><br><span style="font-size:3.3vh;">Felhő Szerver</span></div>
+			<div class="animated bounceIn textDecor2" onclick="navigateToPage('wifi')" style="height:35vh;padding-top:5vh;-moz-animation-delay: 1.2s;-webkit-animation-delay: 1.2s;-o-animation-delay: 1.2s;animation-delay:1.2s;"><img alt="wifi service" class="btnscale" style="height:20vh;padding:21px;" src="img/wifi.svg"><br><span style="font-size:3.3vh;padding-top:1vh;">Lokális WiFi</span></div>
 			
 		</center>
 		
@@ -80,10 +102,13 @@
 		function navigateToPage(destination) {
 			if (destination == 'cloud') 
 			{
+				document.getElementById('main').className = "animated zoomOut animhossz";
+				setTimeout(function(){
 				window.location = "indexCloud.html";
+				},500);
 			}
 			if (destination == 'wifi') {
-				document.getElementById('main').className = "animated zoomOut animhossz"
+				document.getElementById('main').className = "animated zoomOut animhossz";
 				setTimeout(function(){
 				window.location = "indexWiFi.html";
 				},500);
