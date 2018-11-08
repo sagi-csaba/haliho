@@ -51,13 +51,7 @@
 		 x_pos[i] = (settings.radius * Math.sin(ele_angle[i]));
          y_pos[i] = (settings.radius * Math.cos(ele_angle[i]));
 		 
-		 $(ele).css({
-			'-webkit-transform': 'rotate('+(90-ele_angle[i]*180/Math.PI)+'deg)',
-			   '-moz-transform': 'rotate('+(90-ele_angle[i]*180/Math.PI)+'deg)',
-			    '-ms-transform': 'rotate('+(90-ele_angle[i]*180/Math.PI)+'deg)',
-			     '-o-transform': 'rotate('+(90-ele_angle[i]*180/Math.PI)+'deg)',
-			    	'transform': 'rotate('+(90-ele_angle[i]*180/Math.PI)+'deg)',
-		});
+		 
       })
 	  
   };
