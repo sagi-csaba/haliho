@@ -260,7 +260,7 @@
 		}
 		
 		
-		
+
 		</style>
     </head>
 	
@@ -286,6 +286,28 @@
 					
 					<label>Jelszó</label>
 					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px" type="text">
+				</form>
+			</div> 
+			
+			<div class="w3-card-4" style="margin:10px;margin-top:20px;">
+				<div class="w3-container" style="background:#d6d6d6;">
+					<h4><img src="img/user.svg" style="height:20px;margin-right:10px;">Felhasználói beállítások</h4>
+				</div>
+				<form class="w3-container">
+					<label>Alapértelmezett kezdő</label>
+					
+					<div class="w3-dropdown-click w3-container">
+						<button onclick="dropDown1()" class="w3-button w3-black">Click me</button>
+						<div id="Demo" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
+						  <a href="#" class="w3-bar-item w3-button w3-red">Link 1</a>
+						  <a href="#" class="w3-bar-item w3-button w3-blue">Link 2</a>
+						  <a href="#" class="w3-bar-item w3-button w3-green">Link 3</a>
+						</div>
+					  </div>
+
+					<label>Felhő szerver applikáció: szűrő</label>
+					
+					
 				</form>
 			</div> 
 			
@@ -362,11 +384,47 @@
 			
 			function onLoad() {
 					document.addEventListener("deviceready", onDeviceReady, false);
+					document.addEventListener("connected", onCloudConnected, false);
 				}
 			onLoad();
 			
 			function onDeviceReady() {
+				connectAndRefreshCloud();
+			}
+			
+			function connectAndRefreshCloud() {
+				logging("Kapcsolódás a felhő szerverhez...");
 				
+				cordova.plugins.CordovaMqTTPlugin.connect({
+						url:"tcp://m21.cloudmqtt.com", 
+						port:18439,
+						clientId:"snode_testDevice",
+						connectionTimeout:3000,
+						willTopicConfig:{
+							qos:0, //default is 0
+							retain:true, //default is true
+							topic:"HOME",
+							payload:"csacskamacskamocska"
+						},
+						username:"sskmhwoi",
+						password:'QSuPFnVjylqr',
+						keepAlive:60,
+						success:function(s){
+							logging("connect success");
+						},
+						error:function(e){
+							logging("connect error");
+						},
+						onConnectionLost:function (){
+							logging("disconnect");
+						}
+					});
+				logging("végéhez ért a történet");
+			}
+			
+			function onCloudConnected() {
+			
+				logging("Kapcsolódva a felhő szerverhez.");
 			}
 			
 			$('#myModal2').on('click', function(e) {
@@ -445,6 +503,19 @@
 					}
 				}
 			}
+			
+			function dropDown1() {
+				var x = document.getElementById("Demo");
+				if (x.className.indexOf("w3-show") == -1) {
+					x.className += " w3-show";
+				} else { 
+					x.className = x.className.replace(" w3-show", "");
+				}
+			}
+			
+			function logging(logTxt){
+				document.getElementById('log').innerHTML = logTxt;
+			}
 	</script>
 		
 		<div id="main" class="w3-animate-opacity">
@@ -508,7 +579,7 @@
 		
 		<div id="footer" name="footer">
 			<div style=" text-align: center;margin-left:-48px;">
-				<div id='outer_container' class="outer_container" style="display: inline-block;">
+				<div id='outer_container' class="outer_container animated zoomIn" style="display: inline-block;">
 					<a class="menu_button" href="#" title="Toggle"><span id="filterToggleBtn" style="margin-left:-4px;margin-top:-4px;background-image:url('img/null.svg');">Menu Toggle</span></a>
 					<ul class="menu_option">
 					  <li><a href="#"><span onclick="setFilter('a')" style="margin-left:-8px;margin-top:-8px;background-image:url('img/icon_DROP_w.svg');">1</span></a></li>
@@ -522,7 +593,7 @@
 				</div>
 				</div>
 			
-			<!--<center><div id="log" name="log">Kezelőfelület betöltése...</div><center>-->
+			<center><div id="log" name="log">Kezelőfelület betöltése...</div><center>
 		
 			<div style="display: flex;padding-bottom:4px; padding-top:5px;background:#f5f5f5;border-top: 1px solid #d6d6d6;">
 				<div style="flex: 1;text-align:center;">
