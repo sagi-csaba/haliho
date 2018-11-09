@@ -14,18 +14,15 @@
     <plugin name="cordova-universal-clipboard" source="npm" />
     <content src="index.html" />
     <engine name="ios" spec="~4.5.5" />
-    <engine name="android" spec="~7.0.0" />
     <engine name="browser" spec="^5.0.4" />
     <plugin name="cordova-plugin-zeroconf" source="npm" />
     <plugin name="cordova-plugin-whitelist" source="npm" />
-
     <allow-navigation href="*" />
     <allow-intent href="*" />
     <access origin="*" />
     <icon src="icon.png" />
-    	
-    <platform name="android">   
-		<splash src="splash.png" />
+    <platform name="android">
+        <splash src="splash.png" />
     </platform>
-
+    <plugin name="cordova-plugin-mqtt" source="npm" />
 </widget>
