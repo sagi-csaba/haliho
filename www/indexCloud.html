@@ -412,6 +412,35 @@
 						success:function(s){
 							logging("Kapcsolódva a felhő szerverhez!!!");
 							
+							cordova.plugins.CordovaMqTTPlugin.subscribe({
+							   topic:"HOME",
+							   qos:0,
+							  success:function(s){
+								logging("feliratkozva");
+							  },
+							  error:function(e){
+								logging("hiba a feliratkozasnal");
+							  }
+							});
+							
+							logging("Kapcsolódva a felhő szerverhez!!!");
+							
+							cordova.plugins.CordovaMqTTPlugin.publish({
+							   topic:"HOME",
+							   payload:"here i am my FRIENDS",
+							   qos:0,
+							   retain:false,
+							  success:function(s){
+								alert("elküldve a friendes szöveg");
+							  },
+							  error:function(e){
+								alert("hiba a friend-es szöveg küldésénél");
+							  }
+							});
+							
+							
+							
+							
 							cordova.plugins.CordovaMqTTPlugin.listen("HOME",function(payload,params){
 							  //Callback:- (If the user has published to /topic/room/hall)
 							  //payload : contains payload data
