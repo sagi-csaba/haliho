@@ -390,13 +390,12 @@
 			
 			function onDeviceReady() {
 				connectAndRefreshCloud();
-				snodeMQTT = cordova.plugins.CordovaMqTTPlugin;
 			}
-			var snodeMQTT;
+			
 			function connectAndRefreshCloud() {
 				logging("Kapcsolódás a felhő szerverhez...");
 				
-				snodeMQTT.connect({
+				cordova.plugins.CordovaMqTTPlugin.connect({
 						url:"tcp://m21.cloudmqtt.com", 
 						port:18439,
 						clientId:"snode_testDevice",
