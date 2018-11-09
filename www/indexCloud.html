@@ -404,13 +404,40 @@
 							qos:0, //default is 0
 							retain:true, //default is true
 							topic:"HOME",
-							payload:"csacskamacskamocska"
+							payload:"snodeAnroidApp"
 						},
 						username:"sskmhwoi",
 						password:'QSuPFnVjylqr',
 						keepAlive:60,
 						success:function(s){
 							logging("Kapcsolódva a felhő szerverhez!!!");
+							
+							
+							cordova.plugins.CordovaMqTTPlugin.publish({
+							   topic:"HOME",
+							   payload:"halleluia!!!",
+							   qos:0,
+							   retain:false
+							  success:function(s){
+							 
+							  },
+							  error:function(e){
+							 
+							  }
+							});
+							
+							
+							logging("üzenet elküldve");
+							
+							cordova.plugins.CordovaMqTTPlugin.listen("HOME",function(payload,params){
+							  //Callback:- (If the user has published to /topic/room/hall)
+							  //payload : contains payload data
+							  //params : {singlewc:room,multiwc:hall}
+							  logging("most jott valami");
+							  alert(payload);
+							})
+							
+							logging("eventlistener ready");
 						},
 						error:function(e){
 							logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
