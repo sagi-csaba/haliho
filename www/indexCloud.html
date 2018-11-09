@@ -394,8 +394,8 @@
 			
 			function connectAndRefreshCloud() {
 				logging("Kapcsolódás a felhő szerverhez...");
-				
-				cordova.plugins.CordovaMqTTPlugin.connect({
+				var snodeMQTT = cordova.plugins.CordovaMqTTPlugin;
+				snodeMQTT.connect({
 						url:"tcp://m21.cloudmqtt.com", 
 						port:18439,
 						clientId:"snode_testDevice",
@@ -410,17 +410,19 @@
 						password:'QSuPFnVjylqr',
 						keepAlive:60,
 						success:function(s){
-							logging("connect success");
+							logging("Kapcsolódva a felhő szerverhez.");
 						},
 						error:function(e){
-							logging("connect error");
+							logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
 						},
 						onConnectionLost:function (){
-							logging("disconnect");
+							logging("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
 						}
 					});
 				logging("végéhez ért a történet");
 			}
+			
+
 			
 			function onCloudConnected() {
 			
