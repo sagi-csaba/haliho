@@ -322,8 +322,17 @@
 			</div>		  
 		</div>
 		
-		<div id="myModal2" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 0); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
+		<div id="myModal2" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 1); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
+			<div id="logTxtDiv" style="font-size:0.7em;"></div>
 			
+			<div style="display: flex;margin-top:30px;">
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX" onclick="closeWheel()">Bezár</span>
+				</div>
+				<div style="flex: 1;text-align:center;">
+					
+				</div>
+			</div>		
 		</div>
 		
 		
@@ -372,14 +381,16 @@
 			
 			span.onclick = function() { 
 				modal.style.display = "none";
+				
 			}
 			
 			function showWheel() {
 				modal2.style.display = "block";
 				modal2.className = "w3-animate-zoom";
-				
-				
-				
+			}
+			
+			function closeWheel() {
+				modal2.style.display = "none";
 			}
 			
 			function onLoad() {
@@ -393,8 +404,10 @@
 			}
 			
 			function connectAndRefreshCloud() {
+				var cloudStatusIcon = document.getElementById('cloudStatusImage');
+				cloudStatusIcon.src = 'img/cloudSrefresh.svg';
 				logging("Kapcsolódás a felhő szerverhez...");
-				
+				logginToLog("Kapcsolódás a felhő szerverhez");
 				cordova.plugins.CordovaMqTTPlugin.connect({
 						url:"tcp://m21.cloudmqtt.com", 
 						port:18439,
@@ -411,30 +424,33 @@
 						keepAlive:60,
 						success:function(s){
 							logging("Kapcsolódva a felhő szerverhez!!!");
-							
+							logginToLog("Kapcsolódva a felhő szerverhez");
+							cloudStatusIcon.src = 'img/cloudSonline.svg';
 							cordova.plugins.CordovaMqTTPlugin.subscribe({
 							   topic:"HOME",
 							   qos:0,
 							  success:function(s){
-								logging("feliratkozva");
+								logging("Csatlakozva a HOME szobához");
+								logginToLog("Csatlakozva a HOME szobához");
 							  },
 							  error:function(e){
-								logging("hiba a feliratkozasnal");
+								logging("--- HIBA a HOME szobába lépéskor! ---");
+								cloudStatusIcon.src = 'img/cloudSoffline.svg';
+								logginToLog("--- HIBA a HOME szobába lépéskor! ---");
 							  }
 							});
 							
-							logging("Kapcsolódva a felhő szerverhez!!!");
 							
 							cordova.plugins.CordovaMqTTPlugin.publish({
 							   topic:"HOME",
-							   payload:"here i am my FRIENDS",
+							   payload:"tellMeYourSnodeStatus",
 							   qos:0,
 							   retain:false,
 							  success:function(s){
-								alert("elküldve a friendes szöveg");
+								//alert("elküldve a friendes szöveg");
 							  },
 							  error:function(e){
-								alert("hiba a friend-es szöveg küldésénél");
+								//alert("hiba a friend-es szöveg küldésénél");
 							  }
 							});
 							
@@ -445,17 +461,23 @@
 							  //Callback:- (If the user has published to /topic/room/hall)
 							  //payload : contains payload data
 							  //params : {singlewc:room,multiwc:hall}
-							  logging("most jott valami");
-							  alert(payload);
+							  //logging("most jott valami");
+							  //alert(payload);
+							  // ****************--- itt érkezett üzenet **********************
+							  
 							})
 							
 							
 						},
 						error:function(e){
 							logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
+							logginToLog("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
+							cloudStatusIcon.src = 'img/cloudSoffline.svg';
 						},
 						onConnectionLost:function (){
 							logging("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
+							logginToLog("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
+							cloudStatusIcon.src = 'img/cloudSoffline.svg';
 						}
 					});
 				
@@ -467,13 +489,6 @@
 			
 				logging("Kapcsolódva a felhő szerverhez.");
 			}
-			
-			$('#myModal2').on('click', function(e) {
-			  if (e.target !== this)
-				return;
-			  
-			  modal2.style.display = "none";
-			});
 			
 			function setFilter(nr) {
 				var ftb = document.getElementById("filterToggleBtn");
@@ -518,11 +533,11 @@
 			}
 			
 			function executeFilter(type) {
-				for (var i = 1 ; i <= 5; i++)
+				for (var i = 1 ; i <= 10; i++)
 				{
 					var kockai = document.getElementById('kocka' + i);
 					var kockatype = document.getElementById('kocka' + i + 'type');
-					if (type == 'none')
+					if (type == 'none' && kockatype.innerHTML != 'ismeretlen')
 					{
 						
 						kockai.style.display = 'inline-block';
@@ -557,6 +572,14 @@
 			function logging(logTxt){
 				document.getElementById('log').innerHTML = logTxt;
 			}
+			
+			var idobelyeg;
+			
+			function logginToLog(logTxt) {
+				var dt = new Date();
+				idobelyeg = dt.toUTCString();
+				document.getElementById('logTxtDiv').innerHTML = idobelyeg + " | " + logTxt + '<br>' + document.getElementById('logTxtDiv').innerHTML;
+			}
 	</script>
 		
 		<div id="main" class="w3-animate-opacity">
@@ -565,46 +588,86 @@
 			<div id="headerImg" class="bgr"></div>
 			
 			<!--<div id="settings2">Beállítások</div>-->
-			<div style="min-height:100vh;" class="linewithshadow">
-				
-				<div id="kocka1" name="kocka1" class="kocka">
-					<div id="kocka1type" name="kocka1type" style="display:none">WS</div>
-					<div class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/icon_WS.svg"></div>
-					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">23,3</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">&#x2103;</div>
-					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Nappali</div>
+			<div style="min-height:350px;padding-bottom:120px;" class="linewithshadow">
+				<!-- celsuis: &#x2103; -->
+				<div id="kocka1" name="kocka1" class="kocka" style="display:none;">
+					<div id="kocka1type" name="kocka1type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
 					<div id="kocka1szoba" name="kocka1szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka2" name="kocka2" class="kocka">
-					<div id="kocka2type" name="kocka2type" style="display:none">WS</div>
-					<div class="ikon"><img id="kocka2icon" name="kocka2icon" class="ikonImg" src="img/icon_WS.svg"></div>
-					<h1 id="kocka2ertek" name="kocka2ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">22,8</h1><div id="kocka2ertekS" name="kocka2ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">&#x2103;</div>
-					<div id="kocka2nev" name="kocka2nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Hálószoba</div>
+				<div id="kocka2" name="kocka2" class="kocka" style="display:none;">
+					<div id="kocka2type" name="kocka2type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka2icon" name="kocka2icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka2ertek" name="kocka2ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka2ertekS" name="kocka2ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka2nev" name="kocka2nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
 					<div id="kocka2szoba" name="kocka2szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka3" name="kocka3" class="kocka">
-					<div id="kocka3type" name="kocka3type" style="display:none">DROP</div>
-					<div class="ikon"><img id="kocka3icon" name="kocka3icon" class="ikonImg" src="img/icon_DROP.svg"></div>
-					<h1 id="kocka3ertek" name="kocka3ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">58,8</h1><div id="kocka3ertekS" name="kocka3ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">%</div>
-					<div id="kocka3nev" name="kocka3nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Nappali</div>
+				<div id="kocka3" name="kocka3" class="kocka" style="display:none;">
+					<div id="kocka3type" name="kocka3type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka3icon" name="kocka3icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka3ertek" name="kocka3ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka3ertekS" name="kocka3ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka3nev" name="kocka3nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
 					<div id="kocka3szoba" name="kocka3szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka4" name="kocka4" class="kocka">
-					<div id="kocka4type" name="kocka4type" style="display:none">DROP</div>
-					<div class="ikon"><img id="kocka4icon" name="kocka4icon" class="ikonImg" src="img/icon_DROP.svg"></div>
-					<h1 id="kocka4ertek" name="kocka4ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">54,2</h1><div id="kocka4ertekS" name="kocka4ertekS" style="font-size:16px;display:inline;color:#6d6d6d;">%</div>
-					<div id="kocka4nev" name="kocka4nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Hálószoba</div>
+				<div id="kocka4" name="kocka4" class="kocka" style="display:none;">
+					<div id="kocka4type" name="kocka4type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka4icon" name="kocka4icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka4ertek" name="kocka4ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka4ertekS" name="kocka4ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka4nev" name="kocka4nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
 					<div id="kocka4szoba" name="kocka4szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka5" name="kocka5" class="kocka">
-					<div id="kocka5type" name="kocka5type" style="display:none">SP</div>
-					<div class="ikon"><img id="kocka5icon" name="kocka5icon" class="ikonImg" src="img/icon_SP.svg"></div>
-					<h1 id="kocka5ertek" name="kocka5ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">KI</h1><div id="kocka5ertekS" name="kocka5ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka5nev" name="kocka5nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">Éjjeli fény</div>
+				<div id="kocka5" name="kocka5" class="kocka" style="display:none;">
+					<div id="kocka5type" name="kocka5type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka5icon" name="kocka5icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka5ertek" name="kocka5ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka5ertekS" name="kocka5ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka5nev" name="kocka5nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
 					<div id="kocka5szoba" name="kocka5szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka6" name="kocka6" class="kocka" style="display:none;">
+					<div id="kocka6type" name="kocka6type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka6icon" name="kocka6icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka6ertek" name="kocka6ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka6ertekS" name="kocka6ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka6nev" name="kocka6nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
+					<div id="kocka6szoba" name="kocka6szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka7" name="kocka7" class="kocka" style="display:none;">
+					<div id="kocka7type" name="kocka7type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka7icon" name="kocka7icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka7ertek" name="kocka7ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka7ertekS" name="kocka7ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka7nev" name="kocka7nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
+					<div id="kocka7szoba" name="kocka7szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka8" name="kocka8" class="kocka" style="display:none;">
+					<div id="kocka8type" name="kocka8type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka8icon" name="kocka8icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka8ertek" name="kocka8ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka8ertekS" name="kocka8ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka8nev" name="kocka8nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
+					<div id="kocka8szoba" name="kocka8szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka9" name="kocka9" class="kocka" style="display:none;">
+					<div id="kocka9type" name="kocka9type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka9icon" name="kocka9icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka9ertek" name="kocka9ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka9ertekS" name="kocka9ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka9nev" name="kocka9nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
+					<div id="kocka9szoba" name="kocka9szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+				</div>
+				
+				<div id="kocka10" name="kocka10" class="kocka" style="display:none;">
+					<div id="kocka10type" name="kocka10type" style="display:none">ismeretlen</div>
+					<div class="ikon"><img id="kocka10icon" name="kocka10icon" class="ikonImg" src="img/logo.svg"></div>
+					<h1 id="kocka10ertek" name="kocka10ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka10ertekS" name="kocka10ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
+					<div id="kocka10nev" name="kocka10nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
+					<div id="kocka10szoba" name="kocka10szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
 				
@@ -616,7 +679,7 @@
 				
 			</div>
 		
-
+		<div name="cloudStatus" id="cloudStatus" onclick="showWheel()" style="position:absolute; right: 10px; top: 10px;"><img id="cloudStatusImage" src="img/cloudSoffline.svg" style="height:30px;"></div> 
 		
 		<div id="footer" name="footer">
 			<div style=" text-align: center;margin-left:-48px;">
@@ -637,9 +700,14 @@
 			<center><div id="log" name="log">Kezelőfelület betöltése...</div><center>
 		
 			<div style="display: flex;padding-bottom:4px; padding-top:5px;background:#f5f5f5;border-top: 1px solid #d6d6d6;">
+				
+				
+				
+				
 				<div style="flex: 1;text-align:center;">
 					<div name="btn_settings" class="settingsBtn" id="btn_settings" onclick="showSettings()"><img id="btn_settingsImg" src="img/settings.svg" style="height:20px;"></div> 
 				</div>
+						
 				
 				<div style="flex: 1;text-align:center;">
 					<div name="btn_refresh" class="settingsBtn" id="btn_refresh" onclick=""><img alt="node kereses" src="img/refresh.svg" style="height:20px;"></div> 
