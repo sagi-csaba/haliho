@@ -404,10 +404,10 @@
 			}
 			
 			function connectAndRefreshCloud() {
-				var cloudStatusIcon = document.getElementById('cloudStatusImage');
-				cloudStatusIcon.src = 'img/cloudSrefresh.svg';
+				//var cloudStatusIcon = document.getElementById('cloudStatusImage');
+				//cloudStatusIcon.src = 'img/cloudSrefresh.svg';
 				logging("Kapcsolódás a felhő szerverhez...");
-				logginToLog("Kapcsolódás a felhő szerverhez");
+				//logginToLog("Kapcsolódás a felhő szerverhez");
 				cordova.plugins.CordovaMqTTPlugin.connect({
 						url:"tcp://m21.cloudmqtt.com", 
 						port:18439,
@@ -424,19 +424,19 @@
 						keepAlive:60,
 						success:function(s){
 							logging("Kapcsolódva a felhő szerverhez!!!");
-							logginToLog("Kapcsolódva a felhő szerverhez");
-							cloudStatusIcon.src = 'img/cloudSonline.svg';
+							//logginToLog("Kapcsolódva a felhő szerverhez");
+							//cloudStatusIcon.src = 'img/cloudSonline.svg';
 							cordova.plugins.CordovaMqTTPlugin.subscribe({
 							   topic:"HOME",
 							   qos:0,
 							  success:function(s){
-								logging("Csatlakozva a HOME szobához");
-								logginToLog("Csatlakozva a HOME szobához");
+								//logging("Csatlakozva a HOME szobához");
+								//logginToLog("Csatlakozva a HOME szobához");
 							  },
 							  error:function(e){
-								logging("--- HIBA a HOME szobába lépéskor! ---");
-								cloudStatusIcon.src = 'img/cloudSoffline.svg';
-								logginToLog("--- HIBA a HOME szobába lépéskor! ---");
+								//logging("--- HIBA a HOME szobába lépéskor! ---");
+								//cloudStatusIcon.src = 'img/cloudSoffline.svg';
+								//logginToLog("--- HIBA a HOME szobába lépéskor! ---");
 							  }
 							});
 							
@@ -447,7 +447,8 @@
 							   qos:0,
 							   retain:false,
 							  success:function(s){
-								//alert("elküldve a friendes szöveg");
+								alert("elküldve a tellMeYourSnodeStatus szöveg");
+								//logginToLog("snode eszközök lekérdezése...");
 							  },
 							  error:function(e){
 								//alert("hiba a friend-es szöveg küldésénél");
@@ -455,36 +456,33 @@
 							});
 							
 							
-							
-							
 							cordova.plugins.CordovaMqTTPlugin.listen("HOME",function(payload,params){
 							  //Callback:- (If the user has published to /topic/room/hall)
 							  //payload : contains payload data
 							  //params : {singlewc:room,multiwc:hall}
 							  //logging("most jott valami");
-							  //alert(payload);
+							  //logginToLog("most jott valami");
+							  alert(payload);
 							  // ****************--- itt érkezett üzenet **********************
-							  
+							  //logginToLog("Üzenet érkezett:  '" + payload + "'");
 							})
 							
 							
 						},
 						error:function(e){
 							logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
-							logginToLog("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
-							cloudStatusIcon.src = 'img/cloudSoffline.svg';
+							//logginToLog("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
+							//cloudStatusIcon.src = 'img/cloudSoffline.svg';
 						},
 						onConnectionLost:function (){
 							logging("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
-							logginToLog("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
-							cloudStatusIcon.src = 'img/cloudSoffline.svg';
+							//logginToLog("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
+							//cloudStatusIcon.src = 'img/cloudSoffline.svg';
 						}
 					});
 				
 			}
-			
-
-			
+					
 			function onCloudConnected() {
 			
 				logging("Kapcsolódva a felhő szerverhez.");
@@ -679,7 +677,7 @@
 				
 			</div>
 		
-		<div name="cloudStatus" id="cloudStatus" onclick="showWheel()" style="position:absolute; right: 10px; top: 10px;"><img id="cloudStatusImage" src="img/cloudSoffline.svg" style="height:30px;"></div> 
+		<div name="cloudStatus" id="cloudStatus" onclick="showWheel()" style="position:absolute; right: 10px; top: 10px;height:40px;width:40px;"><img id="cloudStatusImage" src="img/cloudSoffline.svg" style="height:30px;max-height:30px;"></div> 
 		
 		<div id="footer" name="footer">
 			<div style=" text-align: center;margin-left:-48px;">
