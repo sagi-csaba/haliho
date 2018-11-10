@@ -471,12 +471,14 @@
 							  //alert(payload);
 							  // ****************--- itt érkezett üzenet **********************
 							  logginToLog("Üzenet érkezett:  '" + payload + "'");
+							  var payloadString = String(payload);
+							  UpdateSnodeDevice(payloadString);
 							})
 							
 							
 						},
 						error:function(e){
-							logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
+							//logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
 							logginToLog("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
 							//cloudStatusIcon.src = 'img/cloudSoffline.svg';
 						},
@@ -489,7 +491,44 @@
 					});
 				
 			}
+			
+			function UpdateSnodeDevice(payload( {
+				if (payload.indexOf('snodeDeviceName') != -1) {
+					//olyan valasz erkezett, amit tudok ertelmezni
 					
+					if (payload.indexOf('_WS') != -1) {
+						//időjárás állomástól jött válasz
+						
+						var tempArray = payload.split(';');
+						var snodeDeviceName = tempArray[0].replace('snodeDeviceName:','');;    	//<-	hőmérséklet eszköz neve
+						var snodeDeviceName2 = snodeDeviceName.replace('_WS','_DROP');			//<-	páratartalom eszköz neve
+						var tempResult = tempArray[1].replace('snodeDeviceStatus:','');
+						var tempResultArray = tempResult.split('-');
+						var snodeDeviceValue = tempResultArray[0].replace('-','');				//<-	hőmérséklet érték
+						var snodeDeviceValue2 = tempResultArray[1].replace('-','');				//<-	páratartalom érték
+						logginToLog("hőmérséklet eszköz neve: " + snodeDeviceName);
+						logginToLog("hőmérséklet érték: " + snodeDeviceValue);
+						logginToLog("páratartalom eszköz neve: " + snodeDeviceName2);
+						logginToLog("páratartalom érték: " + snodeDeviceValue2);
+						
+					}
+					
+					if (payload.indexOf('_SP') != -1) {
+						//okos konnektortól érkezett válasz
+					}
+					
+					if (payload.indexOf('_RGBW') != -1) {
+						//RGBW vezérlőtől jött válasz
+					}
+					
+					if (payload.indexOf('_RF') != -1) {
+						//RF vezérlőtől jött válasz
+					}
+					
+					
+				}
+			}
+			
 			function onCloudConnected() {
 			
 				logging("Kapcsolódva a felhő szerverhez.");
