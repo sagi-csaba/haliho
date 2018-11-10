@@ -404,7 +404,7 @@
 			}
 			
 			function connectAndRefreshCloud() {
-				//var cloudStatusIcon = document.getElementById('cloudStatusImage');
+				var cloudStatusIcon = document.getElementById('cloudStatusImage');
 				cloudStatusIcon.src = 'img/cloudSrefresh.svg';
 				logging("Kapcsolódás a felhő szerverhez...");
 				logginToLog("Kapcsolódás a felhő szerverhez");
@@ -430,8 +430,8 @@
 							   topic:"HOME",
 							   qos:0,
 							  success:function(s){
-								//logging("Csatlakozva a HOME szobához");
-								logginToLog("Csatlakozva a HOME szobához");
+								logging("Csatlakozva a HOME szobához");
+								//logginToLog("Csatlakozva a HOME szobához");
 							  },
 							  error:function(e){
 								//logging("--- HIBA a HOME szobába lépéskor! ---");
@@ -451,7 +451,7 @@
 								logginToLog("snode eszközök lekérdezése...");
 							  },
 							  error:function(e){
-								//alert("hiba a friend-es szöveg küldésénél");
+								logginToLog("--- HIBA az snode eszközök lekédezése során! ---");
 							  }
 							});
 							
