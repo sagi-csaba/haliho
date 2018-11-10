@@ -517,10 +517,12 @@
 							var csempe = document.getElementById('kocka' + i);
 								if (csempe.style.display != 'none') {
 									var csempeDevinceName = document.getElementById('kocka' + i + 'nev').innerHTML;
+									logginToLog("csempeDevinceName: " + csempeDevinceName);
 									if (csempeDevinceName == snodeDeviceName) {
 										//a látható csempe eszközének neve megegyezik a device nevével, ami most küldött parancsot
 										//frissíteni kell az értékeket és készen is vagyunk!
 										document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue;
+										csempe.className = "kocka";
 										csempe.className = "kocka animated flash";
 										return;
 									}
@@ -528,6 +530,7 @@
 										//a látható csempe eszközének neve megegyezik a device2 nevével, ami most küldött parancsot
 										//frissíteni kell az értékeket és készen is vagyunk!
 										document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue2;
+										csempe.className = "kocka";
 										csempe.className = "kocka animated flash";
 										return;
 									}
@@ -550,12 +553,14 @@
 								csempe2.className = "kocka animated bounceIn";
 								
 								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
+								document.getElementById('kocka' + j + 'type').innerHTML = "WS";
 								document.getElementById('kocka' + j + 'ertek').innerHTML = snodeDeviceValue;
 								document.getElementById('kocka' + j + 'ertekS').innerHTML = '&#x2103;';
 								document.getElementById('kocka' + j + 'icon').src = 'img/icon_WS.svg';
 								
 								
 								document.getElementById('kocka' + k + 'nev').innerHTML = snodeDeviceName2;
+								document.getElementById('kocka' + j + 'type').innerHTML = "DROP";
 								document.getElementById('kocka' + k + 'ertek').innerHTML = snodeDeviceValue2;
 								document.getElementById('kocka' + k + 'ertekS').innerHTML = '%';
 								document.getElementById('kocka' + k + 'icon').src = 'img/icon_DROP.svg';
