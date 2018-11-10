@@ -404,8 +404,10 @@
 			}
 			
 			function connectAndRefreshCloud() {
-				var cloudStatusIcon = document.getElementById('cloudStatusImage');
-				cloudStatusIcon.src = 'img/cloudSrefresh.svg';
+				//var cloudStatusIcon = document.getElementById('cloudStatusImage');
+				var cloudStatusI = document.getElementById('cloudStatus');
+				cloudStatusI.style.backgroundImage = 'url(img/cloudSrefresh.svg)';
+				//cloudStatusIcon.src = 'img/cloudSrefresh.svg';
 				logging("Kapcsolódás a felhő szerverhez...");
 				logginToLog("Kapcsolódás a felhő szerverhez");
 				cordova.plugins.CordovaMqTTPlugin.connect({
@@ -425,7 +427,8 @@
 						success:function(s){
 							logging("Kapcsolódva a felhő szerverhez!!!");
 							logginToLog("Kapcsolódva a felhő szerverhez");
-							cloudStatusIcon.src = 'img/cloudSonline.svg';
+							//cloudStatusIcon.src = 'img/cloudSonline.svg';
+							cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 							cordova.plugins.CordovaMqTTPlugin.subscribe({
 							   topic:"HOME",
 							   qos:0,
@@ -435,7 +438,8 @@
 							  },
 							  error:function(e){
 								//logging("--- HIBA a HOME szobába lépéskor! ---");
-								cloudStatusIcon.src = 'img/cloudSoffline.svg';
+								//cloudStatusIcon.src = 'img/cloudSoffline.svg';
+								cloudStatusI.style.backgroundImage = 'url(img/cloudSoffline.svg)';
 								logginToLog("--- HIBA a HOME szobába lépéskor! ---");
 							  }
 							});
@@ -449,9 +453,11 @@
 							  success:function(s){
 								//alert("elküldve a tellMeYourSnodeStatus szöveg");
 								logginToLog("snode eszközök lekérdezése...");
+								cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 							  },
 							  error:function(e){
 								logginToLog("--- HIBA az snode eszközök lekédezése során! ---");
+								cloudStatusI.style.backgroundImage = 'url(img/cloudSoffline.svg)';
 							  }
 							});
 							
@@ -472,12 +478,13 @@
 						error:function(e){
 							logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
 							logginToLog("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
-							cloudStatusIcon.src = 'img/cloudSoffline.svg';
+							//cloudStatusIcon.src = 'img/cloudSoffline.svg';
 						},
 						onConnectionLost:function (){
-							logging("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
-							logginToLog("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
-							cloudStatusIcon.src = 'img/cloudSoffline.svg';
+							//logging("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
+							//logginToLog("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
+							//cloudStatusIcon.src = 'img/cloudSoffline.svg';
+							cloudStatusI.style.backgroundImage = 'url(img/cloudSoffline.svg)';
 						}
 					});
 				
@@ -677,7 +684,7 @@
 				
 			</div>
 		
-		<div name="cloudStatus" id="cloudStatus" onclick="showWheel()" style="position:absolute; right: 10px; top: 10px;height:40px;width:40px;"><img id="cloudStatusImage" src="img/cloudSoffline.svg" style="height:30px;max-height:30px;"></div> 
+		<div name="cloudStatus" id="cloudStatus" onclick="showWheel()" style="position:absolute; right: 10px; top: 10px;height:24px;width:32px;background-image:url('img/cloudSoffline.svg');"></div> 
 		
 		<div id="footer" name="footer">
 			<div style=" text-align: center;margin-left:-48px;">
