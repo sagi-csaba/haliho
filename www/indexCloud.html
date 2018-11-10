@@ -544,12 +544,17 @@
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
 								csempe.className = "kocka animated bounceIn";
+								var k = j + 1;
+								var csempe2 = document.getElementById('kocka' + k);
+								csempe2.style.display = 'inline-block';
+								csempe2.className = "kocka animated bounceIn";
+								
 								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
 								document.getElementById('kocka' + j + 'ertek').innerHTML = snodeDeviceValue;
 								document.getElementById('kocka' + j + 'ertekS').innerHTML = '&#x2103;';
 								document.getElementById('kocka' + j + 'icon').src = 'img/icon_WS.svg';
 								
-								var k = j + 1;
+								
 								document.getElementById('kocka' + k + 'nev').innerHTML = snodeDeviceName2;
 								document.getElementById('kocka' + k + 'ertek').innerHTML = snodeDeviceValue2;
 								document.getElementById('kocka' + k + 'ertekS').innerHTML = '%';
