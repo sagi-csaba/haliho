@@ -541,8 +541,9 @@
 							if (csempe.style.display == 'none') {
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
-								document.getElementById('kocka' + i + 'nev').innerHTML = snodeDeviceName;
-								document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue;
+								csempe.className = "kocka animated bounceIn";
+								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
+								document.getElementById('kocka' + j + 'ertek').innerHTML = snodeDeviceValue;
 							}
 						
 						}
