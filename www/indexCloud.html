@@ -286,7 +286,11 @@
 					
 					<label>Jelszó</label>
 					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px" type="text">
+					
+					<div style="margin-bottom:10px;color:gray;"><label style="font-size:0.8em;">MQTT Client ID: </label><label style="font-size:0.7em;" id = "mqttClientID" name = "mqttClientID"></label></div>
 				</form>
+				
+				
 			</div> 
 			
 			<div class="w3-card-4" style="margin:10px;margin-top:20px;">
@@ -393,9 +397,20 @@
 				modal2.style.display = "none";
 			}
 			
+			var randomName = "snodeApp_";
 			function onLoad() {
 					document.addEventListener("deviceready", onDeviceReady, false);
 					document.addEventListener("connected", onCloudConnected, false);
+					
+					var storage = window.localStorage;
+					var valueRandom = storage.getItem('randomName');
+					if (valueRandom != null) {randomName = valueRandom;} 
+					else {
+						randomName = "snodeApp_" + Math.random().toString(36).substr(2,5);
+						storage.setItem('randomName', randomName);
+					}
+					document.getElementById('mqttClientID').innerHTML = randomName;
+					
 				}
 			onLoad();
 			
@@ -416,7 +431,7 @@
 				cordova.plugins.CordovaMqTTPlugin.connect({
 						url:"tcp://m21.cloudmqtt.com", 
 						port:18439,
-						clientId:"snode_testDevice",
+						clientId:randomName,
 						connectionTimeout:3000,
 						willTopicConfig:{
 							qos:0, //default is 0
