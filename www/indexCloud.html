@@ -689,42 +689,49 @@
 					ftb.style.backgroundImage = 'url(img/icon_DROP.svg)';
 					generalFilerValue = "DROP";
 					executeFilter("DROP");
+					logging("Eszköz szűrő: PÁRATARTALOM");
 				}
 				if (nr == 'b')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_POWER.svg)';
 					generalFilerValue = "POWER";
 					executeFilter("POWER");
+					logging("Eszköz szűrő: KAPCSOLÓ");
 				}
 				if (nr == 'c')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_RF.svg)';
 					generalFilerValue = "RF";
 					executeFilter("RF");
+					logging("Eszköz szűrő: RF VEZÉRLŐ");
 				}
 				if (nr == 'd')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_RGBW.svg)';
 					generalFilerValue = "RGBW";
 					executeFilter("RGBW");
+					logging("Eszköz szűrő: RGBW VEZÉRLŐ");
 				}
 				if (nr == 'e')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_SP.svg)';
 					generalFilerValue = "SP";
 					executeFilter("SP");
+					logging("Eszköz szűrő: OKOS KONNEKTOR");
 				}
 				if (nr == 'f')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_WS.svg)';
 					generalFilerValue = "WS";
 					executeFilter("WS");
+					logging("Eszköz szűrő: HŐMÉRŐ");
 				}
 				if (nr == 'g')
 				{
 					ftb.style.backgroundImage = 'url(img/null.svg)';
 					generalFilerValue = "none";
 					executeFilter("none");
+					logging("Eszköz szűrő: kikapcsolva");
 				}
 				
 				reset();
@@ -794,7 +801,8 @@
 					if (actualPlugState == 'BE') { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:setStateOff";}
 					if (actualPlugState == 'KI') { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:setStateOn";}
 				}
-				logging("Frissítés: " + deviceName);
+				logging("Frissítés: " + deviceName + "...");
+				cloudStatusI.style.backgroundImage = 'url(img/cloudSrefresh.svg)';
 				cordova.plugins.CordovaMqTTPlugin.publish({
 							   topic:"HOME",
 							   payload:commandTxt,
@@ -916,7 +924,7 @@
 		<div id="footer" name="footer">
 			<div style=" text-align: center;margin-left:-48px;">
 				<div id='outer_container' class="outer_container animated zoomIn" style="display: inline-block;">
-					<a class="menu_button" href="#" title="Toggle"><span id="filterToggleBtn" style="margin-left:-4px;margin-top:-4px;background-image:url('img/null.svg');">Menu Toggle</span></a>
+					<a class="menu_button" href="#" title="Filter"><span id="filterToggleBtn" style="margin-left:-4px;margin-top:-4px;background-image:url('img/null.svg');">Menu Toggle</span></a>
 					<ul class="menu_option">
 					  <li><a href="#"><span onclick="setFilter('a')" style="margin-left:-8px;margin-top:-8px;background-image:url('img/icon_DROP_w.svg');">1</span></a></li>
 					  <li><a href="#"><span onclick="setFilter('b')" style="margin-left:-8px;margin-top:-8px;background-image:url('img/icon_POWER_w.svg');">2</span></a></li>
