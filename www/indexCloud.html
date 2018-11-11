@@ -559,7 +559,7 @@
 						for (var j = 1; j <= 10; j++) {
 							var csempe = document.getElementById('kocka' + j);
 							var csempeTypeValue = document.getElementById('kocka' + j + 'type');
-							if (csempe.style.display == 'none' && csempeTypeValue != 'ismeretlen') {
+							if (csempe.style.display == 'none' && csempeTypeValue == 'ismeretlen') {
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
 								csempe.className = "kocka animated bounceIn";
@@ -634,7 +634,7 @@
 						for (var j = 1; j <= 10; j++) {
 							var csempe = document.getElementById('kocka' + j);
 							var csempeTypeValue = document.getElementById('kocka' + j + 'type');
-							if (csempe.style.display == 'none' && csempeTypeValue != 'ismeretlen') {
+							if (csempe.style.display == 'none' && csempeTypeValue == 'ismeretlen') {
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
 								csempe.className = "kocka animated bounceIn";
