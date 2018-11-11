@@ -523,7 +523,8 @@
 						{
 							var csempe = document.getElementById('kocka' + i);
 							var csempeneve = 'kocka' + i;
-								if (csempe.style.display != 'none') {
+							var csempeTypeValue = document.getElementById('kocka' + i + 'type').innerHTML;
+								if (csempeTypeValue != 'ismeretlen') {
 									var csempeDevinceName = document.getElementById('kocka' + i + 'nev').innerHTML;
 									if (csempeDevinceName == snodeDeviceName) {
 										//a látható csempe eszközének neve megegyezik a device nevével, ami most küldött parancsot
@@ -551,7 +552,7 @@
 								
 								}
 						}
-						
+						executeFilter(generalFilerValue);
 						if (vanMarIlyen == 'van') {return;} //kilépek, hogy ne adja hozzá mégegyszer
 						
 						//ha a for ciklus végén a vanMarIlyen még 'nincs' értéken van, akkor létre kell hozni egy csempét az eszköznek
@@ -581,6 +582,7 @@
 								document.getElementById('kocka' + k + 'ertekS').innerHTML = '%';
 								document.getElementById('kocka' + k + 'icon').src = 'img/icon_DROP.svg';
 								
+								executeFilter(generalFilerValue);
 								return;
 							}
 						
@@ -602,8 +604,8 @@
 						{
 							var csempe = document.getElementById('kocka' + i);
 							var csempeneve = 'kocka' + i;
-							
-								if (csempe.style.display != 'none') {
+							var csempeTypeValue = document.getElementById('kocka' + i + 'type').innerHTML;
+								if (csempeTypeValue != 'ismeretlen') {
 									var csempeDevinceName = document.getElementById('kocka' + i + 'nev').innerHTML;
 									if (csempeDevinceName == snodeDeviceName) {
 										//a látható csempe eszközének neve megegyezik a device nevével, ami most küldött parancsot
@@ -626,7 +628,7 @@
 									}
 								}
 						}
-						
+						executeFilter(generalFilerValue);
 						if (vanMarIlyen == 'van') {return;} //kilépek, hogy ne adja hozzá mégegyszer
 						
 						//ha a for ciklus végén a vanMarIlyen még 'nincs' értéken van, akkor létre kell hozni egy csempét az eszköznek
@@ -651,6 +653,7 @@
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#99ff99';
 											} 
 								document.getElementById('kocka' + j + 'ertekS').innerHTML = '';				
+								executeFilter(generalFilerValue);
 								return;
 							}
 						
@@ -666,7 +669,7 @@
 					if (payload.indexOf('_RF') != -1) {
 						//RF vezérlőtől jött válasz
 					}
-					executeFilter(generalFilerValue);
+					
 					
 				}
 			}
