@@ -535,7 +535,7 @@
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
 										  $(this).removeClass().addClass('kocka');
 										});
-										
+										vanMarIlyen = 'van';
 										
 									}
 									if (csempeDevinceName == snodeDeviceName2) {
@@ -547,11 +547,13 @@
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
 										  $(this).removeClass().addClass('kocka');
 										});
-										
+										vanMarIlyen = 'van';
 									}
 								
 								}
 						}
+						
+						if (vanMarIlyen == 'van') {return;} //kilépek, hogy ne adja hozzá mégegyszer
 						
 						//ha a for ciklus végén a vanMarIlyen még 'nincs' értéken van, akkor létre kell hozni egy csempét az eszköznek
 						//méghozzá úgy, hogy végig kell menni a 10 csempén és az első, ami nem látható abba kell beletenni
