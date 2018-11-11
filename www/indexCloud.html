@@ -558,8 +558,8 @@
 						//méghozzá úgy, hogy végig kell menni a 10 csempén és az első, ami nem látható abba kell beletenni
 						for (var j = 1; j <= 10; j++) {
 							var csempe = document.getElementById('kocka' + j);
-						
-							if (csempe.style.display == 'none') {
+							var csempeTypeValue = document.getElementById('kocka' + j + 'type');
+							if (csempe.style.display == 'none' && csempeTypeValue != 'ismeretlen') {
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
 								csempe.className = "kocka animated bounceIn";
@@ -602,6 +602,7 @@
 						{
 							var csempe = document.getElementById('kocka' + i);
 							var csempeneve = 'kocka' + i;
+							
 								if (csempe.style.display != 'none') {
 									var csempeDevinceName = document.getElementById('kocka' + i + 'nev').innerHTML;
 									if (csempeDevinceName == snodeDeviceName) {
@@ -632,8 +633,8 @@
 						//méghozzá úgy, hogy végig kell menni a 10 csempén és az első, ami nem látható abba kell beletenni
 						for (var j = 1; j <= 10; j++) {
 							var csempe = document.getElementById('kocka' + j);
-						
-							if (csempe.style.display == 'none') {
+							var csempeTypeValue = document.getElementById('kocka' + j + 'type');
+							if (csempe.style.display == 'none' && csempeTypeValue != 'ismeretlen') {
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
 								csempe.className = "kocka animated bounceIn";
@@ -665,7 +666,7 @@
 					if (payload.indexOf('_RF') != -1) {
 						//RF vezérlőtől jött válasz
 					}
-					
+					executeFilter(generalFilerValue);
 					
 				}
 			}
@@ -674,42 +675,49 @@
 			
 				logging("Kapcsolódva a felhő szerverhez.");
 			}
-			
+			var generalFilerValue = 'none';
 			function setFilter(nr) {
 				var ftb = document.getElementById("filterToggleBtn");
 				if (nr == 'a')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_DROP.svg)';
+					generalFilerValue = "DROP";
 					executeFilter("DROP");
 				}
 				if (nr == 'b')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_POWER.svg)';
+					generalFilerValue = "POWER";
 					executeFilter("POWER");
 				}
 				if (nr == 'c')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_RF.svg)';
+					generalFilerValue = "RF";
 					executeFilter("RF");
 				}
 				if (nr == 'd')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_RGBW.svg)';
+					generalFilerValue = "RGBW";
 					executeFilter("RGBW");
 				}
 				if (nr == 'e')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_SP.svg)';
+					generalFilerValue = "SP";
 					executeFilter("SP");
 				}
 				if (nr == 'f')
 				{
 					ftb.style.backgroundImage = 'url(img/icon_WS.svg)';
+					generalFilerValue = "WS";
 					executeFilter("WS");
 				}
 				if (nr == 'g')
 				{
 					ftb.style.backgroundImage = 'url(img/null.svg)';
+					generalFilerValue = "none";
 					executeFilter("none");
 				}
 				
