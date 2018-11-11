@@ -525,7 +525,6 @@
 							var csempeneve = 'kocka' + i;
 								if (csempe.style.display != 'none') {
 									var csempeDevinceName = document.getElementById('kocka' + i + 'nev').innerHTML;
-									logginToLog("csempeDevinceName: " + csempeDevinceName);
 									if (csempeDevinceName == snodeDeviceName) {
 										//a látható csempe eszközének neve megegyezik a device nevével, ami most küldött parancsot
 										//frissíteni kell az értékeket és készen is vagyunk!
@@ -590,6 +589,67 @@
 					
 					if (payload.indexOf('_SP') != -1) {
 						//okos konnektortól érkezett válasz
+						var tempArray = payload.split(';');
+						var snodeDeviceName = tempArray[0].replace('snodeDeviceName:','');;    	//<-	okos konnektor neve
+						var tempResult = tempArray[1].replace('snodeDeviceStatus:','');
+						var snodeDeviceValue = tempResult;										//<-	okos konnektor állapota
+						
+						logginToLog("okos konnektor neve: " + snodeDeviceName);
+						logginToLog("okos konnektor állapota: " + snodeDeviceValue);
+						
+						var vanMarIlyen = 'nincs';
+						for (var i = 1; i<=10; i++)
+						{
+							var csempe = document.getElementById('kocka' + i);
+							var csempeneve = 'kocka' + i;
+								if (csempe.style.display != 'none') {
+									var csempeDevinceName = document.getElementById('kocka' + i + 'nev').innerHTML;
+									if (csempeDevinceName == snodeDeviceName) {
+										//a látható csempe eszközének neve megegyezik a device nevével, ami most küldött parancsot
+										//frissíteni kell az értékeket és készen is vagyunk!
+										document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue;
+										if (snodeDeviceValue == '0') {document.getElementById('kocka' + i + 'ertek').style.background = 'red';} 
+										if (snodeDeviceValue == '1') {document.getElementById('kocka' + i + 'ertek').style.background = 'green';} 
+										//csempe.className = "kocka";
+										//csempe.className = "kocka animated flash";
+										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										  $(this).removeClass().addClass('kocka');
+										});
+										vanMarIlyen = 'van';
+										
+									}
+								}
+						}
+						
+						if (vanMarIlyen == 'van') {return;} //kilépek, hogy ne adja hozzá mégegyszer
+						
+						//ha a for ciklus végén a vanMarIlyen még 'nincs' értéken van, akkor létre kell hozni egy csempét az eszköznek
+						//méghozzá úgy, hogy végig kell menni a 10 csempén és az első, ami nem látható abba kell beletenni
+						for (var j = 1; j <= 10; j++) {
+							var csempe = document.getElementById('kocka' + j);
+						
+							if (csempe.style.display == 'none') {
+								//az első csempe a sorban aminek a láthatósága null
+								csempe.style.display = 'inline-block';
+								csempe.className = "kocka animated bounceIn";
+								var k = j + 1;
+								var csempe2 = document.getElementById('kocka' + k);
+								csempe2.style.display = 'inline-block';
+								csempe2.className = "kocka animated bounceIn";
+								
+								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
+								document.getElementById('kocka' + j + 'type').innerHTML = "SP";
+								document.getElementById('kocka' + j + 'ertek').innerHTML = snodeDeviceValue;
+								if (snodeDeviceValue == '0') {document.getElementById('kocka' + j + 'ertek').style.background = 'red';} 
+								if (snodeDeviceValue == '1') {document.getElementById('kocka' + j + 'ertek').style.background = 'green';} 
+								document.getElementById('kocka' + j + 'ertekS').innerHTML = '';
+								document.getElementById('kocka' + j + 'icon').src = 'img/icon_SP.svg';
+								return;
+							}
+						
+						}
+						
+						
 					}
 					
 					if (payload.indexOf('_RGBW') != -1) {
