@@ -403,8 +403,11 @@
 				connectAndRefreshCloud();
 			}
 			
+			var sikerultKapcsolodni = '0';
+			
 			function connectAndRefreshCloud() {
 				//var cloudStatusIcon = document.getElementById('cloudStatusImage');
+				sikerultKapcsolodni = '0';
 				var cloudStatusI = document.getElementById('cloudStatus');
 				cloudStatusI.style.backgroundImage = 'url(img/cloudSrefresh.svg)';
 				//cloudStatusIcon.src = 'img/cloudSrefresh.svg';
@@ -428,6 +431,7 @@
 							logging("Kapcsolódva a felhő szerverhez!!!");
 							logginToLog("Kapcsolódva a felhő szerverhez");
 							//cloudStatusIcon.src = 'img/cloudSonline.svg';
+							sikerultKapcsolodni = '1';
 							cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 							cordova.plugins.CordovaMqTTPlugin.subscribe({
 							   topic:"HOME",
@@ -478,13 +482,16 @@
 							
 						},
 						error:function(e){
-							//logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
-							logginToLog("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
-							//cloudStatusIcon.src = 'img/cloudSoffline.svg';
+							
+							if (sikerultKapcsolodni == '0') {
+								logginToLog("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
+								cloudStatusI.style.backgroundImage = 'url(img/cloudSoffline.svg)';
+								logging("--- A felhő szervehez kapcsolódás SIKERTELEN! --- ");
+							}
 						},
 						onConnectionLost:function (){
-							//logging("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
-							//logginToLog("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
+							logging("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
+							logginToLog("--- A felhő szerverrel a kapcsolat MEGSZAKADT! ---");
 							//cloudStatusIcon.src = 'img/cloudSoffline.svg';
 							cloudStatusI.style.backgroundImage = 'url(img/cloudSoffline.svg)';
 						}
@@ -515,6 +522,7 @@
 						for (var i = 1; i<=10; i++)
 						{
 							var csempe = document.getElementById('kocka' + i);
+							var csempeneve = 'kocka' + i;
 								if (csempe.style.display != 'none') {
 									var csempeDevinceName = document.getElementById('kocka' + i + 'nev').innerHTML;
 									logginToLog("csempeDevinceName: " + csempeDevinceName);
@@ -522,17 +530,24 @@
 										//a látható csempe eszközének neve megegyezik a device nevével, ami most küldött parancsot
 										//frissíteni kell az értékeket és készen is vagyunk!
 										document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue;
-										csempe.className = "kocka";
-										csempe.className = "kocka animated flash";
-										return;
+										//csempe.className = "kocka";
+										//csempe.className = "kocka animated flash";
+										$('#' + csempeneve).removeClass().addClass('flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										  $(this).removeClass();
+										});
+										
+										
 									}
 									if (csempeDevinceName == snodeDeviceName2) {
 										//a látható csempe eszközének neve megegyezik a device2 nevével, ami most küldött parancsot
 										//frissíteni kell az értékeket és készen is vagyunk!
 										document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue2;
-										csempe.className = "kocka";
-										csempe.className = "kocka animated flash";
-										return;
+										//csempe.className = "kocka";
+										//csempe.className = "kocka animated flash";
+										$('#' + csempeneve).removeClass().addClass('flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										  $(this).removeClass();
+										});
+										
 									}
 								
 								}
