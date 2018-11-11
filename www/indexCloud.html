@@ -607,11 +607,16 @@
 									if (csempeDevinceName == snodeDeviceName) {
 										//a látható csempe eszközének neve megegyezik a device nevével, ami most küldött parancsot
 										//frissíteni kell az értékeket és készen is vagyunk!
-										document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue;
-										if (snodeDeviceValue == '0') {document.getElementById('kocka' + i + 'ertek').style.background = 'red';} 
-										if (snodeDeviceValue == '1') {document.getElementById('kocka' + i + 'ertek').style.background = 'green';} 
-										//csempe.className = "kocka";
-										//csempe.className = "kocka animated flash";
+										
+										if (snodeDeviceValue == '0') {
+											document.getElementById('kocka' + i + 'ertek').innerHTML = 'KI';
+											document.getElementById('kocka' + i + 'icon').style.background = '#ffcccc';
+											} 
+										if (snodeDeviceValue == '1') {
+											document.getElementById('kocka' + i + 'ertek').innerHTML = 'BE';
+											document.getElementById('kocka' + i + 'icon').style.background = '#99ff99';
+											} 
+										
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
 										  $(this).removeClass().addClass('kocka');
 										});
@@ -639,11 +644,17 @@
 								
 								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
 								document.getElementById('kocka' + j + 'type').innerHTML = "SP";
-								document.getElementById('kocka' + j + 'ertek').innerHTML = snodeDeviceValue;
-								if (snodeDeviceValue == '0') {document.getElementById('kocka' + j + 'ertek').style.background = 'red';} 
-								if (snodeDeviceValue == '1') {document.getElementById('kocka' + j + 'ertek').style.background = 'green';} 
-								document.getElementById('kocka' + j + 'ertekS').innerHTML = '';
 								document.getElementById('kocka' + j + 'icon').src = 'img/icon_SP.svg';
+								if (snodeDeviceValue == '0') {
+											document.getElementById('kocka' + j + 'ertek').innerHTML = 'KI';
+											document.getElementById('kocka' + j + 'icon').style.background = '#ffcccc';
+											} 
+										if (snodeDeviceValue == '1') {
+											document.getElementById('kocka' + j + 'ertek').innerHTML = 'BE';
+											document.getElementById('kocka' + j + 'icon').style.background = '#99ff99';
+											} 
+								document.getElementById('kocka' + j + 'ertekS').innerHTML = '';
+								
 								return;
 							}
 						
