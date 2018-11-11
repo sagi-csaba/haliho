@@ -536,6 +536,7 @@
 										  $(this).removeClass().addClass('kocka');
 										});
 										vanMarIlyen = 'van';
+										logging("Frissítve: " + snodeDeviceName);
 										
 									}
 									if (csempeDevinceName == snodeDeviceName2) {
@@ -548,6 +549,7 @@
 										  $(this).removeClass().addClass('kocka');
 										});
 										vanMarIlyen = 'van';
+										logging("Frissítve: " + snodeDeviceName2);
 									}
 								
 								}
@@ -574,14 +576,14 @@
 								document.getElementById('kocka' + j + 'ertek').innerHTML = snodeDeviceValue;
 								document.getElementById('kocka' + j + 'ertekS').innerHTML = '&#x2103;';
 								document.getElementById('kocka' + j + 'icon').src = 'img/icon_WS.svg';
-								
+								logging("Eszköz hozzáadva: " + snodeDeviceName);
 								
 								document.getElementById('kocka' + k + 'nev').innerHTML = snodeDeviceName2;
 								document.getElementById('kocka' + k + 'type').innerHTML = "DROP";
 								document.getElementById('kocka' + k + 'ertek').innerHTML = snodeDeviceValue2;
 								document.getElementById('kocka' + k + 'ertekS').innerHTML = '%';
 								document.getElementById('kocka' + k + 'icon').src = 'img/icon_DROP.svg';
-								
+								logging("Eszköz hozzáadva: " + snodeDeviceName2);
 								executeFilter(generalFilerValue);
 								return;
 							}
@@ -624,7 +626,7 @@
 										  $(this).removeClass().addClass('kocka');
 										});
 										vanMarIlyen = 'van';
-										
+										logging("Frissítve: " + snodeDeviceName);
 									}
 								}
 						}
@@ -653,6 +655,7 @@
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#99ff99';
 											} 
 								document.getElementById('kocka' + j + 'ertekS').innerHTML = '';				
+								logging("Eszköz hozzáadva: " + snodeDeviceName);
 								executeFilter(generalFilerValue);
 								return;
 							}
@@ -784,14 +787,14 @@
 				var commandTxt = "empty";
 				//idojaras allomas
 				if (deviceTpye == "WS") { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:sendMeActualConditions";}
-				if (deviceTpye == "DROP") { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:sendMeActualConditions";}
+				if (deviceTpye == "DROP") { commandTxt = "snodeControlThisDevice:" + deviceName.replace('DROP','WS') + ";snodeControlCommand:sendMeActualConditions";}
 				
 				if (deviceTpye == "SP") { 
 					var actualPlugState = document.getElementById('kocka' + ID + 'ertek').innerHTML;
 					if (actualPlugState == 'BE') { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:setStateOff";}
 					if (actualPlugState == 'KI') { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:setStateOn";}
 				}
-				
+				logging("Frissítés: " + deviceName);
 				cordova.plugins.CordovaMqTTPlugin.publish({
 							   topic:"HOME",
 							   payload:commandTxt,
@@ -799,7 +802,7 @@
 							   retain:false,
 							  success:function(s){
 								//alert("elküldve a tellMeYourSnodeStatus szöveg");
-								logginToLog("parancs küldve: " + commandTxt);
+								logginToLog("parancs küldve: " + commandTxt);				
 								cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 							  },
 							  error:function(e){
