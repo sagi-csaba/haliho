@@ -287,7 +287,7 @@
 		</style>
     </head>
 	
-    <body style="background:black;" class="kivalgosodas">
+    <body style="background:black;animation-duration:1.5s" class="animated fadeIn">
 		
 		
 		<div id="myModal" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
@@ -409,7 +409,8 @@
 					},1);
 					
 			function switchToWifiService() {
-				document.getElementById('main').className = "animated fadeOut";
+				//document.getElementById('main').className = "animated zoomOut";
+				document.body.className = "animated fadeOut";
 				
 				setTimeout(function(){
 						window.location = "indexWiFi.html";
@@ -972,7 +973,7 @@
 			}
 	</script>
 		
-		<div id="main" class="w3-animate-opacity">
+		<div id="main">
 			
 			
 			<div id="headerImg" class="bgr"></div>
