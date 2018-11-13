@@ -259,7 +259,30 @@
 			transition: all 0.2s ease-in-out;
 		}
 		
-		
+		.select-style {
+			border: 1px solid #ccc;
+			width: 100%;
+			border-radius: 3px;
+			overflow: hidden;
+			display: block;
+		}
+
+		.select-style select {
+			padding: 5px 8px;
+			width: 100%;
+			border: none;
+			box-shadow: none;
+			background: #eee;
+			background-image: none;
+			-webkit-appearance: none; 
+		    -moz-appearance: none;
+		    appearance: none; 
+			color: #707070;
+		}
+
+		.select-style select:focus {
+			outline: none;
+		}
 
 		</style>
     </head>
@@ -275,17 +298,25 @@
 					<h4><img src="img/cloud.svg" style="height:20px;margin-right:10px;">MQTT felhő szerver</h4>
 				</div>
 				<form class="w3-container">
-					<label>Szerver neve:</label>
-					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px;" type="text">
-
-					<label>Port</label>
-					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px" type="text">
+					<div style="display:flex;">
+						<label  style="flex: 1;text-align:right;margin-top:17px;margin-right:5px;font-size:0.8em;">Szerver: </label>
+						<input id="settingsMqttServerInput" name="settingsMqttServerInput" class="w3-input" style="margin-bottom:10px;color:#707070;margin-top:10px;flex: 2;background:#eee;border-radius:3px;" type="text">
+					</div>
 					
-					<label>Felhasználónév</label>
-					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px" type="text">
+					<div style="display:flex;">
+						<label style="flex: 1;text-align:right;margin-top:17px;margin-right:5px;font-size:0.8em;">Port: </label>
+						<input id="settingsMqttPortInput" name="settingsMqttPortInput" class="w3-input" style="margin-bottom:10px;color:#707070;margin-top:10px;flex: 2;background:#eee;border-radius:3px;" type="text">
+					</div>
 					
-					<label>Jelszó</label>
-					<input class="w3-input" style="margin-bottom:10px;color:#a3a3a3;margin-top:-10px" type="text">
+					<div style="display:flex;">
+						<label style="flex: 1;text-align:right;margin-top:17px;margin-right:5px;font-size:0.8em;">Felhasználó: </label>
+						<input id="settingsMqttUserInput" name="settingsMqttUserInput" class="w3-input" style="margin-bottom:10px;color:#707070;margin-top:10px;flex: 2;background:#eee;border-radius:3px;" type="text">
+					</div>
+					
+					<div style="display:flex;">
+						<label style="flex: 1;text-align:right;margin-top:17px;margin-right:5px;font-size:0.8em;">Jelszó: </label>
+						<input id="settingsMqttPwdInput" name="settingsMqttPwdInput" class="w3-input" style="margin-bottom:10px;color:#707070;margin-top:10px;flex: 2;background:#eee;border-radius:3px;" type="text">
+					</div>
 					
 					<div style="margin-bottom:10px;color:gray;"><label style="font-size:0.8em;">MQTT Client ID: </label><label style="font-size:0.7em;" id = "mqttClientID" name = "mqttClientID"></label></div>
 				</form>
@@ -293,24 +324,29 @@
 				
 			</div> 
 			
-			<div class="w3-card-4" style="margin:10px;margin-top:20px;">
+			<div class="w3-card-4" style="margin:10px;margin-top:20px;padding-bottom:20px;">
 				<div class="w3-container" style="background:#d6d6d6;">
 					<h4><img src="img/user.svg" style="height:20px;margin-right:10px;">Felhasználói beállítások</h4>
 				</div>
 				<form class="w3-container">
-					<label>Alapértelmezett kezdő</label>
+					<label>Alapértelmezett kezdőképernyő:</label>
 					
-					<div class="w3-dropdown-click w3-container">
-						<button onclick="dropDown1()" class="w3-button w3-black">Click me</button>
-						<div id="Demo" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
-						  <a href="#" class="w3-bar-item w3-button w3-red">Link 1</a>
-						  <a href="#" class="w3-bar-item w3-button w3-blue">Link 2</a>
-						  <a href="#" class="w3-bar-item w3-button w3-green">Link 3</a>
-						</div>
-					  </div>
+					<div class="select-style">
+					  <select id="StartUpScreenValue" name="StartUpScreenValue" onchange="settingsStartUpScreenChanged()">
+						<option value="default">Indításnál kérdezzen rá</option>
+						<option value="cloud">Felhő szerver</option>
+						<option value="wifi">Lokális WiFi</option>
+					  </select>
+					</div>
 
-					<label>Felhő szerver applikáció: szűrő</label>
 					
+					<label>Felhő szerver applikáció: szűrő állapota</label>
+					<div class="select-style">
+					  <select id="settingsCloudFilterValue"  name="settingsCloudFilterValue" onchange="settingsStartFilterChanged()">
+						<option value="filterDefault">Indításkor mindig inaktív</option>
+						<option value="filterLast">Utolsó szűrő megjegyzése</option>
+					  </select>
+					</div>
 					
 				</form>
 			</div> 
@@ -321,7 +357,7 @@
 					<span class="closeX">Bezár</span>
 				</div>
 				<div style="flex: 1;text-align:center;">
-					<div class="closeX">Mentés</div>
+					<div class="closeX" onclick="saveSettings()">Mentés</div>
 				</div>
 			</div>		  
 		</div>
@@ -371,8 +407,15 @@
 			setTimeout(function(){
 						document.body.style.backgroundColor = '#d9d9d9';
 					},1);
+					
 			function switchToWifiService() {
-				window.location = "indexWiFi.html";
+				
+				$("html").fadeOut();
+				
+				setTimeout(function(){
+						window.location = "indexWiFi.html";
+					},1);
+				
 			}
 			
 			var modal = document.getElementById('myModal');
@@ -398,6 +441,13 @@
 			}
 			
 			var randomName = "snodeApp_";
+			var settingsMqttServer = "m21.cloudmqtt.com";
+			var settingsMqttPort = 18439;
+			var settingsMqttUser = "sskmhwoi";
+			var settingsMqttPwd = "QSuPFnVjylqr";
+			var settingsStartUpScreen = "default";
+			var settingsCloudFilter = "filterDefault";
+			var settingsLastFilter = "none";
 			function onLoad() {
 					document.addEventListener("deviceready", onDeviceReady, false);
 					document.addEventListener("connected", onCloudConnected, false);
@@ -411,6 +461,47 @@
 					}
 					document.getElementById('mqttClientID').innerHTML = randomName;
 					
+					/* SETTINGS */
+					settingsMqttServerValue = storage.getItem('settingsMqttServer');
+						if (settingsMqttServerValue != null) {settingsMqttServer = settingsMqttServerValue;} 
+					document.getElementById('settingsMqttServerInput').value = settingsMqttServer;
+						
+					settingsMqttPortValue = storage.getItem('settingsMqttPort');
+						if (settingsMqttPortValue != null) {settingsMqttPort = settingsMqttPortValue;}
+					document.getElementById('settingsMqttPortInput').value = settingsMqttPort;
+						
+					settingsMqttUserValue = storage.getItem('settingsMqttUser');
+						if (settingsMqttUserValue != null) {settingsMqttUser = settingsMqttUserValue;} 
+					document.getElementById('settingsMqttUserInput').value = settingsMqttUser;
+						
+					settingsMqttPwdValue = storage.getItem('settingsMqttPwd');
+						if (settingsMqttPwdValue != null) {settingsMqttPwd = settingsMqttPwdValue;}
+					document.getElementById('settingsMqttPwdInput').value = settingsMqttPwd;
+					
+					
+					var settingsStartUpScreenValue = storage.getItem('settingsStartUpScreen');
+						if (settingsStartUpScreenValue != null) {
+							settingsStartUpScreen = settingsStartUpScreenValue;
+							if (settingsStartUpScreen == 'default') {document.getElementById('StartUpScreenValue').value = 'default'; }
+							if (settingsStartUpScreen == 'cloud') {document.getElementById('StartUpScreenValue').value = 'cloud'; }
+							if (settingsStartUpScreen == 'wifi') {document.getElementById('StartUpScreenValue').value = 'wifi'; }
+						}
+						
+					var settingsCloudFilterValue = storage.getItem('settingsCloudFilter');
+						if (settingsCloudFilterValue != null) {
+							
+							settingsCloudFilter = settingsCloudFilterValue;
+							if (settingsCloudFilter == 'filterDefault' ) {document.getElementById('settingsCloudFilterValue').value = 'filterDefault'; }
+							if (settingsCloudFilter == 'filterLast' ){
+								document.getElementById('settingsCloudFilterValue').value = 'filterLast'; 
+								settingsLastFilter = storage.getItem('settingsLastFilter');
+								
+								setTimeout(function(){
+										setFilter(settingsLastFilter);
+								},1);
+							
+							}
+						}
 				}
 			onLoad();
 			
@@ -418,9 +509,54 @@
 				connectAndRefreshCloud();
 			}
 			
+			function settingsStartUpScreenChanged() {
+				var newValue = document.getElementById('StartUpScreenValue').value;
+				if (newValue == 'default') {settingsStartUpScreen = 'default';}
+				if (newValue == 'cloud') {settingsStartUpScreen = 'cloud';}
+				if (newValue == 'wifi') {settingsStartUpScreen = 'wifi';}
+			}
+			
+			function settingsStartFilterChanged() {
+				var newValue = document.getElementById('settingsCloudFilterValue').value;
+				if (newValue == 'filterDefault') {settingsStartUpScreen = 'filterDefault';}
+				if (newValue == 'filterLast') {settingsStartUpScreen = 'filterLast';}
+			}
+			
+			function saveSettings() {
+				var storage = window.localStorage;
+				
+				settingsMqttServer = document.getElementById('settingsMqttServerInput').value;
+				storage.setItem('settingsMqttServer', settingsMqttServer);
+				
+				settingsMqttPort = document.getElementById('settingsMqttPortInput').value;
+				storage.setItem('settingsMqttPort', settingsMqttPort);
+				
+				settingsMqttUser = document.getElementById('settingsMqttUserInput').value;
+				storage.setItem('settingsMqttUser', settingsMqttUser);
+				
+				settingsMqttPwd = document.getElementById('settingsMqttPwdInput').value;
+				storage.setItem('settingsMqttPwd', settingsMqttPwd);
+			
+				var newValue = document.getElementById('StartUpScreenValue').value;
+				if (newValue == 'default') {settingsStartUpScreen = 'default';}
+				if (newValue == 'cloud') {settingsStartUpScreen = 'cloud';}
+				if (newValue == 'wifi') {settingsStartUpScreen = 'wifi';}
+				storage.setItem('settingsStartUpScreen', settingsStartUpScreen);
+				
+				
+				var newValue2 = document.getElementById('settingsCloudFilterValue').value;
+				if (newValue2 == 'filterDefault') {settingsCloudFilter = 'filterDefault';}
+				if (newValue2 == 'filterLast') {settingsCloudFilter = 'filterLast';}
+				storage.setItem('settingsCloudFilter', settingsCloudFilter);
+				
+				alert('A beállítások mentve. A módosítások érvénybe léptetéséhez frissítsd az eszközök listáját!');
+			
+			}
+			
 			var sikerultKapcsolodni = '0';
 			
 			function connectAndRefreshCloud() {
+				
 				//var cloudStatusIcon = document.getElementById('cloudStatusImage');
 				sikerultKapcsolodni = '0';
 				var cloudStatusI = document.getElementById('cloudStatus');
@@ -429,8 +565,8 @@
 				logging("Kapcsolódás a felhő szerverhez...");
 				logginToLog("Kapcsolódás a felhő szerverhez");
 				cordova.plugins.CordovaMqTTPlugin.connect({
-						url:"tcp://m21.cloudmqtt.com", 
-						port:18439,
+						url:"tcp://" + settingsMqttServer, 
+						port: settingsMqttPort,
 						clientId:randomName,
 						connectionTimeout:3000,
 						willTopicConfig:{
@@ -439,8 +575,8 @@
 							topic:"HOME",
 							payload:"snodeAnroidApp"
 						},
-						username:"sskmhwoi",
-						password:'QSuPFnVjylqr',
+						username:settingsMqttUser,
+						password:settingsMqttPwd,
 						keepAlive:60,
 						success:function(s){
 							logging("Kapcsolódva a felhő szerverhez!!!");
@@ -696,62 +832,6 @@
 			
 				logging("Kapcsolódva a felhő szerverhez.");
 			}
-			var generalFilerValue = 'none';
-			function setFilter(nr) {
-				var ftb = document.getElementById("filterToggleBtn");
-				if (nr == 'a')
-				{
-					ftb.style.backgroundImage = 'url(img/icon_DROP.svg)';
-					generalFilerValue = "DROP";
-					executeFilter("DROP");
-					logging("Eszköz szűrő: PÁRATARTALOM");
-				}
-				if (nr == 'b')
-				{
-					ftb.style.backgroundImage = 'url(img/icon_POWER.svg)';
-					generalFilerValue = "POWER";
-					executeFilter("POWER");
-					logging("Eszköz szűrő: KAPCSOLÓ");
-				}
-				if (nr == 'c')
-				{
-					ftb.style.backgroundImage = 'url(img/icon_RF.svg)';
-					generalFilerValue = "RF";
-					executeFilter("RF");
-					logging("Eszköz szűrő: RF VEZÉRLŐ");
-				}
-				if (nr == 'd')
-				{
-					ftb.style.backgroundImage = 'url(img/icon_RGBW.svg)';
-					generalFilerValue = "RGBW";
-					executeFilter("RGBW");
-					logging("Eszköz szűrő: RGBW VEZÉRLŐ");
-				}
-				if (nr == 'e')
-				{
-					ftb.style.backgroundImage = 'url(img/icon_SP.svg)';
-					generalFilerValue = "SP";
-					executeFilter("SP");
-					logging("Eszköz szűrő: OKOS KONNEKTOR");
-				}
-				if (nr == 'f')
-				{
-					ftb.style.backgroundImage = 'url(img/icon_WS.svg)';
-					generalFilerValue = "WS";
-					executeFilter("WS");
-					logging("Eszköz szűrő: HŐMÉRŐ");
-				}
-				if (nr == 'g')
-				{
-					ftb.style.backgroundImage = 'url(img/null.svg)';
-					generalFilerValue = "none";
-					executeFilter("none");
-					logging("Eszköz szűrő: kikapcsolva");
-				}
-				
-				reset();
-				PieMenuInit();
-			}
 			
 			function executeFilter(type) {
 				for (var i = 1 ; i <= 10; i++)
@@ -781,14 +861,70 @@
 				}
 			}
 			
-			function dropDown1() {
-				var x = document.getElementById("Demo");
-				if (x.className.indexOf("w3-show") == -1) {
-					x.className += " w3-show";
-				} else { 
-					x.className = x.className.replace(" w3-show", "");
+			var generalFilerValue = 'none';
+			function setFilter(nr) {
+				var ftb = document.getElementById("filterToggleBtn");
+				if (nr == 'a')
+				{
+					generalFilerValue = "DROP";
+					executeFilter("DROP");
+					logging("Eszköz szűrő: PÁRATARTALOM");
+					ftb.style.backgroundImage = 'url(img/icon_DROP.svg)';
 				}
+				if (nr == 'b')
+				{
+					generalFilerValue = "POWER";
+					executeFilter("POWER");
+					logging("Eszköz szűrő: KAPCSOLÓ");
+					ftb.style.backgroundImage = 'url(img/icon_POWER.svg)';
+				}
+				if (nr == 'c')
+				{
+					generalFilerValue = "RF";
+					executeFilter("RF");
+					logging("Eszköz szűrő: RF VEZÉRLŐ");
+					ftb.style.backgroundImage = 'url(img/icon_RF.svg)';
+				}
+				if (nr == 'd')
+				{
+					generalFilerValue = "RGBW";
+					executeFilter("RGBW");
+					logging("Eszköz szűrő: RGBW VEZÉRLŐ");
+					ftb.style.backgroundImage = 'url(img/icon_RGBW.svg)';
+				}
+				if (nr == 'e')
+				{
+					generalFilerValue = "SP";
+					executeFilter("SP");
+					logging("Eszköz szűrő: OKOS KONNEKTOR");
+					ftb.style.backgroundImage = 'url(img/icon_SP.svg)';
+				}
+				if (nr == 'f')
+				{
+					generalFilerValue = "WS";
+					executeFilter("WS");
+					logging("Eszköz szűrő: HŐMÉRŐ");
+					ftb.style.backgroundImage = 'url(img/icon_WS.svg)';
+				}
+				if (nr == 'g')
+				{
+					generalFilerValue = "none";
+					executeFilter("none");
+					logging("Eszköz szűrő: kikapcsolva");
+					ftb.style.backgroundImage = 'url(img/null.svg)';
+				}
+				
+				var storage = window.localStorage;
+				settingsLastFilter = nr;
+				storage.setItem('settingsLastFilter', settingsLastFilter);
+				
+				reset();
+				PieMenuInit();
 			}
+			
+			
+			
+			
 			
 			function logging(logTxt){
 				document.getElementById('log').innerHTML = logTxt;
@@ -843,7 +979,7 @@
 			<div id="headerImg" class="bgr"></div>
 			
 			<!--<div id="settings2">Beállítások</div>-->
-			<div style="min-height:350px;padding-bottom:120px;" class="linewithshadow">
+			<div id="mainTileContent" name="mainTileContent" style="min-height:90vh;padding-bottom:120px;" class="linewithshadow">
 				<!-- celsuis: &#x2103; -->
 				<div id="kocka1" name="kocka1" onclick="snodeDeviceCommand('1')" class="kocka" style="display:none;">
 					<div id="kocka1type" name="kocka1type" style="display:none">ismeretlen</div>

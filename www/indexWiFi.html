@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
 		<link rel="stylesheet" href="css/fonts.css">
 		<link rel="stylesheet" href="css/csagi.css">
+		<link rel="stylesheet" href="css/w3.css">
 		<link rel="stylesheet" href="css/icono.min.css">
 		<link rel="stylesheet" href="css/grid_listview-grid.css">
 		<style type="text/css" media="screen">
@@ -30,6 +31,46 @@
 			h4,h5,h6 {font-family: 'Jura' !important; font-weight: 300 !important;}
 			article {font-family: 'Jura';}
 			
+			
+			.closeX {
+				color: #f1f1f1;
+				display: inline-block;
+				text-align: center;
+				-webkit-user-select: none;
+				-moz-user-select: none; 
+				-ms-user-select: none; 
+				user-select: none; 
+				cursor: pointer;
+				width: 100px;
+				padding: 5px;
+				font-size: 22px;
+				font-weight: bold;
+				transition: 0.3s;
+				z-index: 99999;
+				background: #ff5555;
+				border-radius: 3px;
+			}
+
+			.closeX:hover,
+			.closeX:focus {
+				color: #bbb;
+				text-decoration: none;
+				cursor: pointer;
+			}
+			
+			.closeX:active {
+				transition: all 0.2s ease-in-out;
+				-ms-transform: scale(0.8);
+				-webkit-transform: scale(0.8); 
+				transform: scale(0.8); 
+				transition: all 0.2s ease-in-out;
+			}
+			.one-edge-shadow {
+				-webkit-box-shadow: 0 8px 30px -6px #111;
+				   -moz-box-shadow: 0 8px 30px -6px #111;
+						box-shadow: 0 8px 30px -6px #111;
+			}
+			
 		</style>
     </head>
 	
@@ -40,15 +81,52 @@
 		<script src="js/jscolor.js"></script>
 		<script src="js/Chart.min.js"></script>
 		<script src="js/moment.js"></script>
-		<section data-role="page" id="first" data-theme="a">
+		<section class="w3-animate-opacity" data-role="page" id="first" data-theme="a">
 			<header data-role="header" data-position="fixed" data-tap-toggle="false">
-				<div style="height:60px;margin-left:auto;margin-right:auto;"><img name="headerlogo" id ="headerlogo" style="height:50px;margin:auto;padding-top:5px;display:block;" src="img/logo_snode_dark_easy_final.svg"></div>
+				<div class="one-edge-shadow" style="height:60px;margin-left:auto;margin-right:auto;background-image:url('img/wifibgw.jpg');background-size:100% 100%"><img name="headerlogo" id ="headerlogo" style="height:50px;margin:auto;padding-top:5px;display:block;" src="img/logo_snode_bright_easy_final.svg"></div>
 			</header>
 
 			<article role="main" class="ui-content my-page">
          <h2>elérhető Node-ok:</h2>
+		
+		<div id="myModal" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); z-index: 10100; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
+			<h2><img src="img/settings.svg" style="height:28px;margin-left:14px;margin-right:10px;">Beállítások</h2>
+			<hr>
+		
+			<div class="w3-card-4" style="margin:10px;margin-top:20px;padding-bottom:20px;">
+				<div class="w3-container" style="background:#d6d6d6;">
+					<h4><img src="img/user.svg" style="height:20px;margin-right:10px;">Felhasználói beállítások</h4>
+				</div>
+				<form class="w3-container">
+					<label>Alapértelmezett kezdőképernyő:</label>
+					
+					<div class="select-style">
+					  <select id="StartUpScreenValue" name="StartUpScreenValue" onchange="settingsStartUpScreenChanged()">
+						<option value="default">Indításnál kérdezzen rá</option>
+						<option value="cloud">Felhő szerver</option>
+						<option value="wifi">Lokális WiFi</option>
+					  </select>
+					</div>
+				</form>
+			</div> 
 			
+			
+			<div style="display: flex;margin-top:30px;">
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX">Bezár</span>
+				</div>
+				<div style="flex: 1;text-align:center;">
+					<div class="closeX" onclick="saveSettings()">Mentés</div>
+				</div>
+			</div>		  
+		</div>
+
+
+
+		
 		<script type="text/javascript">
+				var settingsStartUpScreen = "default";
+				
 				var nodeList = ["name|ip|statusTxt","dummy|dummy|dummy"]; //initial state
 				var nodeNames = ["name", "dummy"];
 				
@@ -195,7 +273,15 @@
 				
 				function onLoad() {
 					document.addEventListener("deviceready", onDeviceReady, false);
+					var storage = window.localStorage;
+					var settingsStartUpScreenValue = storage.getItem('settingsStartUpScreen');
 					
+					if (settingsStartUpScreenValue != null) {
+							settingsStartUpScreen = settingsStartUpScreenValue;
+							if (settingsStartUpScreen == 'default') {document.getElementById('StartUpScreenValue').value = 'default'; }
+							if (settingsStartUpScreen == 'cloud') {document.getElementById('StartUpScreenValue').value = 'cloud'; }
+							if (settingsStartUpScreen == 'wifi') {document.getElementById('StartUpScreenValue').value = 'wifi'; }
+					}
 				}
 				onLoad();
 				
@@ -1668,7 +1754,102 @@
 					window.location = "indexCloud.html";
 				}
 				
+				var modal = document.getElementById('myModal');
+				function showSettings() {
+					modal.style.display = "block";
+					modal.className = "w3-animate-zoom";
+				}
+				
+				var span = document.getElementsByClassName("closeX")[0];
+					span.onclick = function() { 
+					modal.style.display = "none";
+				}
+				
+				
+				function settingsStartUpScreenChanged() {
+					var newValue = document.getElementById('StartUpScreenValue').value;
+					if (newValue == 'default') {settingsStartUpScreen = 'default';}
+					if (newValue == 'cloud') {settingsStartUpScreen = 'cloud';}
+					if (newValue == 'wifi') {settingsStartUpScreen = 'wifi';}
+				}
+				
+				function saveSettings() {
+					var storage = window.localStorage;
+					var newValue = document.getElementById('StartUpScreenValue').value;
+					if (newValue == 'default') {settingsStartUpScreen = 'default';}
+					if (newValue == 'cloud') {settingsStartUpScreen = 'cloud';}
+					if (newValue == 'wifi') {settingsStartUpScreen = 'wifi';}
+					storage.setItem('settingsStartUpScreen', settingsStartUpScreen);
+					
+					alert('A beállítások sikeresen mentve!');
+				}
+				
+				function SaveNodeNewNameRGBW() {
+					var newDeviceName = document.getElementById('rgbwNewName').innerHTML;
+					var ipaddress = document.getElementById('rgbNodeIP').innerHTML;
+	
+					document.getElementById('RGBW_log').innerHTML = "RGBW vezérlő: név mentése SIKERTELEN!!!";
+					var ws = new WebSocket('ws://' + ipaddress + ':8009');
+							ws.onopen = function () {
+								ws.send('nodename:' + newDeviceName);
+								ws.close();
+							}
+
+					var ws2 = new WebSocket('ws://' + ipaddress + ':8009');
+							ws2.onopen = function () {
+								ws2.send('restartSnode');
+								ws2.close();
+								document.getElementById('RGBW_log').innerHTML = "RGBW vezérlő: név mentve! ÚJRAINDÍTÁS...";
+								alert('A vezérlő neve sikeresen mentve! Az eszköz újraindul. A változások érvénybe léptetéséhez frissítsd az eszközök listáját!');
+							}
+					
+					
+				}
+				
+				function SaveNodeNewNameSP() {
+					var newDeviceName = document.getElementById('spNewName').innerHTML;
+					var ipaddress = document.getElementById('spNodeIP').innerHTML;
+	
+					document.getElementById('SP_log').innerHTML = "Okos Konnektor: név mentése SIKERTELEN!!!";
+					var ws = new WebSocket('ws://' + ipaddress + ':8009');
+							ws.onopen = function () {
+								ws.send('nodename:' + newDeviceName);
+								ws.close();
+							}
+
+					var ws2 = new WebSocket('ws://' + ipaddress + ':8009');
+							ws2.onopen = function () {
+								ws2.send('restartSnode');
+								ws2.close();
+								document.getElementById('SP_log').innerHTML = "Okos konnektor: név mentve! ÚJRAINDÍTÁS...";
+								alert('A vezérlő neve sikeresen mentve! Az eszköz újraindul. A változások érvénybe léptetéséhez frissítsd az eszközök listáját!');
+							}
+				}
+				
+				function SaveNodeNewNameWS() {
+					var newDeviceName = document.getElementById('wsNewName').innerHTML;
+					var ipaddress = document.getElementById('wsNodeIP').innerHTML;
+	
+					document.getElementById('WS_log').innerHTML = "Időjárás állomás: név mentése SIKERTELEN!!!";
+					var ws = new WebSocket('ws://' + ipaddress + ':8009');
+							ws.onopen = function () {
+								ws.send('nodename:' + newDeviceName);
+								ws.close();
+							}
+
+					var ws2 = new WebSocket('ws://' + ipaddress + ':8009');
+							ws2.onopen = function () {
+								ws2.send('restartSnode');
+								ws2.close();
+								document.getElementById('WS_log').innerHTML = "Időjárás állomás: név mentve! ÚJRAINDÍTÁS...";
+								alert('A vezérlő neve sikeresen mentve! Az eszköz újraindul. A változások érvénybe léptetéséhez frissítsd az eszközök listáját!');
+							}
+				}
+				
 			</script>
+			
+
+			
 			
 				<!-- DEBUG -->
 				 <div name="content" id="content" style="display:none; min-height:25vh;font-size:0.6em;background:white;" >debug info 1</div>
@@ -1747,15 +1928,19 @@
             <footer data-role="footer" data-position="fixed" data-tap-toggle="false" style="display: flex;">
                 			
 				<div style="flex: 1;text-align:center;">
-					<button name="btn_cloud" id="btn_cloud" style="display: inline-block;width:50px;" onclick="switchToCloudService()"><img alt="wifi service" src="img/cloud2.svg" style="height:16px;"></button> 
+					<button name="btn_cloud" id="btn_cloud" style="display: inline-block;width:50px;" onclick="switchToCloudService()"><img alt="wifi service" src="img/cloud2.svg" style="height:20px;"></button> 
 				</div>
 				
 				<div style="flex: 1;text-align:center;">
-					<button name="btn_searchNodes" id="btn_searchNodes" style="display: inline-block;width:50px;" onclick="refreshNodeList()"><img alt="node kereses" src="img/search.svg" style="height:16px;"></button> 
+					<button name="btn_cloud" id="btn_settings" style="display: inline-block;width:50px;" onclick="showSettings()"><img alt="wifi service" src="img/settings.svg" style="height:20px;"></button> 
 				</div>
 				
 				<div style="flex: 1;text-align:center;">
-					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;width:50px;" onclick="refreshMainListStatus()"><img alt="wifi service" src="img/refresh.svg" style="height:16px;"></button> 
+					<button name="btn_searchNodes" id="btn_searchNodes" style="display: inline-block;width:50px;" onclick="refreshNodeList()"><img alt="node kereses" src="img/search.svg" style="height:20px;"></button> 
+				</div>
+				
+				<div style="flex: 1;text-align:center;">
+					<button name="btn_refresh" id="btn_refresh" style="display: inline-block;width:50px;" onclick="refreshMainListStatus()"><img alt="wifi service" src="img/refresh.svg" style="height:20px;"></button> 
 				</div>
 				
 				
@@ -1882,7 +2067,7 @@
 					<div style="margin-left:20px;" id='rgbwNodeCriteria' name='rgbwNodeCriteria'></div>
 					<br>
 					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
-					<a href="#" id="saveRGBWnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
+					<a href="#" id="saveRGBWnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back" onclick="SaveNodeNewNameRGBW()">Mentés</a>
 				</div>
 			</div>
 				
@@ -1951,7 +2136,7 @@
 					<div style="margin-left:20px;" id='wsNodeCriteria' name='wsNodeCriteria'></div>
 					<br>
 					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
-					<a href="#" id="saveWSnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
+					<a href="#" id="saveWSnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back" onclick="SaveNodeNewNameWS()">Mentés</a>
 				</div>
 			</div>
 
@@ -2041,7 +2226,7 @@
 					<div style="margin-left:20px;" id='spNodeCriteria' name='spNodeCriteria'></div>
 					<br>
 					<a href="#" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Mégsem</a>
-					<a href="#" id="saveSPnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back">Mentés</a>
+					<a href="#" id="saveSPnodeNameBtn" style="margin-top:5px;" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-state-disabled" data-rel="back" onclick="SaveNodeNewNameSP()">Mentés</a>
 				</div>
 			</div>
 		

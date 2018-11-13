@@ -99,6 +99,17 @@
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript">
 	
+		function onLoad() {
+			var storage = window.localStorage;
+			var settingsStartUpScreenValue = storage.getItem('settingsStartUpScreen');
+			//alert(settingsStartUpScreenValue);
+			if (settingsStartUpScreenValue != null){
+				if (settingsStartUpScreenValue == 'cloud') {window.location = "indexCloud.html";}
+				if (settingsStartUpScreenValue == 'wifi') {window.location = "indexWiFi.html";}
+			}
+		}
+		onLoad();
+	
 		function navigateToPage(destination) {
 			if (destination == 'cloud') 
 			{
