@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="css/csagi.css">
 		<link rel="stylesheet" href="css/w3.css">
 		<link rel="stylesheet" href="css/icono.min.css">
+		<link rel="stylesheet" href="css/animate.min.css">
 		<link rel="stylesheet" href="css/grid_listview-grid.css">
 		<style type="text/css" media="screen">
 	
@@ -81,13 +82,14 @@
 		<script src="js/jscolor.js"></script>
 		<script src="js/Chart.min.js"></script>
 		<script src="js/moment.js"></script>
-		<section class="w3-animate-opacity" data-role="page" id="first" data-theme="a">
+		<section class="animated fadeIn" data-role="page" id="first" data-theme="a">
 			<header data-role="header" data-position="fixed" data-tap-toggle="false">
-				<div class="one-edge-shadow" style="padding-top:15px;height:80px;margin-left:auto;margin-right:auto;margin-top:-2px;background-image:url('img/wifibgw.jpg');background-size:100% 100%"><img name="headerlogo" id ="headerlogo" style="height:50px;margin:auto;padding-top:5px;display:block;" src="img/logo_snode_bright_easy_final.svg"></div>
+				<div class="one-edge-shadow" style="padding-top:15px;height:80px;margin-left:auto;margin-right:auto;margin-top:-2px;background-image:url('img/wifibgw.jpg');background-size:100% 100%"><img name="headerlogo" id ="headerlogo" style="height:50px;margin:auto;padding-top:5px;display:block;" src="img/logo_snode_bright_easy_final.svg"><center><img src="img/WiFi_Logo.svg" style="height:28px;display:inline-block;"></center></div>
 			</header>
 
 			<article role="main" class="ui-content my-page">
-         <h2>elérhető Node-ok:</h2>
+         
+		 <h3>elérhető Node-ok:</h3>
 		
 		<div id="myModal" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); z-index: 10100; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
 			<h2><img src="img/settings.svg" style="height:28px;margin-left:14px;margin-right:10px;">Beállítások</h2>
@@ -1752,7 +1754,12 @@
 				}
 				
 				function switchToCloudService() {
-					window.location = "indexCloud.html";
+					//document.getElementById('body').className = "animated zoomOut";
+					document.body.className = "animated zoomOut";
+				
+					setTimeout(function(){
+						window.location = "indexCloud.html";
+					},250);
 				}
 				
 				var modal = document.getElementById('myModal');
@@ -2047,12 +2054,12 @@
 
 				</article>
 
-			<div data-role="popup" id="popupDialogRGBWnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+			<div data-role="popup" id="popupDialogRGBWnodeNameChange" data-overlay-theme="a" data-theme="b" data-dismissible="false" style="width:86vw;">
 				<div data-role="header" data-theme="a">
 				<center><div style="padding:5px;font-size:1.3em;">RGBW vezérlő nevének megváltoztatása</div></center>
 				</div>
 				<div role="main" class="ui-content">
-					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="rgbwCurrentName" name="rgbwCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="rgbwCurrentName" name="rgbwCurrentName" style="display:inline-block;font-size:0.9em;color:yellow;">-</div>
 					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
 					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
 					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
@@ -2116,12 +2123,12 @@
 				
             </article>
 			
-			<div data-role="popup" id="popupDialogWSnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+			<div data-role="popup" id="popupDialogWSnodeNameChange" data-overlay-theme="a" data-theme="b" data-dismissible="false" style="width:86vw;">
 				<div data-role="header" data-theme="a">
 				<center><div style="padding:5px;font-size:1.3em;">időjárás állomás nevének megváltoztatása</div></center>
 				</div>
 				<div role="main" class="ui-content">
-					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="wsCurrentName" name="wsCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="wsCurrentName" name="wsCurrentName" style="display:inline-block;font-size:0.9em;color:yellow;">-</div>
 					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
 					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
 					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
@@ -2194,7 +2201,7 @@
             </article>
 
 			
-			<div data-role="popup" id="popupDialogSP" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:70vw;">
+			<div data-role="popup" id="popupDialogSP" data-overlay-theme="a" data-theme="b" data-dismissible="false" style="width:70vw;">
 				<div data-role="header" data-theme="a">
 				<center><div style="padding:5px;font-size:1.3em;">Broadcast parancs</div></center>
 				</div>
@@ -2206,12 +2213,12 @@
 				</div>
 			</div>
 			
-			<div data-role="popup" id="popupDialogSPnodeNameChange" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="width:90vw;">
+			<div data-role="popup" id="popupDialogSPnodeNameChange" data-overlay-theme="a" data-theme="b" data-dismissible="false" style="width:86vw;">
 				<div data-role="header" data-theme="a">
 				<center><div style="padding:5px;font-size:1.3em;">okos konnektor nevének megváltoztatása</div></center>
 				</div>
 				<div role="main" class="ui-content">
-					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="spCurrentName" name="spCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="spCurrentName" name="spCurrentName" style="display:inline-block;font-size:0.9em;color:yellow;">-</div>
 					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
 					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
 					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>
