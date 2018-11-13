@@ -117,16 +117,19 @@
 		function navigateToPage(destination) {
 			if (destination == 'cloud') 
 			{
-				document.getElementById('main').className = "animated zoomOut animhossz";
+				//document.getElementById('main').className = "animated zoomOut animhossz";
+				document.body.style.background = "#eee";
+				document.body.className = "animated fadeOutDown animhossz";
 				setTimeout(function(){
 				window.location = "indexCloud.html";
-				},500);
+				},600);
 			}
 			if (destination == 'wifi') {
-				document.getElementById('main').className = "animated zoomOut animhossz";
+				document.body.style.background = "white";
+				document.body.className = "animated fadeOutDown animhossz";
 				setTimeout(function(){
 				window.location = "indexWiFi.html";
-				},500);
+				},600);
 			}
 			}
 				

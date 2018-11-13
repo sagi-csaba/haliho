@@ -291,11 +291,11 @@
 		
 		
 		<div id="myModal" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;">
-			<h2><img src="img/settings.svg" style="height:28px;margin-left:14px;margin-right:10px;">Beállítások</h2>
+			<h2 style="background-color:#bababa;"><img src="img/settings.svg" style="height:28px;margin-left:14px;margin-right:10px;margin-top:-10px;">Beállítások</h2>
 			<hr>
 			 <div class="w3-card-4" style="margin:10px;">
 				<div class="w3-container" style="background:#d6d6d6;">
-					<h4><img src="img/cloud.svg" style="height:20px;margin-right:10px;">MQTT felhő szerver</h4>
+					<h4><img src="img/cloud.svg" style="height:20px;margin-right:10px;margin-top:-10px;">MQTT felhő szerver</h4>
 				</div>
 				<form class="w3-container">
 					<div style="display:flex;">
@@ -326,7 +326,7 @@
 			
 			<div class="w3-card-4" style="margin:10px;margin-top:20px;padding-bottom:20px;">
 				<div class="w3-container" style="background:#d6d6d6;">
-					<h4><img src="img/user.svg" style="height:20px;margin-right:10px;">Felhasználói beállítások</h4>
+					<h4><img src="img/user.svg" style="height:20px;margin-right:10px;margin-top:-10px;">Felhasználói beállítások</h4>
 				</div>
 				<form class="w3-container">
 					<label>Alapértelmezett kezdőképernyő:</label>
@@ -427,8 +427,11 @@
 			}
 			
 			span.onclick = function() { 
-				modal.style.display = "none";
 				
+				modal.className = "animated zoomOut";
+				setTimeout(function(){
+					modal.style.display = "none";
+				},300);
 			}
 			
 			function showWheel() {
