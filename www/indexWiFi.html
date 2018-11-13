@@ -83,7 +83,7 @@
 		<script src="js/moment.js"></script>
 		<section class="w3-animate-opacity" data-role="page" id="first" data-theme="a">
 			<header data-role="header" data-position="fixed" data-tap-toggle="false">
-				<div class="one-edge-shadow" style="height:60px;margin-left:auto;margin-right:auto;background-image:url('img/wifibgw.jpg');background-size:100% 100%"><img name="headerlogo" id ="headerlogo" style="height:50px;margin:auto;padding-top:5px;display:block;" src="img/logo_snode_bright_easy_final.svg"></div>
+				<div class="one-edge-shadow" style="padding-top:15px;height:80px;margin-left:auto;margin-right:auto;margin-top:-2px;background-image:url('img/wifibgw.jpg');background-size:100% 100%"><img name="headerlogo" id ="headerlogo" style="height:50px;margin:auto;padding-top:5px;display:block;" src="img/logo_snode_bright_easy_final.svg"></div>
 			</header>
 
 			<article role="main" class="ui-content my-page">
@@ -598,7 +598,7 @@
 						if (nodeNAME.indexOf("_RGBW") != -1) {
 							document.getElementById("nodenameRGBW").innerHTML = nodeNAME;
 							document.getElementById("rgbNodeName").innerHTML = nodeNAME;
-							//document.getElementById("rgbCurrentName").innerHTML = nodeNAME;
+							document.getElementById("rgbwCurrentName").innerHTML = nodeNAME;
 							document.getElementById("rgbNodeIP").innerHTML = nodeIP;
 						
 							//get serieal number and firmware version
@@ -711,6 +711,7 @@
 						if (nodeNAME.indexOf("_WS") != -1){
 							document.getElementById("nodenameWS").innerHTML = nodeNAME;
 							document.getElementById("wsNodeName").innerHTML = nodeNAME;
+							document.getElementById("wsCurrentName").innerHTML = nodeNAME;
 							document.getElementById("wsNodeIP").innerHTML = nodeIP;
 						
 							//get serieal number and firmware version
@@ -2120,7 +2121,7 @@
 				<center><div style="padding:5px;font-size:1.3em;">időjárás állomás nevének megváltoztatása</div></center>
 				</div>
 				<div role="main" class="ui-content">
-					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="spCurrentName" name="spCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
+					<div style="display:inline-block;font-size:1.1em;">Eszköz jelenlegi neve: </div><div id="wsCurrentName" name="wsCurrentName" style="display:inline-block;font-size:0.9em;">-</div>
 					<div style="font-size:0.8em;margin-left:20px;margin-top:10px;">Az eszköz nevének megváltoztatásánál az alábbi feltételeknek kell teljesülnie:</div>
 					<div style="font-size:0.7em;margin-left:25px;">- az adott hálózaton egyedinek kell lennie</div>
 					<div style="font-size:0.7em;margin-left:25px;">- csak alfanumerikus karakterekből állhat</div>

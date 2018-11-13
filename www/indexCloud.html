@@ -410,11 +410,12 @@
 					
 			function switchToWifiService() {
 				
-				$("html").fadeOut();
+				//$("html").fadeOut();
+				document.getElementById('main').className = "animated fadeOut";
 				
 				setTimeout(function(){
 						window.location = "indexWiFi.html";
-					},1);
+					},10);
 				
 			}
 			
