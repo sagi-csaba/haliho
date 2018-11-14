@@ -90,7 +90,7 @@
         
 		<script type="text/javascript" src="cordova.js"></script>
 		<script src="js/jquery-1.11.1.min.js"></script>
-		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+		<!--<script src="js/jquery.mobile-1.4.5.min.js"></script>-->
 		<script src="js/jscolor.js"></script>
 		<script src="js/Chart.min.js"></script>
 		<script src="js/moment.js"></script>
@@ -139,6 +139,15 @@
 
 		
 		<script type="text/javascript">
+				
+				var script = document.createElement('script');
+				script.onload = function () {
+						
+				};
+				script.src = "js/jquery.mobile-1.4.5.min.js";
+				document.head.appendChild(script);
+				
+				
 				var settingsStartUpScreen = "default";
 				
 				var nodeList = ["name|ip|statusTxt","dummy|dummy|dummy"]; //initial state
