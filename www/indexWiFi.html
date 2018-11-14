@@ -72,11 +72,23 @@
 						box-shadow: 0 8px 30px -6px #111;
 			}
 			
+			.loaderNEW {
+				position: fixed;
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				z-index: 9999;
+				background: url('css/images/ajax-loader.gif') 50% 50% no-repeat;
+			}
+			
 		</style>
+		<div class="loaderNEW"></div>
     </head>
 	
     <body class="animated fadeIn" style="animation-duration:1.5s;">
-        <script type="text/javascript" src="cordova.js"></script>
+        
+		<script type="text/javascript" src="cordova.js"></script>
 		<script src="js/jquery-1.11.1.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
 		<script src="js/jscolor.js"></script>
@@ -274,6 +286,8 @@
 				}
 				
 				function onLoad() {
+					
+					//alert('most kezdődik a betöltődés');
 					document.addEventListener("deviceready", onDeviceReady, false);
 					var storage = window.localStorage;
 					var settingsStartUpScreenValue = storage.getItem('settingsStartUpScreen');
@@ -503,6 +517,7 @@
 				}
 				
 				function onDeviceReady() {
+					$(".loaderNEW").fadeOut("slow");
 					refreshNodeList();
 				 }
 
