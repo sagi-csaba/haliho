@@ -318,11 +318,6 @@
 						<input id="settingsMqttPwdInput" name="settingsMqttPwdInput" class="w3-input" style="margin-bottom:10px;color:#707070;margin-top:10px;flex: 2;background:#eee;border-radius:3px;" type="text">
 					</div>
 					
-					<div style="display:flex;">
-						<label style="flex: 1;text-align:right;margin-top:17px;margin-right:5px;font-size:0.8em;">SZOBA: </label>
-						<input id="settingsMqttTopicInput" name="settingsMqttTopicInput" class="w3-input" style="margin-bottom:10px;color:#707070;margin-top:10px;flex: 2;background:#eee;border-radius:3px;" type="text">
-					</div>
-					
 					<div style="margin-bottom:10px;color:gray;"><label style="font-size:0.8em;">MQTT Client ID: </label><label style="font-size:0.7em;" id = "mqttClientID" name = "mqttClientID"></label></div>
 				</form>
 				
@@ -456,7 +451,6 @@
 			var settingsStartUpScreen = "default";
 			var settingsCloudFilter = "filterDefault";
 			var settingsLastFilter = "none";
-			var settingsMqttTopic = "HOME";
 			function onLoad() {
 					document.addEventListener("deviceready", onDeviceReady, false);
 					document.addEventListener("connected", onCloudConnected, false);
@@ -487,18 +481,6 @@
 						if (settingsMqttPwdValue != null) {settingsMqttPwd = settingsMqttPwdValue;}
 					document.getElementById('settingsMqttPwdInput').value = settingsMqttPwd;
 					
-					settingsMqttTopicValue = storage.getItem('settingsMqttTopic');
-						if (settingsMqttTopicValue != null) {settingsMqttTopic = settingsMqttTopicValue;}
-					document.getElementById('settingsMqttTopicInput').value = settingsMqttTopic;
-					
-					//alert(settingsMqttTopicValue);
-					
-					setTimeout(function(){
-						for (var i=1; i<= 10; i++) {
-						document.getElementById('kocka' + i + 'szoba').innerHTML = settingsMqttTopicValue;
-						}
-					}, 1); 
-					
 					
 					var settingsStartUpScreenValue = storage.getItem('settingsStartUpScreen');
 						if (settingsStartUpScreenValue != null) {
@@ -520,6 +502,7 @@
 								setTimeout(function(){
 										setFilter(settingsLastFilter);
 								},1);
+							
 							}
 						}
 				}
@@ -556,9 +539,6 @@
 				
 				settingsMqttPwd = document.getElementById('settingsMqttPwdInput').value;
 				storage.setItem('settingsMqttPwd', settingsMqttPwd);
-				
-				settingsMqttTopic = document.getElementById('settingsMqttTopicInput').value;
-				storage.setItem('settingsMqttTopic', settingsMqttTopic);
 			
 				var newValue = document.getElementById('StartUpScreenValue').value;
 				if (newValue == 'default') {settingsStartUpScreen = 'default';}
@@ -595,7 +575,7 @@
 						willTopicConfig:{
 							qos:0, //default is 0
 							retain:true, //default is true
-							topic:settingsMqttTopic,
+							topic:"HOME",
 							payload:"snodeAnroidApp"
 						},
 						username:settingsMqttUser,
@@ -608,7 +588,7 @@
 							sikerultKapcsolodni = '1';
 							cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 							cordova.plugins.CordovaMqTTPlugin.subscribe({
-							   topic:settingsMqttTopic,
+							   topic:"HOME",
 							   qos:0,
 							  success:function(s){
 								logging("Csatlakozva a HOME szobához");
@@ -624,7 +604,7 @@
 							
 							
 							cordova.plugins.CordovaMqTTPlugin.publish({
-							   topic:settingsMqttTopic,
+							   topic:"HOME",
 							   payload:"tellMeYourSnodeStatus",
 							   qos:0,
 							   retain:false,
@@ -640,7 +620,7 @@
 							});
 							
 							
-							cordova.plugins.CordovaMqTTPlugin.listen(settingsMqttTopic,function(payload,params){
+							cordova.plugins.CordovaMqTTPlugin.listen("HOME",function(payload,params){
 							  //Callback:- (If the user has published to /topic/room/hall)
 							  //payload : contains payload data
 							  //params : {singlewc:room,multiwc:hall}
@@ -852,6 +832,7 @@
 			}
 			
 			function onCloudConnected() {
+			
 				logging("Kapcsolódva a felhő szerverhez.");
 			}
 			
@@ -944,7 +925,8 @@
 				PieMenuInit();
 			}
 			
-				
+			
+			
 			
 			
 			function logging(logTxt){
@@ -976,7 +958,7 @@
 				logging("Frissítés: " + deviceName + "...");
 				cloudStatusI.style.backgroundImage = 'url(img/cloudSrefresh.svg)';
 				cordova.plugins.CordovaMqTTPlugin.publish({
-							   topic:settingsMqttTopic,
+							   topic:"HOME",
 							   payload:commandTxt,
 							   qos:0,
 							   retain:false,
@@ -992,34 +974,13 @@
 							});
 			
 			}
-
-			function resetKockas() {
-				for (var i=10; i> 10; i--) {
-					document.getElementById('kocka' + i).style.display = 'none';
-					document.getElementById('kocka' + i + 'type').innerHTML = 'ismeretlen';
-					document.getElementById('kocka' + i + 'ertek').innerHTML = '...';
-					document.getElementById('kocka' + i + 'erteks').innerHTML = '';
-					document.getElementById('kocka' + i + 'nev').innerHTML = 'nincs_nev';
-					document.getElementById('kocka' + i + 'szoba').innerHTML = 'OTTHON';
-				
-				}
-			}
-		
-			function refreshEverything() {
-				//nezzuk meg ez mit mutat; eltuntetunk minden kockat
-				resetKockas();
-				//es mindent megprobalunk elorol, mintha most toltenenk be; egyenlore csak gombbal, mert nem akarom folyamatosan ujrakapcsolni
-				//de lehene akar az alabbi fuggveny onConnectionLost eseményénél is egy ujracsatlakozas
-				connectAndRefreshCloud();
-			}
-			
 	</script>
 		
 		<div id="main">
 			
 			
 			<div id="headerImg" class="bgr"></div>
-			<!--<div onclick="resetKockas()">test</div>-->
+			
 			<!--<div id="settings2">Beállítások</div>-->
 			<div id="mainTileContent" name="mainTileContent" style="min-height:90vh;padding-bottom:120px;" class="linewithshadow">
 				<!-- celsuis: &#x2103; -->
@@ -1143,7 +1104,7 @@
 						
 				
 				<div style="flex: 1;text-align:center;">
-					<div name="btn_refresh" class="settingsBtn" id="btn_refresh" onclick="refreshEverything()"><img alt="node kereses" src="img/refresh.svg" style="height:20px;"></div> 
+					<div name="btn_refresh" class="settingsBtn" id="btn_refresh" onclick=""><img alt="node kereses" src="img/refresh.svg" style="height:20px;"></div> 
 				</div>
 				
 				<div style="flex: 1;text-align:center;">
@@ -1155,25 +1116,5 @@
 		</div>
 		
 		</div>
-		
-		<script>
-			var pressTimer;
-			$("#kocka1").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('1'); },1000);	});
-			$("#kocka2").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('2'); },1000);	});
-			$("#kocka3").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('3'); },1000);	});
-			$("#kocka4").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('4'); },1000);	});
-			$("#kocka5").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('5'); },1000);	});
-			$("#kocka6").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('6'); },1000);	});
-			$("#kocka7").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('7'); },1000);	});
-			$("#kocka8").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('8'); },1000);	});
-			$("#kocka9").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('9'); },1000);	});
-			$("#kocka10").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('10'); },1000);	});
-			
-			function showDeviceDetails(id) {
-				var deviceName = document.getElementById('kocka' + id + 'nev').innerHTML;
-				logging('Részletek lekérdezése: ' + deviceName);
-			}
-		</script>
-		
     </body>
 </html>
