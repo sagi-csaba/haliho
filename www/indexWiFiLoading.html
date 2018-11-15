@@ -98,14 +98,14 @@
 			//setTimeout(function(){
 				var script = document.createElement('script');
 				script.onload = function () { document.getElementById('porgressBarValueDiv').innerHTML='22%'; porgressBarDiv.style.width = '22vw';};
-				script.src = "cordova.js";
+				script2.src = "js/jquery-1.11.1.min.js";
 				document.head.appendChild(script);
 			//}, 500);
 				
 			//setTimeout(function(){
 				var script2 = document.createElement('script');
 				script2.onload = function () { document.getElementById('porgressBarValueDiv').innerHTML='40%'; porgressBarDiv.style.width = '40vw';};
-				script2.src = "js/jquery-1.11.1.min.js";
+				script.src = "cordova.js";
 				document.head.appendChild(script2);
 			//}, 1000);
 			
@@ -126,8 +126,8 @@
 				
 				var wholeDOM = document.createElement('link');
 				wholeDOM.onload = function () { document.getElementById('porgressBarValueDiv').innerHTML='80%'; porgressBarDiv.style.width = '80vw';};
-				wholeDOM.setAttribute("rel", "preload")
-				wholeDOM.setAttribute("href", "indexWiFi.html")
+				wholeDOM.setAttribute("rel", "preload");
+				wholeDOM.setAttribute("href", "indexWiFi.html");
 				document.head.appendChild(wholeDOM);
 								
 			//setTimeout(function(){
