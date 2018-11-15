@@ -126,7 +126,7 @@
 				
 				var wholeDOM = document.createElement('link');
 				wholeDOM.onload = function () { document.getElementById('porgressBarValueDiv').innerHTML='80%'; porgressBarDiv.style.width = '80vw';};
-				wholeDOM.setAttribute("rel", "prefetch")
+				wholeDOM.setAttribute("rel", "preload")
 				wholeDOM.setAttribute("href", "indexWiFi.html")
 				document.head.appendChild(wholeDOM);
 								
@@ -135,8 +135,8 @@
 				script5.onload = function () { 
 					console.log('ChartMin betöltve'); porgressBarDiv.style.width = '92vw';
 					document.getElementById('porgressBarValueDiv').innerHTML='100%';
-						document.body.style.background = "#fff";
-						document.body.className = "animated fadeOut animhossz";
+						
+						document.body.className = "animated fadeOut";
 						setTimeout(function(){
 						window.location = "indexWiFi.html";
 						
