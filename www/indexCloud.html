@@ -608,7 +608,7 @@
 							sikerultKapcsolodni = '1';
 							cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 							cordova.plugins.CordovaMqTTPlugin.subscribe({
-							   topic:"HOME",
+							   topic:settingsMqttTopicValue,
 							   qos:0,
 							  success:function(s){
 								logging("Csatlakozva a HOME szobához");
@@ -624,7 +624,7 @@
 							
 							
 							cordova.plugins.CordovaMqTTPlugin.publish({
-							   topic:"HOME",
+							   topic:settingsMqttTopicValue,
 							   payload:"tellMeYourSnodeStatus",
 							   qos:0,
 							   retain:false,
@@ -640,7 +640,7 @@
 							});
 							
 							
-							cordova.plugins.CordovaMqTTPlugin.listen("HOME",function(payload,params){
+							cordova.plugins.CordovaMqTTPlugin.listen(settingsMqttTopicValue,function(payload,params){
 							  //Callback:- (If the user has published to /topic/room/hall)
 							  //payload : contains payload data
 							  //params : {singlewc:room,multiwc:hall}
@@ -976,7 +976,7 @@
 				logging("Frissítés: " + deviceName + "...");
 				cloudStatusI.style.backgroundImage = 'url(img/cloudSrefresh.svg)';
 				cordova.plugins.CordovaMqTTPlugin.publish({
-							   topic:"HOME",
+							   topic:settingsMqttTopicValue,
 							   payload:commandTxt,
 							   qos:0,
 							   retain:false,
@@ -1023,7 +1023,7 @@
 			<!--<div id="settings2">Beállítások</div>-->
 			<div id="mainTileContent" name="mainTileContent" style="min-height:90vh;padding-bottom:120px;" class="linewithshadow">
 				<!-- celsuis: &#x2103; -->
-				<div id="kocka1" name="kocka1" onclick="snodeDeviceCommand('1')" class="kocka" style="display:block;">
+				<div id="kocka1" name="kocka1" onclick="snodeDeviceCommand('1')" class="kocka" style="display:none;">
 					<div id="kocka1type" name="kocka1type" style="display:none">ismeretlen</div>
 					<div id="kocka1iconConatiner" name="kocka1iconConatiner" class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
