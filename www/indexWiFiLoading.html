@@ -82,63 +82,71 @@
 				background-color: #fff;
 			}
 			
+			.porgressBarDivClass {
+			-webkit-transition: all 0.2s;
+				transition: all 0.2s;
+			}
+			
 		</style>
-		<div class="loaderNEW">
+		
+    </head>
+	
+    <body style="background:#fff;">
+        <div class="loaderNEW">
 			<div style="margin-top:10vh;"><center><h2>WiFi hálózat felderítése...</h2></center></div>
 			<div id="porgressBarDiv" class="porgressBarDivClass" style="margin:3vh;height:5px;background:#ff5555; width:0vw;"></div>
 			<div id="porgressBarValueDiv" style="font-size:0.8em;text-align:center;margin-left:auto;margin-right:auto;"><center>inicializálás</center></div>
 		</div>
-    </head>
-	
-    <body style="background:#fff;">
-        <script type="text/javascript">
+		
+		<script type="text/javascript">
 			var porgressBarDiv = document.getElementById('porgressBarDiv');
 			var porgressBarValueDiv = document.getElementById('porgressBarValueDiv');
 			var progressBarValueVariable = 0;		
-			//setTimeout(function(){
+			
+			setTimeout(function(){
 				var script = document.createElement('script');
 				script.onload = function () { updateProgress('jQueryMin.js'); };
 				script.src = "js/jquery-1.11.1.min.js";
 				document.head.appendChild(script);
-			//}, 500);
+			}, 100);
 				
-			//setTimeout(function(){
+			setTimeout(function(){
 				var script2 = document.createElement('script');
 				script2.onload = function () { updateProgress('jqueryMobile.js');}
 				script2.src = "js/jquery.mobile-1.4.5.min.js";
 				document.head.appendChild(script2);
-			//}, 1000);
+			}, 200);
 			
-			//setTimeout(function(){
+			setTimeout(function(){
 				var script3 = document.createElement('script');
 				script3.onload = function () { updateProgress('cordova.js');};
 				script3.src = "cordova.js";
 				document.head.appendChild(script3);
-			//}, 1500);
+			}, 300);
 				
 						
 				
-			//setTimeout(function(){
+			setTimeout(function(){
 				var script4 = document.createElement('script');
 				script4.onload = function () { updateProgress('Color.js');};
 				script4.src = "js/jscolor.js";
 				document.head.appendChild(script4);
-			//}, 2000);
+			}, 400);
 								
-			//setTimeout(function(){
+			setTimeout(function(){
 				var script5 = document.createElement('script');
 				script5.onload = function () { 	updateProgress('ChartMin.js'); };
 				script5.src = "js/Chart.min.js";
 				document.head.appendChild(script5);
-			//}, 2500);
+			}, 500);
 				
 
 			function updateProgress(valami) {
 				progressBarValueVariable = progressBarValueVariable + 20; 
 				//document.getElementById('porgressBarValueDiv').innerHTML=progressBarValueVariable+'%';
-				porgressBarDiv.style.width = progressBarValueVariable-6 + 'vw';
+				porgressBarDiv.style.width = progressBarValueVariable-10 + 'vw';
 				//console.log(valami + ' ' + progressBarValueVariable);
-				document.getElementById('porgressBarValueDiv').innerHTML=valami + ' ' + progressBarValueVariable;
+				document.getElementById('porgressBarValueDiv').innerHTML=progressBarValueVariable+'%';
 				if (progressBarValueVariable == 100)
 				{
 					document.body.className = "animated fadeOut";
