@@ -595,7 +595,7 @@
 						willTopicConfig:{
 							qos:0, //default is 0
 							retain:true, //default is true
-							topic:settingsMqttTopicValue,
+							topic:settingsMqttTopic,
 							payload:"snodeAnroidApp"
 						},
 						username:settingsMqttUser,
@@ -608,7 +608,7 @@
 							sikerultKapcsolodni = '1';
 							cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 							cordova.plugins.CordovaMqTTPlugin.subscribe({
-							   topic:settingsMqttTopicValue,
+							   topic:settingsMqttTopic,
 							   qos:0,
 							  success:function(s){
 								logging("Csatlakozva a HOME szobához");
@@ -624,7 +624,7 @@
 							
 							
 							cordova.plugins.CordovaMqTTPlugin.publish({
-							   topic:settingsMqttTopicValue,
+							   topic:settingsMqttTopic,
 							   payload:"tellMeYourSnodeStatus",
 							   qos:0,
 							   retain:false,
@@ -640,7 +640,7 @@
 							});
 							
 							
-							cordova.plugins.CordovaMqTTPlugin.listen(settingsMqttTopicValue,function(payload,params){
+							cordova.plugins.CordovaMqTTPlugin.listen(settingsMqttTopic,function(payload,params){
 							  //Callback:- (If the user has published to /topic/room/hall)
 							  //payload : contains payload data
 							  //params : {singlewc:room,multiwc:hall}
@@ -976,7 +976,7 @@
 				logging("Frissítés: " + deviceName + "...");
 				cloudStatusI.style.backgroundImage = 'url(img/cloudSrefresh.svg)';
 				cordova.plugins.CordovaMqTTPlugin.publish({
-							   topic:settingsMqttTopicValue,
+							   topic:settingsMqttTopic,
 							   payload:commandTxt,
 							   qos:0,
 							   retain:false,
