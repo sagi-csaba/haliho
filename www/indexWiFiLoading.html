@@ -133,11 +133,12 @@
 			//}, 2500);
 				
 
-			function updateProgress(mit) {
+			function updateProgress(valami) {
 				progressBarValueVariable = progressBarValueVariable + 20; 
-				document.getElementById('porgressBarValueDiv').innerHTML=progressBarValueVariable+'%';
-				porgressBarDiv.style.width = progressBarValueVariable + 'vw';
-				//console.log(mit + ' ' + progressBarValueVariable);
+				//document.getElementById('porgressBarValueDiv').innerHTML=progressBarValueVariable+'%';
+				porgressBarDiv.style.width = progressBarValueVariable-6 + 'vw';
+				//console.log(valami + ' ' + progressBarValueVariable);
+				document.getElementById('porgressBarValueDiv').innerHTML=valami + ' ' + progressBarValueVariable;
 				if (progressBarValueVariable == 100)
 				{
 					document.body.className = "animated fadeOut";
