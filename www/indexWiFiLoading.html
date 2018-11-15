@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>snode</title>
+		<meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
+		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+		<link rel="stylesheet" href="css/fonts.css">
+		<link rel="stylesheet" href="css/csagi.css">
+		<link rel="stylesheet" href="css/w3.css">
+		<link rel="stylesheet" href="css/icono.min.css">
+		<link rel="stylesheet" href="css/animate.min.css">
+		<link rel="stylesheet" href="css/grid_listview-grid.css">
+		<style type="text/css" media="screen">
+	
+			html, body, div, span, applet, object, iframe,
+			p, blockquote, pre,
+			a, abbr, acronym, address, big, cite, code,
+			del, dfn, em, img, ins, kbd, q, s, samp,
+			small, strike, strong, sub, sup, tt, var,
+			b, u, i, center,
+			dl, dt, dd, ol, ul, li,
+			fieldset, form, label, legend,
+			table, caption, tbody, tfoot, thead, tr, th, td,
+			article, aside, canvas, details, embed, 
+			figure, figcaption, footer, header, hgroup, 
+			menu, nav, output, ruby, section, summary,
+			time, mark, audio, video {font-family: 'Jura' !important; font-weight: 400 !important;}
+			h1 {font-family: 'Jura' !important; font-weight: 700 !important;}
+			h2 {font-family: 'Jura' !important; font-weight: 600 !important;}
+			h3 {font-family: 'Jura' !important; font-weight: 500 !important;}
+			h4,h5,h6 {font-family: 'Jura' !important; font-weight: 300 !important;}
+			article {font-family: 'Jura';}
+			
+			
+			.closeX {
+				color: #f1f1f1;
+				display: inline-block;
+				text-align: center;
+				-webkit-user-select: none;
+				-moz-user-select: none; 
+				-ms-user-select: none; 
+				user-select: none; 
+				cursor: pointer;
+				width: 100px;
+				padding: 5px;
+				font-size: 22px;
+				font-weight: bold;
+				transition: 0.3s;
+				z-index: 99999;
+				background: #ff5555;
+				border-radius: 3px;
+			}
+
+			.closeX:hover,
+			.closeX:focus {
+				color: #bbb;
+				text-decoration: none;
+				cursor: pointer;
+			}
+			
+			.closeX:active {
+				transition: all 0.2s ease-in-out;
+				-ms-transform: scale(0.8);
+				-webkit-transform: scale(0.8); 
+				transform: scale(0.8); 
+				transition: all 0.2s ease-in-out;
+			}
+			.one-edge-shadow {
+				-webkit-box-shadow: 0 8px 30px -6px #111;
+				   -moz-box-shadow: 0 8px 30px -6px #111;
+						box-shadow: 0 8px 30px -6px #111;
+			}
+			
+			.loaderNEW {
+				position: fixed;
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				z-index: 9999;
+				background-color: #fff;
+			}
+			
+			.porgressBarDivClass {
+				-webkit-transition: all 0.2s;
+				transition: all 0.2s;
+			}
+		</style>
+		<div class="loaderNEW">
+			<div style="margin-top:10vh;"><center><h2>WiFi hálózat felderítése...</h2></center></div>
+			<div id="porgressBarDiv" class="porgressBarDivClass" style="margin:3vh;height:5px;background:#ff5555; width:0vw;"></div>
+			<div id="porgressBarValueDiv" style="font-size:0.8em;text-align:center;margin-left:auto;margin-right:auto;"><center>inicializálás</center></div>
+		</div>
+    </head>
+	
+    <body style="background:#fff;">
+        <script type="text/javascript">
+			var porgressBarDiv = document.getElementById('porgressBarDiv');
+			var porgressBarValueDiv = document.getElementById('porgressBarValueDiv');
+						
+			//setTimeout(function(){
+				var script = document.createElement('script');
+				script.onload = function () { console.log('cordova betöltve'); document.getElementById('porgressBarValueDiv').innerHTML='22%'; porgressBarDiv.style.width = '22vw';};
+				script.src = "cordova.js";
+				document.head.appendChild(script);
+			//}, 500);
+				
+			//setTimeout(function(){
+				var script2 = document.createElement('script');
+				script2.onload = function () { console.log('jqueryMin betöltve'); document.getElementById('porgressBarValueDiv').innerHTML='40%'; porgressBarDiv.style.width = '40vw';};
+				script2.src = "js/jquery-1.11.1.min.js";
+				document.head.appendChild(script2);
+			//}, 1000);
+			
+			//setTimeout(function(){
+				var script3 = document.createElement('script');
+				script3.onload = function () { console.log('jqueryMobile betöltve'); document.getElementById('porgressBarValueDiv').innerHTML='55%'; porgressBarDiv.style.width = '55vw';};
+				script3.src = "js/jquery.mobile-1.4.5.min.js";
+				document.head.appendChild(script3);
+			//}, 1500);
+				
+			//setTimeout(function(){
+				var script4 = document.createElement('script');
+				script4.onload = function () { console.log('jsColor betöltve'); document.getElementById('porgressBarValueDiv').innerHTML='75%'; porgressBarDiv.style.width = '75vw';};
+				script4.src = "js/jscolor.js";
+				document.head.appendChild(script4);
+			//}, 2000);
+			
+			//setTimeout(function(){
+				var script5 = document.createElement('script');
+				script5.onload = function () { 
+					console.log('ChartMin betöltve'); porgressBarDiv.style.width = '94vw';
+					document.getElementById('porgressBarValueDiv').innerHTML='100%';
+						document.body.style.background = "#fff";
+						document.body.className = "animated fadeOut animhossz";
+						setTimeout(function(){
+						window.location = "indexWiFi.html";
+						console.log('most');
+						},600);
+					
+					};
+				script5.src = "js/Chart.min.js";
+				document.head.appendChild(script5);
+			//}, 2500);
+			
+			
+			
+		</script>
+		
+    </body>
+</html>
