@@ -126,7 +126,15 @@
 				script4.src = "js/jscolor.js";
 				document.head.appendChild(script4);
 			//}, 2000);
+				
+				
+				var wholeDOM = document.createElement('link');
+				wholeDOM.onload = function () { console.log('wholeDOM betöltve'); document.getElementById('porgressBarValueDiv').innerHTML='80%'; porgressBarDiv.style.width = '80vw';};
+				wholeDOM.setAttribute("rel", "prefetch")
+				wholeDOM.setAttribute("href", "indexWiFi.html")
+				document.head.appendChild(wholeDOM);
 			
+			//<link rel="prefetch" href="image.png">
 			
 			//setTimeout(function(){
 				var script5 = document.createElement('script');
@@ -138,7 +146,7 @@
 						setTimeout(function(){
 						window.location = "indexWiFi.html";
 						
-						},2750);
+						},500);
 					
 					};
 				script5.src = "js/Chart.min.js";
