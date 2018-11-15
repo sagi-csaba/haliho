@@ -135,9 +135,10 @@
 
 			function updateProgress(mit) {
 				progressBarValueVariable = progressBarValueVariable + 20; 
-				document.getElementById('porgressBarValueDiv').innerHTML=progressBarValueVariable+'%';
-				porgressBarDiv.style.width = progressBarValueVariable + 'vw';
+				//document.getElementById('porgressBarValueDiv').innerHTML=progressBarValueVariable+'%';
+				porgressBarDiv.style.width = progressBarValueVariable-8 + 'vw';
 				//console.log(mit + ' ' + progressBarValueVariable);
+				document.getElementById('porgressBarValueDiv').innerHTML=mit + ' ' + progressBarValueVariable;
 				if (progressBarValueVariable == 100)
 				{
 					document.body.className = "animated fadeOut";
