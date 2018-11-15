@@ -127,16 +127,16 @@
 						
 				
 			setTimeout(function(){
-				//var script4 = document.createElement('script');
-				//script4.onload = function () { updateProgress('Color.js');};
-				//script4.src = "js/jscolor.js";
-				//document.head.appendChild(script4);
+				var script4 = document.createElement('script');
+				script4.onload = function () { updateProgress('Color.js');};
+				script4.src = "js/jscolor.js";
+				document.head.appendChild(script4);
 				
-				var preloadLink = document.createElement("link");
-				preloadLink.href = "indexWiFi.html";
-				preloadLink.rel = "preload";
-				preloadLink.as = "text";
-				document.head.appendChild(preloadLink);
+				//var preloadLink = document.createElement("link");
+				//preloadLink.href = "indexWiFi.html";
+				//preloadLink.rel = "preload";
+				//preloadLink.as = "text";
+				//document.head.appendChild(preloadLink);
 
 				
 			}, 400);
