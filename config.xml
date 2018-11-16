@@ -22,13 +22,11 @@
     <access origin="*" />
     <icon src="icon.png" />
     <platform name="android">
-        <splash src="splash.png" />
+        <uses-permission android:name="android.permission.CAMERA" />
+		<uses-feature android:name="android.hardware.camera" />
+		<uses-feature android:name="android.hardware.camera.autofocus" />
+		<splash src="splash.png" />
     </platform>
     <plugin name="cordova-plugin-mqtt" source="npm" />
     <plugin name="cordova-plugin-barcodescanner" spec="^0.7.4" />
-	<config-file target="AndroidManifest.xml" parent="/*" mode="merge">
-		<uses-permission android:name="android.permission.CAMERA" />
-		<uses-feature android:name="android.hardware.camera" />
-		<uses-feature android:name="android.hardware.camera.autofocus" />
-	</config-file>
 </widget>
