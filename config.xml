@@ -22,9 +22,6 @@
     <access origin="*" />
     <icon src="icon.png" />
     <platform name="android">
-        <uses-permission android:name="android.permission.CAMERA" />
-		<uses-feature android:name="android.hardware.camera" />
-		<uses-feature android:name="android.hardware.camera.autofocus" />
 		<splash src="splash.png" />
     </platform>
     <plugin name="cordova-plugin-mqtt" source="npm" />
