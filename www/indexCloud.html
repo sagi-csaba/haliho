@@ -394,7 +394,7 @@
 						<label style="flex: 1;text-align:right;margin-top:17px;margin-right:5px;font-size:0.8em;">SZOBA: </label>
 						<input id="settingsMqttTopicInput" name="settingsMqttTopicInput" class="w3-input" style="margin-bottom:10px;color:#707070;margin-top:10px;flex: 2;background:#eee;border-radius:3px;" type="text">
 					</div>
-					<center><div class="closeX2" onclick="">Beállítások szkennelése QR kódról</div></center>
+					<center><div class="closeX2" onclick="scanQRcode()">Beállítások szkennelése QR kódról</div></center>
 					<div style="margin-bottom:10px;color:gray;"><label style="font-size:0.8em;">MQTT Client ID: </label><label style="font-size:0.7em;" id = "mqttClientID" name = "mqttClientID"></label></div>
 				</form>
 				
@@ -1136,6 +1136,22 @@
 				connectAndRefreshCloud();
 			}
 			
+			
+			function scanQRcode(){
+			
+				 cordova.plugins.barcodeScanner.scan(
+				  function (result) {
+					  alert("We got a barcode\n" +
+							"Result: " + result.text + "\n" +
+							"Format: " + result.format + "\n" +
+							"Cancelled: " + result.cancelled);
+				  },
+				  function (error) {
+					  alert("Scanning failed: " + error);
+				  }
+			   );
+			
+			}
 	</script>
 		
 		<div id="main">
@@ -1148,7 +1164,7 @@
 			<div id="mainTileContent" name="mainTileContent" style="min-height:90vh;padding-bottom:120px;" class="linewithshadow">
 				<!-- celsuis: &#x2103; -->
 				<div id="kocka1" name="kocka1" class="kocka" style="display:none;">
-					<div id="kocka1type" name="kocka1type" style="display:none">WS</div>
+					<div id="kocka1type" name="kocka1type" style="display:none">ismeretlen</div>
 					<div id="kocka1iconConatiner" name="kocka1iconConatiner" class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
 					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
