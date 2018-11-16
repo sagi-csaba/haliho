@@ -777,7 +777,25 @@
 							  // ****************--- itt érkezett üzenet **********************
 							  logginToLog("Üzenet érkezett:  '" + payload + "'");
 							  var payloadString = String(payload);
-							  UpdateSnodeDevice(payloadString);
+							  
+							  if (payloadString.indexOf('snodeDeviceHistory') != -1) {
+								// ha a valasz tartalmazza a snodeDeviceHistory szot; akkor nem a fo lapot, hanem valamelyik melleklapot kell frissiten
+								
+								if (payloadString.indexOf('_WS') != -1) {
+									//idojaras allomasrol erkezett historie adat
+									UpdateSnodeWSHistorie(payloadString);
+								}
+								
+								if (payloadString.indexOf('_valami_aminek_van_meg_historie_adatlapja') != -1) {
+								
+								}
+								
+								
+							  }
+							  else {
+								//ha nem a melleklapra erkezik frissites, akkor bizony a folapot kell frissiteni
+								UpdateSnodeDevice(payloadString);
+							  }
 							})
 							
 							
@@ -1145,7 +1163,10 @@
 				document.getElementById('scanBtn').innerHTML = "Kamera indítása folyamatban...";
 				 cordova.plugins.barcodeScanner.scan(
 				  function (result) {
-					  document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról";
+					  
+					setTimeout(function(){
+						document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról";
+					},500);
 					  
 					  if (result.text.indexOf('snodeConfig') != -1){
 						var resultArray = result.text.split(';');
@@ -1166,7 +1187,7 @@
 					//"Cancelled: " + result.cancelled);
 				  },
 				  function (error) {
-					  alert("Scanning failed: " + error);
+					  alert("Hiba a szkennelés során: " + error);
 				  }
 			   );
 			
@@ -1339,6 +1360,29 @@
 				if (tipus == "WS" || tipus == "DROP") {
 					document.getElementById('wsName').innerHTML = deviceName;
 					
+					var commandTxtHistorie = 'snodeControlThisDevice:' + deviceName.replace('_DROP','_WS') + ';snodeControlCommand:sendMeYourHistory';
+					
+					cordova.plugins.CordovaMqTTPlugin.publish({
+							   topic:settingsMqttTopic,
+							   payload:commandTxtHistorie,
+							   qos:0,
+							   retain:false,
+							  success:function(s){
+								//alert("elküldve a tellMeYourSnodeStatus szöveg");
+								logginToLog("parancs küldve: " + commandTxt);				
+								//cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
+								
+								//a valasz ugye nem ide fog jonni, hanem a listen-es részre 						
+								
+							  },
+							  error:function(e){
+								logginToLog("--- HIBA az snode eszközök vezérlése során! ---");
+								//cloudStatusI.style.backgroundImage = 'url(img/cloudSoffline.svg)';
+							  }
+							});
+					
+					
+					
 					
 					showModalWS();
 					logging('Részletek lekérdezése: ' + deviceName);
@@ -1348,6 +1392,73 @@
 				}
 				
 				
+			}
+			
+			var wsChart;
+			
+			function UpdateSnodeWSHistorie(valasz) {
+				//ez fogja az idojaras allomastol beerkezett adatokat fogadni
+				var ctx = document.getElementById('myChart').getContext("2d");
+				
+				var ertekek_homerseklet = [];
+				var ertekek_paratartalom = [];
+				var felirat = [];
+				
+								
+				//es most chart rajzolasa
+											var ctx = document.getElementById('myChart').getContext("2d");
+											if (wsChart != null) 
+											{
+												//wsChart.destroy();
+												wsChart.data.labels = felirat;
+												wsChart.data.datasets[0].data = ertekek_homerseklet;
+												wsChart.data.datasets[1].data = ertekek_paratartalom;
+												wsChart.update();
+												return;
+											}
+											wsChart = new Chart(ctx, {
+											  type: 'line',
+											  data: {
+												labels: felirat,
+												datasets: [{
+												  label: 'hőmérséklet [Celsius]',
+												  borderColor: 'rgba(0, 255, 0, 0.6)',
+												  backgroundColor: 'rgba(0, 255, 0, 0.1)',
+												  yAxisID: 'A',
+												  data: ertekek_homerseklet,
+												  pointRadius: 0
+												}, {
+												  label: 'páratartalom [%]',
+												  yAxisID: 'B',
+												  borderColor: 'rgba(255, 255, 255, 0.6)',
+												  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+												  data: ertekek_paratartalom,
+												  pointRadius: 0
+												}]
+											  },
+											  options: {
+											  responsive: true,
+											  stacked: false,
+											  animation: {
+												duration: 1000,
+												easing: 'easeInOutExpo',
+											  },
+											  hoverMode: 'index',
+											  stacked: false,
+												scales: {
+												  yAxes: [{
+													id: 'A',
+													type: 'linear',
+													position: 'left',
+												  }, {
+													id: 'B',
+													type: 'linear',
+													position: 'right',
+													
+												  }]
+												}
+											  }
+											});
 			}
 		</script>
 		
