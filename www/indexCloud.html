@@ -246,7 +246,7 @@
 
 		.closeX:hover,
 		.closeX:focus {
-			color: #bbb;
+			background-color: #111;
 			text-decoration: none;
 			cursor: pointer;
 		}
@@ -258,6 +258,78 @@
 			transform: scale(0.8); 
 			transition: all 0.2s ease-in-out;
 		}
+		
+		
+		.closeX2 {
+			color: #f1f1f1;
+			display: inline-block;
+			text-align: center;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+			cursor: pointer;
+			width: 90%;
+			padding: 3px;
+			font-size: 12px;
+			transition: 0.3s;
+			z-index: 99999;
+			background: #ff5555;
+			border-radius: 3px;
+			margin-top:5px;
+			margin-bottom: 15px;
+		}
+
+		.closeX2:hover,
+		.closeX2:focus {
+			background-color: #111;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		
+		.closeX2:active {
+			transition: all 0.2s ease-in-out;
+			-ms-transform: scale(0.9);
+			-webkit-transform: scale(0.9); 
+			transform: scale(0.9); 
+			transition: all 0.2s ease-in-out;
+		}
+		
+		.closeX3 {
+			color: #f1f1f1;
+			display: inline-block;
+			text-align: center;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+			cursor: pointer;
+			width: 90%;
+			padding: 3px;
+			font-size: 12px;
+			transition: 0.3s;
+			z-index: 99999;
+			background: #bb1111;
+			border-radius: 3px;
+			margin-top:5px;
+			margin-bottom: 15px;
+		}
+
+		.closeX3:hover,
+		.closeX3:focus {
+			background-color: #111;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		
+		.closeX3:active {
+			transition: all 0.2s ease-in-out;
+			-ms-transform: scale(0.9);
+			-webkit-transform: scale(0.9); 
+			transform: scale(0.9); 
+			transition: all 0.2s ease-in-out;
+		}
+		
 		
 		.select-style {
 			border: 1px solid #ccc;
@@ -322,7 +394,7 @@
 						<label style="flex: 1;text-align:right;margin-top:17px;margin-right:5px;font-size:0.8em;">SZOBA: </label>
 						<input id="settingsMqttTopicInput" name="settingsMqttTopicInput" class="w3-input" style="margin-bottom:10px;color:#707070;margin-top:10px;flex: 2;background:#eee;border-radius:3px;" type="text">
 					</div>
-					
+					<center><div class="closeX2" onclick="">Beállítások szkennelése QR kódról</div></center>
 					<div style="margin-bottom:10px;color:gray;"><label style="font-size:0.8em;">MQTT Client ID: </label><label style="font-size:0.7em;" id = "mqttClientID" name = "mqttClientID"></label></div>
 				</form>
 				
@@ -380,12 +452,53 @@
 			</div>		
 		</div>
 		
+		<div id="myModalWS" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 1); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;background-image:url('img/ws_bgw.jpg');background-size:100% 100%;">
+			 <div style="margin:5px;">
+				 <center><div id="wsName">...</div></center>
+				 <div style="display: flex;">
+					<div style="flex: 1;text-align:center;">
+						<img src="img/pictogram_temp.png" style="max-height:55px;margin-top:-30px;"><div id="actualTemp" name="actualTemp" style="display:inline-block;font-size:4em;">26</div>&#x2103;<br>
+					</div>
+					<div style="flex: 1;text-align:center;margin-top:33px;">
+						<img src="img/pictogram_drop.png" style="max-height:30px;margin-top:-15px;"> <div id="actualHumidity" name="actualHumidity" center style="display:inline-block;font-size:2em;">52</div>%<br> 
+					</div>
+					
+				</div>	
+			 	
+				<div style="margin-top:35px;"><canvas id="myChart" name="myChart" width="30" height="15"></canvas></div>
+				
+			</div>
+			
+			<div style="display: flex;margin-top:30px;">
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX3" onclick="">utolsó 24 óra</span>
+				</div>
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX3" onclick="">utolsó 3 nap</span>
+				</div>
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX3" onclick="">utolsó 1 hét</span>
+				</div>
+			</div>	
+			
+			
+			<div style="display: flex;margin-top:30px;">
+				<div style="flex: 1;text-align:center;">
+					
+				</div>
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX" onclick="closemyModalWS()">Bezár</span>
+				</div>
+			</div>		
+		</div>
+		
 		
 		
 	<script type="text/javascript" src="cordova.js"></script>
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/jquery.menu.js"></script>
 	<script src="js/jquery-ui-1.8.20.custom.min.js"></script>
+	<script src="js/Chart.min.js"></script>
 	<script type="text/javascript">
 		function PieMenuInit(){		
 			$('#outer_container').PieMenu({
@@ -425,10 +538,16 @@
 			
 			var modal = document.getElementById('myModal');
 			var modal2 = document.getElementById('myModal2');
+			var modalWS = document.getElementById('myModalWS');
 			var span = document.getElementsByClassName("closeX")[0];
 			function showSettings() {
 				modal.style.display = "block";
 				modal.className = "w3-animate-zoom";
+			}
+			
+			function showModalWS() {
+				modalWS.style.display = "block";
+				modalWS.className = "animated fadeInUp";
 			}
 			
 			span.onclick = function() { 
@@ -446,6 +565,10 @@
 			
 			function closeWheel() {
 				modal2.style.display = "none";
+			}
+			
+			function closemyModalWS() {
+				modalWS.style.display = "none";
 			}
 			
 			var randomName = "snodeApp_";
@@ -1021,17 +1144,18 @@
 			<div id="headerImg" class="bgr"></div>
 			<!--<div onclick="resetKockas()">test</div>-->
 			<!--<div id="settings2">Beállítások</div>-->
+			<!--background-image:url('img/cloud_bgw.jpg');background-size:100% 100%;-->
 			<div id="mainTileContent" name="mainTileContent" style="min-height:90vh;padding-bottom:120px;" class="linewithshadow">
 				<!-- celsuis: &#x2103; -->
-				<div id="kocka1" name="kocka1" onclick="snodeDeviceCommand('1')" class="kocka" style="display:none;">
-					<div id="kocka1type" name="kocka1type" style="display:none">ismeretlen</div>
+				<div id="kocka1" name="kocka1" class="kocka" style="display:none;">
+					<div id="kocka1type" name="kocka1type" style="display:none">WS</div>
 					<div id="kocka1iconConatiner" name="kocka1iconConatiner" class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
 					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
 					<div id="kocka1szoba" name="kocka1szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka2" name="kocka2" onclick="snodeDeviceCommand('2')" class="kocka" style="display:none;">
+				<div id="kocka2" name="kocka2" class="kocka" style="display:none;">
 					<div id="kocka2type" name="kocka2type" style="display:none">ismeretlen</div>
 					<div id="kocka2iconConatiner" name="kocka2iconConatiner" class="ikon"><img id="kocka2icon" name="kocka2icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka2ertek" name="kocka2ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka2ertekS" name="kocka2ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1039,7 +1163,7 @@
 					<div id="kocka2szoba" name="kocka2szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka3" name="kocka3" onclick="snodeDeviceCommand('3')" class="kocka" style="display:none;">
+				<div id="kocka3" name="kocka3" class="kocka" style="display:none;">
 					<div id="kocka3type" name="kocka3type" style="display:none">ismeretlen</div>
 					<div id="kocka3iconConatiner" name="kocka3iconConatiner" class="ikon"><img id="kocka3icon" name="kocka3icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka3ertek" name="kocka3ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka3ertekS" name="kocka3ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1047,7 +1171,7 @@
 					<div id="kocka3szoba" name="kocka3szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka4" name="kocka4" onclick="snodeDeviceCommand('4')" class="kocka" style="display:none;">
+				<div id="kocka4" name="kocka4" class="kocka" style="display:none;">
 					<div id="kocka4type" name="kocka4type" style="display:none">ismeretlen</div>
 					<div id="kocka4iconConatiner" name="kocka4iconConatiner" class="ikon"><img id="kocka4icon" name="kocka4icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka4ertek" name="kocka4ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka4ertekS" name="kocka4ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1055,7 +1179,7 @@
 					<div id="kocka4szoba" name="kocka4szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka5" name="kocka5" onclick="snodeDeviceCommand('5')" class="kocka" style="display:none;">
+				<div id="kocka5" name="kocka5" class="kocka" style="display:none;">
 					<div id="kocka5type" name="kocka5type" style="display:none">ismeretlen</div>
 					<div id="kocka5iconConatiner" name="kocka5iconConatiner" class="ikon"><img id="kocka5icon" name="kocka5icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka5ertek" name="kocka5ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka5ertekS" name="kocka5ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1063,7 +1187,7 @@
 					<div id="kocka5szoba" name="kocka5szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka6" name="kocka6" onclick="snodeDeviceCommand('6')" class="kocka" style="display:none;">
+				<div id="kocka6" name="kocka6" class="kocka" style="display:none;">
 					<div id="kocka6type" name="kocka6type" style="display:none">ismeretlen</div>
 					<div id="kocka6iconConatiner" name="kocka6iconConatiner" class="ikon"><img id="kocka6icon" name="kocka6icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka6ertek" name="kocka6ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka6ertekS" name="kocka6ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1071,7 +1195,7 @@
 					<div id="kocka6szoba" name="kocka6szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka7" name="kocka7" onclick="snodeDeviceCommand('7')" class="kocka" style="display:none;">
+				<div id="kocka7" name="kocka7" class="kocka" style="display:none;">
 					<div id="kocka7type" name="kocka7type" style="display:none">ismeretlen</div>
 					<div id="kocka7iconConatiner" name="kocka7iconConatiner" class="ikon"><img id="kocka7icon" name="kocka7icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka7ertek" name="kocka7ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka7ertekS" name="kocka7ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1079,7 +1203,7 @@
 					<div id="kocka7szoba" name="kocka7szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka8" name="kocka8" onclick="snodeDeviceCommand('8')" class="kocka" style="display:none;">
+				<div id="kocka8" name="kocka8" class="kocka" style="display:none;">
 					<div id="kocka8type" name="kocka8type" style="display:none">ismeretlen</div>
 					<div id="kocka8iconConatiner" name="kocka8iconConatiner" class="ikon"><img id="kocka8icon" name="kocka8icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka8ertek" name="kocka8ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka8ertekS" name="kocka8ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1087,7 +1211,7 @@
 					<div id="kocka8szoba" name="kocka8szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka9" name="kocka9" onclick="snodeDeviceCommand('9')" class="kocka" style="display:none;">
+				<div id="kocka9" name="kocka9" class="kocka" style="display:none;">
 					<div id="kocka9type" name="kocka9type" style="display:none">ismeretlen</div>
 					<div id="kocka9iconConatiner" name="kocka9iconConatiner" class="ikon"><img id="kocka9icon" name="kocka9icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka9ertek" name="kocka9ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka9ertekS" name="kocka9ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1095,7 +1219,7 @@
 					<div id="kocka9szoba" name="kocka9szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka10" name="kocka10" onclick="snodeDeviceCommand('10')" class="kocka" style="display:none;">
+				<div id="kocka10" name="kocka10" class="kocka" style="display:none;">
 					<div id="kocka10type" name="kocka10type" style="display:none">ismeretlen</div>
 					<div id="kocka10iconConatiner" name="kocka10iconConatiner" class="ikon"><img id="kocka10icon" name="kocka10icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka10ertek" name="kocka10ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka10ertekS" name="kocka10ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1157,21 +1281,38 @@
 		</div>
 		
 		<script>
+					
 			var pressTimer;
-			$("#kocka1").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('1'); },1000);	});
-			$("#kocka2").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('2'); },1000);	});
-			$("#kocka3").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('3'); },1000);	});
-			$("#kocka4").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('4'); },1000);	});
-			$("#kocka5").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('5'); },1000);	});
-			$("#kocka6").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('6'); },1000);	});
-			$("#kocka7").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('7'); },1000);	});
-			$("#kocka8").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('8'); },1000);	});
-			$("#kocka9").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('9'); },1000);	});
-			$("#kocka10").mouseup(function(){ clearTimeout(pressTimer);}).mousedown(function(){ pressTimer = window.setTimeout(function() {showDeviceDetails('10'); },1000);	});
+			var longpress = '0';
+			//onclick="snodeDeviceCommand('1')"
+			
+			$("#kocka1").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000);});
+			$("#kocka2").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('2');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000);});
+			$("#kocka3").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('3');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('3'); },1000);});
+			$("#kocka4").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('4');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('4'); },1000);});
+			$("#kocka5").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('5');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('5'); },1000);});
+			$("#kocka6").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('6');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('6'); },1000);});
+			$("#kocka7").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('7');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('7'); },1000);});
+			$("#kocka8").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('8');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('8'); },1000);});
+			$("#kocka9").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('9');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('9'); },1000);});
+			$("#kocka10").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000);});
 			
 			function showDeviceDetails(id) {
 				var deviceName = document.getElementById('kocka' + id + 'nev').innerHTML;
-				logging('Részletek lekérdezése: ' + deviceName);
+				var tipus = document.getElementById('kocka' + id + 'type').innerHTML;
+				
+				if (tipus == "WS" || tipus == "DROP") {
+					document.getElementById('wsName').innerHTML = deviceName;
+					
+					
+					showModalWS();
+					logging('Részletek lekérdezése: ' + deviceName);
+				}
+				else {
+					return;
+				}
+				
+				
 			}
 		</script>
 		
