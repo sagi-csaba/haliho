@@ -1359,10 +1359,8 @@
 			$("#kocka9").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('9');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('9'); },1000);});
 			$("#kocka10").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000);});
 			
-			var hopplaEztKellCserelniMeg = 'ures';
 			function showDeviceDetails(id) {
 				var deviceName = document.getElementById('kocka' + id + 'nev').innerHTML;
-				hopplaEztKellCserelniMeg = deviceName;
 				var tipus = document.getElementById('kocka' + id + 'type').innerHTML;
 				
 				if (tipus == "WS" || tipus == "DROP") {
@@ -1405,7 +1403,7 @@
 			var wsChart;
 			
 			function UpdateSnodeWSHistorie24h() {
-				var valaszStr = String(valaszHistorie.replace(hopplaEztKellCserelniMeg,'');
+				var valaszStr = String(valaszHistorie);
 				var lines = valaszStr.split("|"); 
 
 				logginToLog('UpdateSnodeWSHistorie24h:');
@@ -1415,9 +1413,9 @@
 				var ertekek_paratartalom = [];
 				var felirat = [];
 				logginToLog('for ciklus kezdete');
-				var i = 12;
-				for (i = 12; i > 0; i--) {
-				var feliratInt = i-12;
+				var i = 72;
+				for (i = 72; i > 0; i--) {
+				var feliratInt = i-72;
 				if (feliratInt == 0 ) { felirat[i] = "most";} 
 					else
 					{
@@ -1430,7 +1428,7 @@
 							felirat[i] = "";
 						}
 					}
-					var reszertek = lines[12-i].split(";");
+					var reszertek = lines[72-i].split(";");
 					ertekek_homerseklet[i] = reszertek[0];
 					ertekek_paratartalom[i] = reszertek[1];
 					logginToLog(i + ' -> homerseklet = ' + reszertek[0] + ' paratartalom:' + reszertek[1]);
@@ -1492,7 +1490,7 @@
 			}
 			
 			function UpdateSnodeWSHistorie3d() {
-				var valaszStr = String(valaszHistorie.replace(hopplaEztKellCserelniMeg,'');
+				var valaszStr = String(valaszHistorie);
 				var lines = valaszStr.split("|"); 
 
 				logginToLog('UpdateSnodeWSHistorie3d');
@@ -1500,13 +1498,13 @@
 				var ertekek_paratartalom = [];
 				var felirat = [];
 				
-				var i = 24;
-				for (i = 24; i > 0; i--) {
-					var feliratInt = i-24;
+				var i = 216;
+				for (i = 216; i > 0; i--) {
+					var feliratInt = i-216;
 					if (feliratInt == 0 ) { felirat[i] = "most";} 
 					else
 					{
-						if (feliratInt % 24 == 0)
+						if (feliratInt % 36 == 0)
 						{
 							felirat[i] = String(feliratInt / 3) + 'ó';
 						}
@@ -1515,7 +1513,7 @@
 							felirat[i] = "";
 						}
 					}
-					var reszertek = lines[24-i].split(";");
+					var reszertek = lines[216-i].split(";");
 					ertekek_homerseklet[i] = reszertek[0];
 					ertekek_paratartalom[i] = reszertek[1];
 				} 
@@ -1576,7 +1574,7 @@
 			}
 			
 			function UpdateSnodeWSHistorie7d() {
-				var valaszStr = String(valaszHistorie.replace(hopplaEztKellCserelniMeg,'');
+				var valaszStr = String(valaszHistorie);
 				var lines = valaszStr.split("|"); 
 
 				logginToLog('UpdateSnodeWSHistorie7d');
@@ -1584,9 +1582,9 @@
 				var ertekek_paratartalom = [];
 				var felirat = [];
 				
-				var i = 36;
-				for (i = 36; i > 0; i--) {
-				var feliratInt = i-36;
+				var i = 504;
+				for (i = 504; i > 0; i--) {
+				var feliratInt = i-504;
 				if (feliratInt == 0 ) { felirat[i] = "most";} 
 				else
 				{
@@ -1600,7 +1598,7 @@
 						felirat[i] = "";
 					}
 				}
-				var reszertek = lines[36-i].split(";");
+				var reszertek = lines[504-i].split(";");
 				ertekek_homerseklet[i] = reszertek[0];
 				ertekek_paratartalom[i] = reszertek[1];
 				} 
