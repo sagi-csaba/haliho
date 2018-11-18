@@ -457,10 +457,10 @@
 				 <center><div id="wsName">...</div></center>
 				 <div style="display: flex;">
 					<div style="flex: 1;text-align:center;">
-						<img src="img/pictogram_temp.png" style="max-height:55px;margin-top:-30px;"><div id="actualTemp" name="actualTemp" style="display:inline-block;font-size:4em;">26</div>&#x2103;<br>
+						<img src="img/pictogram_temp.png" style="max-height:55px;margin-top:-30px;"><div id="actualTemp" name="actualTemp" style="display:inline-block;font-size:4em;">--</div>&#x2103;<br>
 					</div>
 					<div style="flex: 1;text-align:center;margin-top:33px;">
-						<img src="img/pictogram_drop.png" style="max-height:30px;margin-top:-15px;"> <div id="actualHumidity" name="actualHumidity" center style="display:inline-block;font-size:2em;">52</div>%<br> 
+						<img src="img/pictogram_drop.png" style="max-height:30px;margin-top:-15px;"> <div id="actualHumidity" name="actualHumidity" center style="display:inline-block;font-size:2em;">--</div>%<br> 
 					</div>
 					
 				</div>	
@@ -483,9 +483,6 @@
 			
 			
 			<div style="display: flex;margin-top:30px;">
-				<div style="flex: 1;text-align:center;">
-					
-				</div>
 				<div style="flex: 1;text-align:center;">
 					<span class="closeX" onclick="closemyModalWS()">Bezár</span>
 				</div>
@@ -1347,6 +1344,7 @@
 			var pressTimer;
 			var longpress = '0';
 			var nodeNameToReplace = 'ures';
+			var nodeNameToReplaceAlt = 'ures';
 			//onclick="snodeDeviceCommand('1')"
 			
 			$("#kocka1").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000);});
@@ -1363,10 +1361,22 @@
 			function showDeviceDetails(id) {
 				var deviceName = document.getElementById('kocka' + id + 'nev').innerHTML;
 				nodeNameToReplace = deviceName + ';';
+				nodeNameToReplaceAlt = deviceName.replace('_DROP','_WS') + ';';
 				var tipus = document.getElementById('kocka' + id + 'type').innerHTML;
 				
 				if (tipus == "WS" || tipus == "DROP") {
 					document.getElementById('wsName').innerHTML = deviceName;
+					var devicenameArr = deviceName.split('_');
+					var devMainNameTemperature = devicenameArr[0] + '_WS';
+					var devMainNameHumidity = devicenameArr[0] + '_DROP';
+					
+					//irjuk be az akutalis adatokat
+					for (var i = 1; i<=10; i++)
+					{
+						if (document.getElementById('kocka' + i + 'nev').innerHTML.indexOf(devMainNameTemperature) != -1) {document.getElementById('actualTemp').innerHTML = document.getElementById('kocka' + i + 'ertek').innerHTML;}
+						if (document.getElementById('kocka' + i + 'nev').innerHTML.indexOf(devMainNameHumidity) != -1) {document.getElementById('actualHumidity').innerHTML = document.getElementById('kocka' + i + 'ertek').innerHTML;}
+					}
+					
 					
 					var commandTxtHistorie = 'snodeControlThisDevice:' + deviceName.replace('_DROP','_WS') + ';snodeControlCommand:sendMeYourHistory';
 					
@@ -1405,17 +1415,17 @@
 			var wsChart;
 			
 			function UpdateSnodeWSHistorie24h() {
-				var valaszStr = String(valaszHistorie).replace(nodeNameToReplace,'');
+				var valaszStr = String(valaszHistorie).replace(nodeNameToReplace,'').replace(nodeNameToReplaceAlt,'');
 				var lines = valaszStr.split("|"); 
 
-				logginToLog('UpdateSnodeWSHistorie24h:');
-				logginToLog('nodeNameToReplace: ' + nodeNameToReplace);
-				logginToLog('valaszHistorie: ' + nodeNameToReplace );
-				logginToLog('lines hossza: ' + lines.lenght);
+				//logginToLog('UpdateSnodeWSHistorie24h:');
+				//logginToLog('nodeNameToReplace: ' + nodeNameToReplace);
+				//logginToLog('valaszHistorie: ' + nodeNameToReplace );
+				//logginToLog('lines hossza: ' + lines.lenght);
 				var ertekek_homerseklet = [];
 				var ertekek_paratartalom = [];
 				var felirat = [];
-				logginToLog('for ciklus kezdete');
+				//logginToLog('for ciklus kezdete');
 				var i = 12;
 				for (i = 12; i > 0; i--) {
 				var feliratInt = i-12;
@@ -1434,7 +1444,7 @@
 					var reszertek = lines[12-i].split(";");
 					ertekek_homerseklet[i] = reszertek[0];
 					ertekek_paratartalom[i] = reszertek[1];
-					logginToLog(i + ' -> homerseklet = ' + reszertek[0] + ' paratartalom:' + reszertek[1]);
+					//logginToLog(i + ' -> homerseklet = ' + reszertek[0] + ' paratartalom:' + reszertek[1]);
 				} 
 				logginToLog('chart rajzolasa');
 				//es most chart rajzolasa
@@ -1493,7 +1503,7 @@
 			}
 			
 			function UpdateSnodeWSHistorie3d() {
-				var valaszStr = String(valaszHistorie);
+				var valaszStr = String(valaszHistorie).replace(nodeNameToReplace,'').replace(nodeNameToReplaceAlt,'');
 				var lines = valaszStr.split("|"); 
 
 				logginToLog('UpdateSnodeWSHistorie3d');
@@ -1577,7 +1587,7 @@
 			}
 			
 			function UpdateSnodeWSHistorie7d() {
-				var valaszStr = String(valaszHistorie);
+				var valaszStr = String(valaszHistorie).replace(nodeNameToReplace,'').replace(nodeNameToReplaceAlt,'');
 				var lines = valaszStr.split("|"); 
 
 				logginToLog('UpdateSnodeWSHistorie7d');
