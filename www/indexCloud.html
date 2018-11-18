@@ -471,13 +471,13 @@
 			
 			<div style="display: flex;margin-top:30px;">
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX3" onclick="">utolsó 24 óra</span>
+					<span class="closeX3" onclick="UpdateSnodeWSHistorie24h()">utolsó 24 óra</span>
 				</div>
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX3" onclick="">utolsó 3 nap</span>
+					<span class="closeX3" onclick="UpdateSnodeWSHistorie3d()">utolsó 3 nap</span>
 				</div>
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX3" onclick="">utolsó 1 hét</span>
+					<span class="closeX3" onclick="UpdateSnodeWSHistorie7d()">utolsó 1 hét</span>
 				</div>
 			</div>	
 			
@@ -536,6 +536,7 @@
 				
 			}
 			
+			var valaszHistorie = 'ures';
 			var modal = document.getElementById('myModal');
 			var modal2 = document.getElementById('myModal2');
 			var modalWS = document.getElementById('myModalWS');
@@ -781,9 +782,13 @@
 							  if (payloadString.indexOf('snodeDeviceHistory') != -1) {
 								// ha a valasz tartalmazza a snodeDeviceHistory szot; akkor nem a fo lapot, hanem valamelyik melleklapot kell frissiten
 								
+								if (document.getElementById('myModalWS').style.display == 'none') {return;}	//ha nem lathato az idojaras ablak, akkor ne csinaljon semmit sem
+								
+								
 								if (payloadString.indexOf('_WS') != -1) {
 									//idojaras allomasrol erkezett historie adat
-									UpdateSnodeWSHistorie(payloadString);
+									valaszHistorie = payloadString.replace('snodeDeviceName:','').replace('snodeDeviceHistory:',''); 
+									//UpdateSnodeWSHistorie(payloadString); // helyette a gombok fogjak vezerelni
 								}
 								
 								if (payloadString.indexOf('_valami_aminek_van_meg_historie_adatlapja') != -1) {
@@ -1396,70 +1401,260 @@
 			
 			var wsChart;
 			
-			function UpdateSnodeWSHistorie(valasz) {
-				//ez fogja az idojaras allomastol beerkezett adatokat fogadni
-				var ctx = document.getElementById('myChart').getContext("2d");
-				
+			function UpdateSnodeWSHistorie24h(valaszHistorie) {
+				var valaszStr = String(valaszHistorie);
+				var lines = valaszStr.split("|"); 
+
+				logginToLog('UpdateSnodeWSHistorie24h:');
 				var ertekek_homerseklet = [];
 				var ertekek_paratartalom = [];
 				var felirat = [];
 				
-								
+				var i = 72;
+				for (i = 72; i > 0; i--) {
+				var feliratInt = i-72;
+				if (feliratInt == 0 ) { felirat[i] = "most";} 
+					else
+					{
+					if (feliratInt % 3 == 0)
+					{
+						felirat[i] = String(feliratInt / 3) + 'ó';
+					}
+						else
+						{
+							felirat[i] = "";
+						}
+					}
+					var reszertek = lines[72-i].split(";");
+					ertekek_homerseklet[i] = reszertek[0];
+					ertekek_paratartalom[i] = reszertek[1];
+					logginToLog(i + ' -> homerseklet = ' + reszertek[0] + ' paratartalom:' + reszertek[1]);
+				} 
+				
 				//es most chart rajzolasa
-											var ctx = document.getElementById('myChart').getContext("2d");
-											if (wsChart != null) 
-											{
-												//wsChart.destroy();
-												wsChart.data.labels = felirat;
-												wsChart.data.datasets[0].data = ertekek_homerseklet;
-												wsChart.data.datasets[1].data = ertekek_paratartalom;
-												wsChart.update();
-												return;
-											}
-											wsChart = new Chart(ctx, {
-											  type: 'line',
-											  data: {
-												labels: felirat,
-												datasets: [{
-												  label: 'hőmérséklet [Celsius]',
-												  borderColor: 'rgba(0, 255, 0, 0.6)',
-												  backgroundColor: 'rgba(0, 255, 0, 0.1)',
-												  yAxisID: 'A',
-												  data: ertekek_homerseklet,
-												  pointRadius: 0
-												}, {
-												  label: 'páratartalom [%]',
-												  yAxisID: 'B',
-												  borderColor: 'rgba(255, 255, 255, 0.6)',
-												  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-												  data: ertekek_paratartalom,
-												  pointRadius: 0
-												}]
-											  },
-											  options: {
-											  responsive: true,
-											  stacked: false,
-											  animation: {
-												duration: 1000,
-												easing: 'easeInOutExpo',
-											  },
-											  hoverMode: 'index',
-											  stacked: false,
-												scales: {
-												  yAxes: [{
-													id: 'A',
-													type: 'linear',
-													position: 'left',
-												  }, {
-													id: 'B',
-													type: 'linear',
-													position: 'right',
-													
-												  }]
-												}
-											  }
-											});
+				var ctx = document.getElementById('myChart').getContext("2d");
+				if (wsChart != null) 
+				{
+					//wsChart.destroy();
+					wsChart.data.labels = felirat;
+					wsChart.data.datasets[0].data = ertekek_homerseklet;
+					wsChart.data.datasets[1].data = ertekek_paratartalom;
+					wsChart.update();
+					return;
+				}
+				wsChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+					labels: felirat,
+					datasets: [{
+					label: 'hőmérséklet [Celsius]',
+					borderColor: 'rgba(0, 255, 0, 0.6)',
+					backgroundColor: 'rgba(0, 255, 0, 0.1)',
+					yAxisID: 'A',
+					data: ertekek_homerseklet,
+					pointRadius: 0
+				}, {
+					label: 'páratartalom [%]',
+					yAxisID: 'B',
+					borderColor: 'rgba(0, 0, 255, 0.6)',
+					backgroundColor: 'rgba(0, 0, 255, 0.1)',
+					data: ertekek_paratartalom,
+					pointRadius: 0
+					}]
+					},
+					options: {
+					  responsive: true,
+					  stacked: false,
+					  animation: {
+					  duration: 1000,
+					  easing: 'easeInOutExpo',
+					},
+					hoverMode: 'index',
+					stacked: false,
+					scales: {
+					  yAxes: [{
+					  id: 'A',
+					  type: 'linear',
+					  position: 'left',
+					}, {
+					  id: 'B',
+					  type: 'linear',
+					  position: 'right',
+					 }]
+					}
+				  }
+				});
 			}
+			
+			function UpdateSnodeWSHistorie3d(valaszHistorie) {
+				var valaszStr = String(valaszHistorie);
+				var lines = valaszStr.split("|"); 
+
+				logginToLog('UpdateSnodeWSHistorie3d');
+				var ertekek_homerseklet = [];
+				var ertekek_paratartalom = [];
+				var felirat = [];
+				
+				var i = 216;
+				for (i = 216; i > 0; i--) {
+					var feliratInt = i-216;
+					if (feliratInt == 0 ) { felirat[i] = "most";} 
+					else
+					{
+						if (feliratInt % 36 == 0)
+						{
+							felirat[i] = String(feliratInt / 3) + 'ó';
+						}
+						else
+						{
+							felirat[i] = "";
+						}
+					}
+					var reszertek = lines[216-i].split(";");
+					ertekek_homerseklet[i] = reszertek[0];
+					ertekek_paratartalom[i] = reszertek[1];
+				} 
+										
+				//es most chart rajzolasa
+				var ctx = document.getElementById('myChart').getContext("2d");
+				if (wsChart != null) 
+				{
+					//wsChart.destroy();
+					wsChart.data.labels = felirat;
+					wsChart.data.datasets[0].data = ertekek_homerseklet;
+					wsChart.data.datasets[1].data = ertekek_paratartalom;
+					wsChart.update();
+					return;
+				}
+				wsChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+					labels: felirat,
+					datasets: [{
+					label: 'hőmérséklet [Celsius]',
+					borderColor: 'rgba(0, 255, 0, 0.6)',
+					backgroundColor: 'rgba(0, 255, 0, 0.1)',
+					yAxisID: 'A',
+					data: ertekek_homerseklet,
+					pointRadius: 0
+				}, {
+					label: 'páratartalom [%]',
+					yAxisID: 'B',
+					borderColor: 'rgba(0, 0, 255, 0.6)',
+					backgroundColor: 'rgba(0, 0, 255, 0.1)',
+					data: ertekek_paratartalom,
+					pointRadius: 0
+					}]
+					},
+					options: {
+					  responsive: true,
+					  stacked: false,
+					  animation: {
+					  duration: 1000,
+					  easing: 'easeInOutExpo',
+					},
+					hoverMode: 'index',
+					stacked: false,
+					scales: {
+					  yAxes: [{
+					  id: 'A',
+					  type: 'linear',
+					  position: 'left',
+					}, {
+					  id: 'B',
+					  type: 'linear',
+					  position: 'right',
+					 }]
+					}
+				  }
+				});
+			}
+			
+			function UpdateSnodeWSHistorie7d(valaszHistorie) {
+				var valaszStr = String(valaszHistorie);
+				var lines = valaszStr.split("|"); 
+
+				logginToLog('UpdateSnodeWSHistorie7d');
+				var ertekek_homerseklet = [];
+				var ertekek_paratartalom = [];
+				var felirat = [];
+				
+				var i = 504;
+				for (i = 504; i > 0; i--) {
+				var feliratInt = i-504;
+				if (feliratInt == 0 ) { felirat[i] = "most";} 
+				else
+				{
+					if (feliratInt % 36 == 0)
+					{
+						//felirat[i] = String(feliratInt / 3) + 'ó';
+						felirat[i] = String(feliratInt / 3 / 24) + 'nap';
+					}
+					else
+					{
+						felirat[i] = "";
+					}
+				}
+				var reszertek = lines[504-i].split(";");
+				ertekek_homerseklet[i] = reszertek[0];
+				ertekek_paratartalom[i] = reszertek[1];
+				} 
+										
+				//es most chart rajzolasa
+				var ctx = document.getElementById('myChart').getContext("2d");
+				if (wsChart != null) 
+				{
+					//wsChart.destroy();
+					wsChart.data.labels = felirat;
+					wsChart.data.datasets[0].data = ertekek_homerseklet;
+					wsChart.data.datasets[1].data = ertekek_paratartalom;
+					wsChart.update();
+					return;
+				}
+				wsChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+					labels: felirat,
+					datasets: [{
+					label: 'hőmérséklet [Celsius]',
+					borderColor: 'rgba(0, 255, 0, 0.6)',
+					backgroundColor: 'rgba(0, 255, 0, 0.1)',
+					yAxisID: 'A',
+					data: ertekek_homerseklet,
+					pointRadius: 0
+				}, {
+					label: 'páratartalom [%]',
+					yAxisID: 'B',
+					borderColor: 'rgba(0, 0, 255, 0.6)',
+					backgroundColor: 'rgba(0, 0, 255, 0.1)',
+					data: ertekek_paratartalom,
+					pointRadius: 0
+					}]
+					},
+					options: {
+					  responsive: true,
+					  stacked: false,
+					  animation: {
+					  duration: 1000,
+					  easing: 'easeInOutExpo',
+					},
+					hoverMode: 'index',
+					stacked: false,
+					scales: {
+					  yAxes: [{
+					  id: 'A',
+					  type: 'linear',
+					  position: 'left',
+					}, {
+					  id: 'B',
+					  type: 'linear',
+					  position: 'right',
+					 }]
+					}
+				  }
+				});
+			}
+			
 		</script>
 		
     </body>
