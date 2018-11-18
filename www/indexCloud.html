@@ -1406,10 +1406,12 @@
 				var lines = valaszStr.split("|"); 
 
 				logginToLog('UpdateSnodeWSHistorie24h:');
+				logginToLog('valaszHistorie: ' + valaszHistorie );
+				logginToLog('lines hossza: ' + lines.lenght);
 				var ertekek_homerseklet = [];
 				var ertekek_paratartalom = [];
 				var felirat = [];
-				
+				logginToLog('for ciklus kezdete');
 				var i = 72;
 				for (i = 72; i > 0; i--) {
 				var feliratInt = i-72;
@@ -1430,7 +1432,7 @@
 					ertekek_paratartalom[i] = reszertek[1];
 					logginToLog(i + ' -> homerseklet = ' + reszertek[0] + ' paratartalom:' + reszertek[1]);
 				} 
-				
+				logginToLog('chart rajzolasa');
 				//es most chart rajzolasa
 				var ctx = document.getElementById('myChart').getContext("2d");
 				if (wsChart != null) 
