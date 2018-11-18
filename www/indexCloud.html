@@ -471,13 +471,13 @@
 			
 			<div style="display: flex;margin-top:30px;">
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX3" onclick="UpdateSnodeWSHistorie24h()">utolsó 24 óra</span>
+					<span class="closeX3" onclick="UpdateSnodeWSHistorie24h()">utolsó 4 óra</span>
 				</div>
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX3" onclick="UpdateSnodeWSHistorie3d()">utolsó 3 nap</span>
+					<span class="closeX3" onclick="UpdateSnodeWSHistorie3d()">utolsó 8 óra</span>
 				</div>
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX3" onclick="UpdateSnodeWSHistorie7d()">utolsó 1 hét</span>
+					<span class="closeX3" onclick="UpdateSnodeWSHistorie7d()">utolsó 12 óra</span>
 				</div>
 			</div>	
 			
@@ -1362,7 +1362,7 @@
 			
 			function showDeviceDetails(id) {
 				var deviceName = document.getElementById('kocka' + id + 'nev').innerHTML;
-				nodeNameToReplace = deviceName + ':';
+				nodeNameToReplace = deviceName + ';';
 				var tipus = document.getElementById('kocka' + id + 'type').innerHTML;
 				
 				if (tipus == "WS" || tipus == "DROP") {
@@ -1501,13 +1501,13 @@
 				var ertekek_paratartalom = [];
 				var felirat = [];
 				
-				var i = 216;
-				for (i = 216; i > 0; i--) {
-					var feliratInt = i-216;
+				var i = 24;
+				for (i = 24; i > 0; i--) {
+					var feliratInt = i-24;
 					if (feliratInt == 0 ) { felirat[i] = "most";} 
 					else
 					{
-						if (feliratInt % 36 == 0)
+						if (feliratInt % 3 == 0)
 						{
 							felirat[i] = String(feliratInt / 3) + 'ó';
 						}
@@ -1516,7 +1516,7 @@
 							felirat[i] = "";
 						}
 					}
-					var reszertek = lines[216-i].split(";");
+					var reszertek = lines[24-i].split(";");
 					ertekek_homerseklet[i] = reszertek[0];
 					ertekek_paratartalom[i] = reszertek[1];
 				} 
@@ -1585,23 +1585,22 @@
 				var ertekek_paratartalom = [];
 				var felirat = [];
 				
-				var i = 504;
-				for (i = 504; i > 0; i--) {
-				var feliratInt = i-504;
+				var i = 36;
+				for (i = 36; i > 0; i--) {
+				var feliratInt = i-36;
 				if (feliratInt == 0 ) { felirat[i] = "most";} 
 				else
 				{
-					if (feliratInt % 36 == 0)
+					if (feliratInt % 3 == 0)
 					{
-						//felirat[i] = String(feliratInt / 3) + 'ó';
-						felirat[i] = String(feliratInt / 3 / 24) + 'nap';
+						felirat[i] = String(feliratInt / 3) + 'ó';
 					}
 					else
 					{
 						felirat[i] = "";
 					}
 				}
-				var reszertek = lines[504-i].split(";");
+				var reszertek = lines[36-i].split(";");
 				ertekek_homerseklet[i] = reszertek[0];
 				ertekek_paratartalom[i] = reszertek[1];
 				} 
