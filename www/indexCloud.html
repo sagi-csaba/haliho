@@ -566,11 +566,12 @@
 			}
 			
 			function closemyModalWS() {
-				
+				logging('Részletek elrejtve: ' + deviceName);
 				modalWS.className = "animated fadeOutDown";
 				setTimeout(function(){
 					modalWS.style.display = "none";
-				},300);
+				},500);
+				
 			}
 			
 			var randomName = "snodeApp_";
@@ -1408,7 +1409,7 @@
 					
 					setTimeout(function(){
 						document.getElementById('btnWS_last4hours').click();
-					},1000);
+					},500);
 					
 					
 					logging('Részletek lekérdezése: ' + deviceName);
