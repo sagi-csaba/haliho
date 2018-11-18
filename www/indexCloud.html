@@ -782,11 +782,12 @@
 							  if (payloadString.indexOf('snodeDeviceHistory') != -1) {
 								// ha a valasz tartalmazza a snodeDeviceHistory szot; akkor nem a fo lapot, hanem valamelyik melleklapot kell frissiten
 								
-								if (document.getElementById('myModalWS').style.display == 'none') {return;}	//ha nem lathato az idojaras ablak, akkor ne csinaljon semmit sem
+								if (document.getElementById('myModalWS').style.display == 'none') {logginToLog('return; mert a myModalWS display=none');return;}	//ha nem lathato az idojaras ablak, akkor ne csinaljon semmit sem
 								
 								
 								if (payloadString.indexOf('_WS') != -1) {
 									//idojaras allomasrol erkezett historie adat
+									logginToLog('itt állítjuk be a valaszHistorie változót');
 									valaszHistorie = payloadString.replace('snodeDeviceName:','').replace('snodeDeviceHistory:',''); 
 									//UpdateSnodeWSHistorie(payloadString); // helyette a gombok fogjak vezerelni
 								}
