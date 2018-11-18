@@ -1408,7 +1408,7 @@
 					
 					setTimeout(function(){
 						document.getElementById('btnWS_last4hours').click();
-					},1);
+					},1000);
 					
 					
 					logging('Részletek lekérdezése: ' + deviceName);
@@ -1455,7 +1455,7 @@
 					//logginToLog(i + ' -> homerseklet = ' + reszertek[0] + ' paratartalom:' + reszertek[1]);
 				} 
 				logginToLog('chart rajzolasa');
-				document.getElementById('btnWS_last4hours').innerHTML = "utolsó 4 óra adatai";
+				document.getElementById('actualChartType').innerHTML = "utolsó 4 óra adatai";
 				//es most chart rajzolasa
 				var ctx = document.getElementById('myChart').getContext("2d");
 				if (wsChart != null) 
@@ -1541,7 +1541,7 @@
 				} 
 										
 				//es most chart rajzolasa
-				document.getElementById('btnWS_last4hours').innerHTML = "utolsó 8 óra adatai";
+				document.getElementById('actualChartType').innerHTML = "utolsó 8 óra adatai";
 				var ctx = document.getElementById('myChart').getContext("2d");
 				if (wsChart != null) 
 				{
@@ -1626,7 +1626,7 @@
 				} 
 										
 				//es most chart rajzolasa
-				document.getElementById('btnWS_last4hours').innerHTML = "utolsó 12 óra adatai";
+				document.getElementById('actualChartType').innerHTML = "utolsó 12 óra adatai";
 				var ctx = document.getElementById('myChart').getContext("2d");
 				if (wsChart != null) 
 				{
