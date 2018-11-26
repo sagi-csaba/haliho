@@ -1348,16 +1348,44 @@
 			var nodeNameToReplaceAlt = 'ures';
 			//onclick="snodeDeviceCommand('1')"
 			
-			$("#kocka1").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000);});
-			$("#kocka2").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('2');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000);});
-			$("#kocka3").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('3');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('3'); },1000);});
-			$("#kocka4").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('4');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('4'); },1000);});
-			$("#kocka5").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('5');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('5'); },1000);});
-			$("#kocka6").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('6');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('6'); },1000);});
-			$("#kocka7").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('7');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('7'); },1000);});
-			$("#kocka8").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('8');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('8'); },1000);});
-			$("#kocka9").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('9');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('9'); },1000);});
-			$("#kocka10").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000);});
+			//$("#kocka1").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000);});
+			//$("#kocka2").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('2');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000);});
+			//$("#kocka3").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('3');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('3'); },1000);});
+			//$("#kocka4").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('4');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('4'); },1000);});
+			//$("#kocka5").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('5');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('5'); },1000);});
+			//$("#kocka6").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('6');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('6'); },1000);});
+			//$("#kocka7").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('7');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('7'); },1000);});
+			//$("#kocka8").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('8');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('8'); },1000);});
+			//$("#kocka9").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('9');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('9'); },1000);});
+			//$("#kocka10").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000);});
+			
+			
+			$("#kocka1").on('touchstart mousedown', function(e) {
+				e.preventDefault();
+				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000);
+			});
+			
+			$("#kocka2").on('touchstart mousedown', function(e) {
+				e.preventDefault();
+				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000);
+			});
+			
+			$("#kocka3").on('touchstart mousedown', function(e) {
+				e.preventDefault();
+				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('3'); },1000);
+			});
+			
+			$("#kocka3").on('touchstart mousedown', function(e) {
+				e.preventDefault();
+				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('4'); },1000);
+			});
+			
+			$("#kocka4").on('touchstart mousedown', function(e) {
+				e.preventDefault();
+				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('5'); },1000);
+			});
+			
+			
 			
 			function showDeviceDetails(id) {
 				var deviceName = document.getElementById('kocka' + id + 'nev').innerHTML;
