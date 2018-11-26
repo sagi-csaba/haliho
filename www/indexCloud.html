@@ -1360,9 +1360,25 @@
 			//$("#kocka10").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000);});
 			
 			
+			$("#kocka1").on('touchend mouseup', function(e) {
+				e.preventDefault();
+				clearTimeout(pressTimer);
+				if (longpress=='0'){snodeDeviceCommand('1');}
+				longpress='0';
+				
+			});
+			
 			$("#kocka1").on('touchstart mousedown', function(e) {
 				e.preventDefault();
 				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000);
+			});
+			
+			$("#kocka2").on('touchend mouseup', function(e) {
+				e.preventDefault();
+				clearTimeout(pressTimer);
+				if (longpress=='0'){snodeDeviceCommand('2');}
+				longpress='0';
+				
 			});
 			
 			$("#kocka2").on('touchstart mousedown', function(e) {
@@ -1370,21 +1386,7 @@
 				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000);
 			});
 			
-			$("#kocka3").on('touchstart mousedown', function(e) {
-				e.preventDefault();
-				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('3'); },1000);
-			});
-			
-			$("#kocka3").on('touchstart mousedown', function(e) {
-				e.preventDefault();
-				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('4'); },1000);
-			});
-			
-			$("#kocka4").on('touchstart mousedown', function(e) {
-				e.preventDefault();
-				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('5'); },1000);
-			});
-			
+				
 			
 			
 			function showDeviceDetails(id) {
