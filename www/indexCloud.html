@@ -1361,20 +1361,19 @@
 			
 			
 			$("#kocka1").on('touchend mouseup', function(e) {
-				e.preventDefault();
+				//e.preventDefault();
 				clearTimeout(pressTimer);
 				if (longpress=='0'){snodeDeviceCommand('1');}
 				longpress='0';
-				
 			});
 			
 			$("#kocka1").on('touchstart mousedown', function(e) {
-				e.preventDefault();
+				//e.preventDefault();
 				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000);
 			});
 			
 			$("#kocka2").on('touchend mouseup', function(e) {
-				e.preventDefault();
+				//e.preventDefault();
 				clearTimeout(pressTimer);
 				if (longpress=='0'){snodeDeviceCommand('2');}
 				longpress='0';
@@ -1382,7 +1381,7 @@
 			});
 			
 			$("#kocka2").on('touchstart mousedown', function(e) {
-				e.preventDefault();
+				//e.preventDefault();
 				pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000);
 			});
 			
