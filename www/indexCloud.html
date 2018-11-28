@@ -1025,12 +1025,7 @@
 											//rgb mode
 											var tempRgbColor = payload.split('-');
 											document.getElementById('kocka' + i + 'ertek').innerHTML = 'BE';
-											var hexRed = parseFloat(tempRgbColor[2]).toString(16);
-											var hexGreen = parseFloat(tempRgbColor[3]).toString(16);
-											var hexBlue = parseFloat(tempRgbColor[4]).toString(16);
-											var ikonhatterszine = '#' + hexRed +hexGreen + hexBlue;
-											logginToLog("rgbw controller jelenlegi színkódja: " + ikonhatterszine);
-											document.getElementById('kocka' + i + 'iconConatiner').style.background = ikonhatterszine;
+											document.getElementById('kocka' + i + 'iconConatiner').style.background = rgb(parseFloat(tempRgbColor[2]), parseFloat(tempRgbColor[3]), parseFloat(tempRgbColor[4]));
 											document.getElementById('kocka' + i + 'ertekS').innerHTML = ' RGB';
 										}
 										if (snodeDeviceValue.substring(0,3) == '0-1')
@@ -1081,12 +1076,7 @@
 											//rgb mode
 											var tempRgbColor = payload.split('-');
 											document.getElementById('kocka' + j + 'ertek').innerHTML = 'BE';
-											var hexRed = parseFloat(tempRgbColor[2]).toString(16);
-											var hexGreen = parseFloat(tempRgbColor[3]).toString(16);
-											var hexBlue = parseFloat(tempRgbColor[4]).toString(16);
-											var ikonhatterszine = '#' + hexRed +hexGreen + hexBlue;
-											logginToLog("rgbw controller jelenlegi színkódja: " + ikonhatterszine);
-											document.getElementById('kocka' + j + 'iconConatiner').style.background = ikonhatterszine;
+											document.getElementById('kocka' + j + 'iconConatiner').style.background = rgb(parseFloat(tempRgbColor[2]), parseFloat(tempRgbColor[3]), parseFloat(tempRgbColor[4]));
 											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' RGB';
 										}
 										
