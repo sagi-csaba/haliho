@@ -990,6 +990,113 @@
 					
 					if (payload.indexOf('_RGBW') != -1) {
 						//RGBW vezérlőtől jött válasz
+						
+						var tempArray = payload.split(';');
+						var snodeDeviceName = tempArray[0].replace('snodeDeviceName:','');;    	//<-	rgbw controller neve
+						var tempResult = tempArray[1].replace('snodeDeviceStatus:','');
+						var snodeDeviceValue = tempResult;										//<-	rgbw controller állapota
+						
+						logginToLog("rgbw controller neve: " + snodeDeviceName);
+						logginToLog("rgbw controller állapota: " + snodeDeviceValue);
+						
+						//"snodeDeviceName:nappali_RGBW;snodeDeviceStatus:0-0-255-255-255-0"  rgbw:BE/KI-feher:BE/KI-rrr-ggg-bbb-feherfenyero
+						
+						var vanMarIlyen = 'nincs';
+						for (var i = 1; i<=10; i++)
+						{
+							var csempe = document.getElementById('kocka' + i);
+							var csempeneve = 'kocka' + i;
+							var csempeTypeValue = document.getElementById('kocka' + i + 'type').innerHTML;
+								if (csempeTypeValue != 'ismeretlen') {
+									var csempeDevinceName = document.getElementById('kocka' + i + 'nev').innerHTML;
+									if (csempeDevinceName == snodeDeviceName) {
+										//a látható csempe eszközének neve megegyezik a device nevével, ami most küldött parancsot
+										//frissíteni kell az értékeket és készen is vagyunk!
+										
+										if (snodeDeviceValue.substring(0,3) == '0-0')
+										{
+											//kikapcsolva
+											document.getElementById('kocka' + i + 'ertek').innerHTML = 'KI';
+											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#ffffff';
+										}
+										if (snodeDeviceValue.substring(0,3) == '1-0')
+										{
+											//rgb mode
+											var tempRgbColor = payload.split('-');
+											document.getElementById('kocka' + i + 'ertek').innerHTML = 'RGB: BE';
+											var hexRed = tempRgbColor[2].toString(16);
+											var hexGreen = tempRgbColor[3].toString(16);
+											var hexBlue = tempRgbColor[4].toString(16);
+											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#' + hexRed +hexGreen + hexBlue;
+										}
+										if (snodeDeviceValue.substring(0,3) == '0-1')
+										{
+											//white mode
+											var tempWhitePercentage = payload.split('-');
+											document.getElementById('kocka' + i + 'ertek').innerHTML = 'Fehér: ' + tempWhitePercentage[5]  + '%';
+											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#ffffff';
+										}
+									
+										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										  $(this).removeClass().addClass('kocka');
+										});
+										vanMarIlyen = 'van';
+										logging("Frissítve: " + snodeDeviceName);
+									}
+								}
+						}
+						
+						//executeFilter(generalFilerValue);
+						if (vanMarIlyen == 'van') {return;} //kilépek, hogy ne adja hozzá mégegyszer
+						//ha a for ciklus végén a vanMarIlyen még 'nincs' értéken van, akkor létre kell hozni egy csempét az eszköznek
+						//méghozzá úgy, hogy végig kell menni a 10 csempén és az első, ami nem látható abba kell beletenni
+						for (var j = 1; j <= 10; j++) {
+							var csempe = document.getElementById('kocka' + j);
+							var csempeTypeValue = document.getElementById('kocka' + j + 'type').innerHTML;
+							if (csempe.style.display == 'none' && csempeTypeValue == 'ismeretlen') {
+								//az első csempe a sorban aminek a láthatósága null
+								csempe.style.display = 'inline-block';
+								csempe.className = "kocka animated bounceIn";
+								
+								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
+								document.getElementById('kocka' + j + 'type').innerHTML = "RGBW";
+								document.getElementById('kocka' + j + 'icon').src = 'img/icon_RGBW.svg';
+								
+								if (snodeDeviceValue.substring(0,3) == '0-0')
+										{
+											//kikapcsolva
+											document.getElementById('kocka' + j + 'ertek').innerHTML = 'KI';
+											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#ffffff';
+										}
+										
+										
+								if (snodeDeviceValue.substring(0,3) == '1-0')
+										{
+											//rgb mode
+											var tempRgbColor = payload.split('-');
+											document.getElementById('kocka' + j + 'ertek').innerHTML = 'RGB: BE';
+											var hexRed = tempRgbColor[2].toString(16);
+											var hexGreen = tempRgbColor[3].toString(16);
+											var hexBlue = tempRgbColor[4].toString(16);
+											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#' + hexRed +hexGreen + hexBlue;
+										}
+										
+								if (snodeDeviceValue.substring(0,3) == '0-1')
+										{
+											//white mode
+											var tempWhitePercentage = payload.split('-');
+											document.getElementById('kocka' + j + 'ertek').innerHTML = 'Fehér: ' + tempWhitePercentage[5]  + '%';
+											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#ffffff';
+										}
+											
+								document.getElementById('kocka' + j + 'ertekS').innerHTML = '';				
+								logging("Eszköz hozzáadva: " + snodeDeviceName);
+								executeFilter(generalFilerValue);
+								return;
+							}
+						
+						}
+						
 					}
 					
 					if (payload.indexOf('_RF') != -1) {
@@ -1122,6 +1229,9 @@
 					if (actualPlugState == 'BE') { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:setStateOff";}
 					if (actualPlugState == 'KI') { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:setStateOn";}
 				}
+				
+				if (deviceTpye == "RGBW") { commandTxt = "snodeControlThisDevice:" + deviceName + ";snodeControlCommand:sendMeActualConditions";}
+				
 				logging("Frissítés: " + deviceName + "...");
 				cloudStatusI.style.backgroundImage = 'url(img/cloudSrefresh.svg)';
 				cordova.plugins.CordovaMqTTPlugin.publish({
