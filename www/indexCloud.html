@@ -1025,7 +1025,7 @@
 											//rgb mode
 											var tempRgbColor = payload.split('-');
 											document.getElementById('kocka' + i + 'ertek').innerHTML = 'BE';
-											document.getElementById('kocka' + j + 'iconConatiner').style.background = 'rgb(' + parseFloat(tempRgbColor[2]) + ',' + parseFloat(tempRgbColor[3]) + ',' + parseFloat(tempRgbColor[4]) + ')';
+											document.getElementById('kocka' + i + 'iconConatiner').style.background = 'rgb(' + tempRgbColor[2] + ',' + tempRgbColor[3] + ',' + tempRgbColor[4] + ')';
 											document.getElementById('kocka' + i + 'ertekS').innerHTML = ' RGB';
 										}
 										if (snodeDeviceValue.substring(0,3) == '0-1')
@@ -1076,7 +1076,7 @@
 											//rgb mode
 											var tempRgbColor = payload.split('-');
 											document.getElementById('kocka' + j + 'ertek').innerHTML = 'BE';
-											document.getElementById('kocka' + j + 'iconConatiner').style.background = 'rgb(' + parseFloat(tempRgbColor[2]) + ',' + parseFloat(tempRgbColor[3]) + ',' + parseFloat(tempRgbColor[4]) + ')';
+											document.getElementById('kocka' + j + 'iconConatiner').style.background = 'rgb(' + tempRgbColor[2] + ',' + tempRgbColor[3] + ',' + tempRgbColor[4] + ')';
 											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' RGB';
 										}
 										
