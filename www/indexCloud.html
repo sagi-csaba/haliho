@@ -1018,23 +1018,28 @@
 											//kikapcsolva
 											document.getElementById('kocka' + i + 'ertek').innerHTML = 'KI';
 											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#ffffff';
+											document.getElementById('kocka' + i + 'ertekS').innerHTML = '';	
 										}
 										if (snodeDeviceValue.substring(0,3) == '1-0')
 										{
 											//rgb mode
 											var tempRgbColor = payload.split('-');
-											document.getElementById('kocka' + i + 'ertek').innerHTML = 'RGB: BE';
+											document.getElementById('kocka' + i + 'ertek').innerHTML = 'BE';
 											var hexRed = tempRgbColor[2].toString(16);
 											var hexGreen = tempRgbColor[3].toString(16);
 											var hexBlue = tempRgbColor[4].toString(16);
-											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#' + hexRed +hexGreen + hexBlue;
+											var ikonhatterszine = '#' + hexRed +hexGreen + hexBlue;
+											logginToLog("rgbw controller jelenlegi színkódja: " + ikonhatterszine);
+											document.getElementById('kocka' + i + 'iconConatiner').style.background = ikonhatterszine;
+											document.getElementById('kocka' + i + 'ertekS').innerHTML = ' RGB';
 										}
 										if (snodeDeviceValue.substring(0,3) == '0-1')
 										{
 											//white mode
 											var tempWhitePercentage = payload.split('-');
-											document.getElementById('kocka' + i + 'ertek').innerHTML = 'Fehér: ' + tempWhitePercentage[5]  + '%';
+											document.getElementById('kocka' + i + 'ertek').innerHTML = tempWhitePercentage[5]  + '%';
 											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#ffffff';
+											document.getElementById('kocka' + i + 'ertekS').innerHTML = ' Fehér';
 										}
 									
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
@@ -1067,6 +1072,7 @@
 											//kikapcsolva
 											document.getElementById('kocka' + j + 'ertek').innerHTML = 'KI';
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#ffffff';
+											document.getElementById('kocka' + j + 'ertekS').innerHTML = '';				
 										}
 										
 										
@@ -1074,22 +1080,26 @@
 										{
 											//rgb mode
 											var tempRgbColor = payload.split('-');
-											document.getElementById('kocka' + j + 'ertek').innerHTML = 'RGB: BE';
+											document.getElementById('kocka' + j + 'ertek').innerHTML = 'BE';
 											var hexRed = tempRgbColor[2].toString(16);
 											var hexGreen = tempRgbColor[3].toString(16);
 											var hexBlue = tempRgbColor[4].toString(16);
-											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#' + hexRed +hexGreen + hexBlue;
+											var ikonhatterszine = '#' + hexRed +hexGreen + hexBlue;
+											logginToLog("rgbw controller jelenlegi színkódja: " + ikonhatterszine);
+											document.getElementById('kocka' + j + 'iconConatiner').style.background = ikonhatterszine;
+											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' RGB';
 										}
 										
 								if (snodeDeviceValue.substring(0,3) == '0-1')
 										{
 											//white mode
 											var tempWhitePercentage = payload.split('-');
-											document.getElementById('kocka' + j + 'ertek').innerHTML = 'Fehér: ' + tempWhitePercentage[5]  + '%';
+											document.getElementById('kocka' + j + 'ertek').innerHTML = tempWhitePercentage[5]  + '%';
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#ffffff';
+											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' Fehér';
 										}
 											
-								document.getElementById('kocka' + j + 'ertekS').innerHTML = '';				
+								//document.getElementById('kocka' + j + 'ertekS').innerHTML = '';				
 								logging("Eszköz hozzáadva: " + snodeDeviceName);
 								executeFilter(generalFilerValue);
 								return;
