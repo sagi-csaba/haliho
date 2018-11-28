@@ -1025,9 +1025,9 @@
 											//rgb mode
 											var tempRgbColor = payload.split('-');
 											document.getElementById('kocka' + i + 'ertek').innerHTML = 'BE';
-											var hexRed = tempRgbColor[2].toString(16);
-											var hexGreen = tempRgbColor[3].toString(16);
-											var hexBlue = tempRgbColor[4].toString(16);
+											var hexRed = parseFloat(tempRgbColor[2]).toString(16);
+											var hexGreen = parseFloat(tempRgbColor[3]).toString(16);
+											var hexBlue = parseFloat(tempRgbColor[4]).toString(16);
 											var ikonhatterszine = '#' + hexRed +hexGreen + hexBlue;
 											logginToLog("rgbw controller jelenlegi színkódja: " + ikonhatterszine);
 											document.getElementById('kocka' + i + 'iconConatiner').style.background = ikonhatterszine;
@@ -1081,9 +1081,9 @@
 											//rgb mode
 											var tempRgbColor = payload.split('-');
 											document.getElementById('kocka' + j + 'ertek').innerHTML = 'BE';
-											var hexRed = tempRgbColor[2].toString(16);
-											var hexGreen = tempRgbColor[3].toString(16);
-											var hexBlue = tempRgbColor[4].toString(16);
+											var hexRed = parseFloat(tempRgbColor[2]).toString(16);
+											var hexGreen = parseFloat(tempRgbColor[3]).toString(16);
+											var hexBlue = parseFloat(tempRgbColor[4]).toString(16);
 											var ikonhatterszine = '#' + hexRed +hexGreen + hexBlue;
 											logginToLog("rgbw controller jelenlegi színkódja: " + ikonhatterszine);
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = ikonhatterszine;
