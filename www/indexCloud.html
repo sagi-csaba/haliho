@@ -454,12 +454,12 @@
 		
 		<div id="myModalWS" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 1); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;background-image:url('img/ws_bgw.jpg');background-size:100% 100%;">
 			 <div style="margin:5px;">
-				 <center><div id="wsName">...</div></center>
+				 <center><div id="wsName" style="margin:8px;font-size:1.2em;font-weight:700;">...</div></center>
 				 <div style="display: flex;">
-					<div style="flex: 1;text-align:center;">
+					<div style="flex: 1;text-align:center;margin:8px;background:rgba(50,50,50,0.2);border-radius:4px;" class="w3-card-4">
 						<img src="img/pictogram_temp.png" style="max-height:55px;margin-top:-30px;"><div id="actualTemp" name="actualTemp" style="display:inline-block;font-size:4em;">--</div>&#x2103;<br>
 					</div>
-					<div style="flex: 1;text-align:center;margin-top:33px;">
+					<div style="flex: 1;text-align:center;padding-top:33px;margin:8px;background:rgba(50,50,50,0.2);border-radius:4px;" class="w3-card-4">
 						<img src="img/pictogram_drop.png" style="max-height:30px;margin-top:-15px;"> <div id="actualHumidity" name="actualHumidity" center style="display:inline-block;font-size:2em;">--</div>%<br> 
 					</div>
 					
@@ -485,6 +485,30 @@
 			<div style="display: flex;margin-top:30px;">
 				<div style="flex: 1;text-align:center;">
 					<span class="closeX" onclick="closemyModalWS()">Bezár</span>
+				</div>
+			</div>		
+		</div>
+		
+		
+		<div id="myModalRGBW" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 1); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;background-image:url('img/rgbw_bgw.jpg');background-size:100% 100%;">
+			 <div style="margin:5px;">
+				 <center><div id="rgbwName" style="margin:8px;font-size:1.2em;font-weight:700;">...</div></center>
+				
+			</div>
+			<center><div id="actualRgbwState">ide jön a státusz</div></center>
+			<div style="display: flex;margin-top:30px;">
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX3" onclick="">RGB mód</span>
+				</div>
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX3" onclick="">Fehér mód</span>
+				</div>
+			</div>	
+			
+			
+			<div style="display: flex;margin-top:30px;">
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX" onclick="closemyModalRGBW()">Bezár</span>
 				</div>
 			</div>		
 		</div>
@@ -537,6 +561,7 @@
 			var modal = document.getElementById('myModal');
 			var modal2 = document.getElementById('myModal2');
 			var modalWS = document.getElementById('myModalWS');
+			var modalRGBW = document.getElementById('myModalRGBW');
 			var span = document.getElementsByClassName("closeX")[0];
 			function showSettings() {
 				modal.style.display = "block";
@@ -546,6 +571,11 @@
 			function showModalWS() {
 				modalWS.style.display = "block";
 				modalWS.className = "animated fadeInUp";
+			}
+			
+			function showModalRGBW() {
+				modalRGBW.style.display = "block";
+				modalRGBW.className = "animated fadeInUp";
 			}
 			
 			span.onclick = function() { 
@@ -572,6 +602,15 @@
 					modalWS.style.display = "none";
 				},500);
 				
+			}
+			
+			function closemyModalRGBW() {
+				logging('RGBW panel elrejtve');
+				modalRGBW.className = "animated fadeOutDown";
+				setTimeout(function(){
+					modalRGBW.style.display = "none";
+				},500);
+			
 			}
 			
 			var randomName = "snodeApp_";
@@ -1317,7 +1356,7 @@
 			<!--background-image:url('img/cloud_bgw.jpg');background-size:100% 100%;-->
 			<div id="mainTileContent" name="mainTileContent" style="min-height:90vh;padding-bottom:120px;" class="linewithshadow">
 				<!-- celsuis: &#x2103; -->
-				<div id="kocka1" name="kocka1" class="kocka" style="display:none;">
+				<div id="kocka1" name="kocka1" class="kocka" style="display:inline-block;">
 					<div id="kocka1type" name="kocka1type" style="display:none">ismeretlen</div>
 					<div id="kocka1iconConatiner" name="kocka1iconConatiner" class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1325,7 +1364,7 @@
 					<div id="kocka1szoba" name="kocka1szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
 				</div>
 				
-				<div id="kocka2" name="kocka2" class="kocka" style="display:none;">
+				<div id="kocka2" name="kocka2" class="kocka" style="display:inline-block;">
 					<div id="kocka2type" name="kocka2type" style="display:none">ismeretlen</div>
 					<div id="kocka2iconConatiner" name="kocka2iconConatiner" class="ikon"><img id="kocka2icon" name="kocka2icon" class="ikonImg" src="img/logo.svg"></div>
 					<h1 id="kocka2ertek" name="kocka2ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka2ertekS" name="kocka2ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
@@ -1524,7 +1563,7 @@
 					
 					
 					var commandTxtHistorie = 'snodeControlThisDevice:' + deviceName.replace('_DROP','_WS') + ';snodeControlCommand:sendMeYourHistory';
-					
+					//showModalWS();
 					cordova.plugins.CordovaMqTTPlugin.publish({
 							   topic:settingsMqttTopic,
 							   payload:commandTxtHistorie,
@@ -1557,6 +1596,10 @@
 					
 					
 					logging('Részletek lekérdezése: ' + deviceName);
+				}
+				if (tipus == 'RGBW') {
+					document.getElementById('rgbwName').innerHTML = deviceName;
+					showModalRGBW();
 				}
 				else {
 					return;
