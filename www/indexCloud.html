@@ -1822,7 +1822,7 @@
 							   retain:false,
 							  success:function(s){
 								//alert("elküldve a tellMeYourSnodeStatus szöveg");
-								logginToLog("parancs küldve: " + commandTxt);				
+								logginToLog("WS parancs küldve: " + commandTxt);				
 								//cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 								
 								//a valasz ugye nem ide fog jonni, hanem a listen-es részre 						
@@ -1838,8 +1838,6 @@
 					
 					
 					showModalWS();
-					
-					
 					
 					setTimeout(function(){
 						document.getElementById('btnWS_last4hours').click();
@@ -1864,14 +1862,12 @@
 							   retain:false,
 							  success:function(s){
 								//alert("elküldve a tellMeYourSnodeStatus szöveg");
-								logginToLog("parancs küldve: " + commandTxt);				
+								logginToLog("RGBW parancs küldve: " + commandTxt);				
 								//cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 								
 								//a valasz ugye nem ide fog jonni, hanem a listen-es részre 
 								//de egy kis kisleltetes utan mar meg lehet jeleniteni
-								setTimeout(function(){
-									showModalRGBW();
-								},250);
+								
 								
 							  },
 							  error:function(e){
@@ -1880,6 +1876,9 @@
 							  }
 							});
 					
+					setTimeout(function(){
+									showModalRGBW();
+								},250);
 					
 				}
 				else {
