@@ -1365,7 +1365,7 @@
 											document.getElementById('actualRgbwState').innerHTML = 'RGB mód aktív';
 											document.getElementById('rgbSettingsDiv').style.display = 'block';
 											document.getElementById('whiteSettingsDiv').style.display = 'none';
-											var col = document.getElementById( 'kocka' + i + 'iconConatiner' ).style.background;
+											var col = document.getElementById( 'kocka' + j + 'iconConatiner' ).style.background;
 											var colHEX = rgbToHex(col);
 											document.getElementById('rgbPickerValue').jscolor.fromString(colHEX);
 										}
@@ -1764,36 +1764,39 @@
 			//$("#kocka9").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('9');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('9'); },1000);});
 			//$("#kocka10").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000);});
 			
+			//$("#kocka1").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}	longpress='0'; });
+			//$("#kocka1").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000); });
+			
 			//e.preventDefault();
-			$("#kocka1").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}	longpress='0'; });
-			$("#kocka1").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000); });
+			$("#kocka1").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}	longpress='0'; });
+			$("#kocka1").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000); });
 			
-			$("#kocka2").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('2');}	longpress='0'; });
-			$("#kocka2").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000); });
+			$("#kocka2").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('2');}	longpress='0'; });
+			$("#kocka2").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000); });
 			
-			$("#kocka3").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('3');}	longpress='0'; });
-			$("#kocka3").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('3'); },1000); });
+			$("#kocka3").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('3');}	longpress='0'; });
+			$("#kocka3").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('3'); },1000); });
 			
-			$("#kocka4").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('4');}	longpress='0'; });
-			$("#kocka4").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('4'); },1000); });
+			$("#kocka4").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('4');}	longpress='0'; });
+			$("#kocka4").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('4'); },1000); });
 			
-			$("#kocka5").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('5');}	longpress='0'; });
-			$("#kocka5").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('5'); },1000); });
+			$("#kocka5").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('5');}	longpress='0'; });
+			$("#kocka5").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('5'); },1000); });
 			
-			$("#kocka6").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('6');}	longpress='0'; });
-			$("#kocka6").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('6'); },1000); });
+			$("#kocka6").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('6');}	longpress='0'; });
+			$("#kocka6").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('6'); },1000); });
 			
-			$("#kocka7").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('7');}	longpress='0'; });
-			$("#kocka7").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('7'); },1000); });
+			$("#kocka7").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('7');}	longpress='0'; });
+			$("#kocka7").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('7'); },1000); });
 			
-			$("#kocka8").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('8');}	longpress='0'; });
-			$("#kocka8").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('8'); },1000); });
+			$("#kocka8").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('8');}	longpress='0'; });
+			$("#kocka8").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('8'); },1000); });
 			
-			$("#kocka9").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('9');}	longpress='0'; });
-			$("#kocka9").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('9'); },1000); });
+			$("#kocka9").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('9');}	longpress='0'; });
+			$("#kocka9").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('9'); },1000); });
 			
-			$("#kocka10").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}	longpress='0'; });
-			$("#kocka10").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000); });
+			$("#kocka10").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}	longpress='0'; });
+			$("#kocka10").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000); });
 			
 				
 			
