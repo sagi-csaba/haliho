@@ -1309,7 +1309,8 @@
 										{
 											//white mode
 											var tempWhitePercentage = payload.split('-');
-											document.getElementById('kocka' + i + 'ertek').innerHTML = tempWhitePercentage[5]  + '%';
+											var quotient = Math.round(tempWhitePercentage[5]/1023*100);
+											document.getElementById('kocka' + i + 'ertek').innerHTML = String(quotient) + '%';
 											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#ffffff';
 											document.getElementById('kocka' + i + 'ertekS').innerHTML = ' Fehér';
 											document.getElementById('actualRgbwState').innerHTML = 'Fehér mód aktív';
@@ -1374,7 +1375,8 @@
 										{
 											//white mode
 											var tempWhitePercentage = payload.split('-');
-											document.getElementById('kocka' + j + 'ertek').innerHTML = tempWhitePercentage[5]  + '%';
+											var quotient = Math.round(tempWhitePercentage[5]/1023*100);
+											document.getElementById('kocka' + j + 'ertek').innerHTML = String(quotient) + '%';
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#ffffff';
 											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' Fehér';
 											document.getElementById('actualRgbwState').innerHTML = 'Fehér mód aktív';
