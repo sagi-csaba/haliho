@@ -597,10 +597,9 @@
 		
 		<div id="myModalRGBW" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 1); z-index: 998; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;background-image:url('img/rgbw_bgw.jpg');background-size:100% 100%;">
 			 <div style="margin:5px;">
-				 <center><div id="rgbwName" style="margin:8px;font-size:1.2em;font-weight:700;">...</div></center>
-				
+				 <center><div id="rgbwName" style="margin:8px;font-size:1.2em;font-weight:700;">...</div></center>	
 			</div>
-			<center><div id="actualRgbwState">ide jön a státusz</div></center>
+			<center><div id="actualRgbwState">...</div></center>
 			<div style="display: flex;margin-top:20px;">
 				<div style="flex: 1;text-align:center;">
 					<span class="closeX5" onclick="turnOffRGB()"><img src="img/exit.png" style="max-height:55px;margin:5px;"><br>KI</span>
@@ -614,13 +613,13 @@
 			</div>	
 			
 			<div id="rgbSettingsDiv" style="text-align:center;margin:8px;padding-bottom:20px;display:none;">
-				<div class="closeX4">Kiválasztott szín beállítása</div>
+				<div class="closeX4" onclick="setSnodeRgbCommand()">Kiválasztott szín beállítása</div>
 				<div style="margin-left:5px;">Szín: <input id="rgbPickerValue" name="rgbPickerValue" class="jscolor" value="009900" readonly></div>
 			</div>
 			
 			<div id="whiteSettingsDiv" style="text-align:center;margin:8px;padding-bottom:20px;display:none;">
-				<div class="closeX4">Fényerő beállítása</div>
-				<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+				<div class="closeX4" onclick="setSnodeWhiteCommand()">Fényerő beállítása</div>
+				<input type="range" min="0" max="1023" value="50" class="slider" id="myRange">
 			</div>
 			
 			
@@ -763,10 +762,70 @@
 				var whiteDIV = document.getElementById('whiteSettingsDiv');
 				rgbDIV.className = "animated flipOutX";
 				whiteDIV.className = "animated flipOutX";
+				
+				var devName = document.getElementById('rgbwName').innerHTML;
+				var commandTxtHistorie = 'snodeControlThisDevice:' + devName + ';snodeControlCommand:0-0-255-255-255-0'; //ez frissiteni fogja a jelenlegi allapotot
+			
+				cordova.plugins.CordovaMqTTPlugin.publish({
+					   topic:settingsMqttTopic,
+					   payload:commandTxtHistorie,
+					   qos:0,
+					   retain:false,
+					  success:function(s){
+						logginToLog("parancs küldve: " + commandTxt);				
+					  },
+					  error:function(e){
+						logginToLog("--- HIBA az snode eszközök vezérlése során! ---");
+					  }
+					});
+				
 				setTimeout(function(){
 					rgbDIV.style.display = "none";
 					whiteDIV.style.display = "none";
 				},1000);
+			}
+			
+			function setSnodeRgbCommand() {
+				var devName = document.getElementById('rgbwName').innerHTML;
+				var ertek = $('#rgbPickerValue').val();
+				var piros = parseInt(ertek.substring(0,2),16);
+				var zold = parseInt(ertek.substring(2,4),16);
+				var kek = parseInt(ertek.substring(4,6),16);
+				
+				
+				var commandTxtHistorie = 'snodeControlThisDevice:' + devName + ';snodeControlCommand:1-0-' + piros + '-' + zold + '-' + kek + '-0'; //ez bekapcsolja RGB kód szerint a szines fényt
+			
+				cordova.plugins.CordovaMqTTPlugin.publish({
+					   topic:settingsMqttTopic,
+					   payload:commandTxtHistorie,
+					   qos:0,
+					   retain:false,
+					  success:function(s){
+						logginToLog("parancs küldve: " + commandTxt);				
+					  },
+					  error:function(e){
+						logginToLog("--- HIBA az snode eszközök vezérlése során! ---");
+					  }
+					});
+			}
+			
+			function setSnodeWhiteCommand() {
+				var devName = document.getElementById('rgbwName').innerHTML;
+				var actualVal = $('#myRange').val();
+				var commandTxtHistorie = 'snodeControlThisDevice:' + devName + ';snodeControlCommand:0-1-255-255-255-' + String(actualVal); //ez bakapcsolja a feher fényt megadott fenyerovel
+			
+				cordova.plugins.CordovaMqTTPlugin.publish({
+					   topic:settingsMqttTopic,
+					   payload:commandTxtHistorie,
+					   qos:0,
+					   retain:false,
+					  success:function(s){
+						logginToLog("parancs küldve: " + commandTxt);				
+					  },
+					  error:function(e){
+						logginToLog("--- HIBA az snode eszközök vezérlése során! ---");
+					  }
+					});
 			}
 			
 			var randomName = "snodeApp_";
@@ -1017,6 +1076,20 @@
 				
 			}
 			
+			function rgbToHex(col)
+				{
+					if(col.charAt(0)=='r')
+					{
+						col=col.replace('rgb(','').replace(')','').split(',');
+						var r=parseInt(col[0], 10).toString(16);
+						var g=parseInt(col[1], 10).toString(16);
+						var b=parseInt(col[2], 10).toString(16);
+						r=r.length==1?'0'+r:r; g=g.length==1?'0'+g:g; b=b.length==1?'0'+b:b;
+						var colHex=r+g+b;
+						return colHex;
+					}
+				}
+			
 			function UpdateSnodeDevice(payload) {
 				if (payload.indexOf('snodeDeviceName') != -1) {
 					//olyan valasz erkezett, amit tudok ertelmezni
@@ -1214,6 +1287,9 @@
 											document.getElementById('kocka' + i + 'ertek').innerHTML = 'KI';
 											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#ffffff';
 											document.getElementById('kocka' + i + 'ertekS').innerHTML = '';	
+											document.getElementById('actualRgbwState').innerHTML = 'Kikapcsolva';
+											document.getElementById('rgbSettingsDiv').style.display = 'none';
+											document.getElementById('whiteSettingsDiv').style.display = 'none';
 										}
 										if (snodeDeviceValue.substring(0,3) == '1-0')
 										{
@@ -1222,6 +1298,12 @@
 											document.getElementById('kocka' + i + 'ertek').innerHTML = 'BE';
 											document.getElementById('kocka' + i + 'iconConatiner').style.background = 'rgb(' + tempRgbColor[2] + ',' + tempRgbColor[3] + ',' + tempRgbColor[4] + ')';
 											document.getElementById('kocka' + i + 'ertekS').innerHTML = ' RGB';
+											document.getElementById('actualRgbwState').innerHTML = 'RGB mód aktív';
+											document.getElementById('rgbSettingsDiv').style.display = 'block';
+											document.getElementById('whiteSettingsDiv').style.display = 'none';
+											var col = document.getElementById( 'kocka' + i + 'iconConatiner' ).style.background;
+											var colHEX = rgbToHex(col);
+											document.getElementById('rgbPickerValue').jscolor.fromString(colHEX);
 										}
 										if (snodeDeviceValue.substring(0,3) == '0-1')
 										{
@@ -1230,6 +1312,10 @@
 											document.getElementById('kocka' + i + 'ertek').innerHTML = tempWhitePercentage[5]  + '%';
 											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#ffffff';
 											document.getElementById('kocka' + i + 'ertekS').innerHTML = ' Fehér';
+											document.getElementById('actualRgbwState').innerHTML = 'Fehér mód aktív';
+											document.getElementById('rgbSettingsDiv').style.display = 'none';
+											document.getElementById('whiteSettingsDiv').style.display = 'block';
+											document.getElementById('myRange').value = tempWhitePercentage[5];
 										}
 									
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
@@ -1273,6 +1359,11 @@
 											document.getElementById('kocka' + j + 'ertek').innerHTML = 'BE';
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = 'rgb(' + tempRgbColor[2] + ',' + tempRgbColor[3] + ',' + tempRgbColor[4] + ')';
 											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' RGB';
+											document.getElementById('rgbSettingsDiv').style.display = 'block';
+											document.getElementById('whiteSettingsDiv').style.display = 'none';
+											var col = document.getElementById( 'kocka' + i + 'iconConatiner' ).style.background;
+											var colHEX = rgbToHex(col);
+											document.getElementById('rgbPickerValue').jscolor.fromString(colHEX);
 										}
 										
 								if (snodeDeviceValue.substring(0,3) == '0-1')
@@ -1282,6 +1373,9 @@
 											document.getElementById('kocka' + j + 'ertek').innerHTML = tempWhitePercentage[5]  + '%';
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#ffffff';
 											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' Fehér';
+											document.getElementById('rgbSettingsDiv').style.display = 'none';
+											document.getElementById('whiteSettingsDiv').style.display = 'block';
+											document.getElementById('myRange').value = tempWhitePercentage[5];
 										}
 											
 								//document.getElementById('kocka' + j + 'ertekS').innerHTML = '';				
@@ -1756,7 +1850,37 @@
 				}
 				if (tipus == 'RGBW') {
 					document.getElementById('rgbwName').innerHTML = deviceName;
-					showModalRGBW();
+					
+					//le kell kérni a friss állapotot
+					var commandTxtHistorie = 'snodeControlThisDevice:' + deviceName + ';snodeControlCommand:sendMeActualConditions'; //ez frissiteni fogja a jelenlegi allapotot
+					//es akkor be lehet tolteni egy kis kesleltetes utan
+					
+					//showModalRGBW();
+					
+					cordova.plugins.CordovaMqTTPlugin.publish({
+							   topic:settingsMqttTopic,
+							   payload:commandTxtHistorie,
+							   qos:0,
+							   retain:false,
+							  success:function(s){
+								//alert("elküldve a tellMeYourSnodeStatus szöveg");
+								logginToLog("parancs küldve: " + commandTxt);				
+								//cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
+								
+								//a valasz ugye nem ide fog jonni, hanem a listen-es részre 
+								//de egy kis kisleltetes utan mar meg lehet jeleniteni
+								setTimeout(function(){
+									showModalRGBW();
+								},250);
+								
+							  },
+							  error:function(e){
+								logginToLog("--- HIBA az snode eszközök vezérlése során! ---");
+								//cloudStatusI.style.backgroundImage = 'url(img/cloudSoffline.svg)';
+							  }
+							});
+					
+					
 				}
 				else {
 					return;
