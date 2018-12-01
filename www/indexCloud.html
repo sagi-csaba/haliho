@@ -330,6 +330,79 @@
 			transition: all 0.2s ease-in-out;
 		}
 		
+		.closeX4 {
+			color: #f1f1f1;
+			display: inline-block;
+			text-align: center;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+			cursor: pointer;
+			width: 70%;
+			padding: 4px;
+			font-size: 16px;
+			transition: 0.3s;
+			z-index: 99999;
+			background: #e11;
+			border-radius: 3px;
+			margin-top:20px;
+			margin-bottom:25px;
+		}
+
+		.closeX4:hover,
+		.closeX4:focus {
+			background-color: #111;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		
+		.closeX4:active {
+			transition: all 0.2s ease-in-out;
+			-ms-transform: scale(0.9);
+			-webkit-transform: scale(0.9); 
+			transform: scale(0.9); 
+			transition: all 0.2s ease-in-out;
+		}
+		
+		.closeX5 {
+			color: #111;
+			display: inline-block;
+			text-align: center;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+			cursor: pointer;
+			width: 90%;
+			padding: 4px;
+			font-size: 14px;
+			transition: 0.3s;
+			z-index: 99999;
+			background: #aaa;
+			background: rgba(0,0,0, 0.2);
+			border-radius: 3px;
+			margin-top:1px;
+			margin-bottom:1px;
+			box-shadow: 0px 0px 10px 5px #ffffff;
+		}
+
+		.closeX5:hover,
+		.closeX5:focus {
+			background-color: #111;
+			color: #eee;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		
+		.closeX5:active {
+			transition: all 0.2s ease-in-out;
+			-ms-transform: scale(0.9);
+			-webkit-transform: scale(0.9); 
+			transform: scale(0.9); 
+			transition: all 0.2s ease-in-out;
+		}
+		
 		
 		.select-style {
 			border: 1px solid #ccc;
@@ -356,6 +429,38 @@
 			outline: none;
 		}
 
+		.slider {
+			-webkit-appearance: none;
+			width: 80%;
+			margin-left:10%;
+			margin-right:10%;
+			height: 35px;
+			outline: none;
+			opacity: 0.7;
+			-webkit-transition: .2s;
+			transition: opacity .2s;
+		}
+
+		.slider:hover {
+			opacity: 1;
+		}
+
+		.slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 25px;
+			height: 25px;
+			background: #4CAF50;
+			cursor: pointer;
+		}
+
+		.slider::-moz-range-thumb {
+			width: 25px;
+			height: 25px;
+			background: #4CAF50;
+			cursor: pointer;
+		}
+		
 		</style>
     </head>
 	
@@ -456,10 +561,10 @@
 			 <div style="margin:5px;">
 				 <center><div id="wsName" style="margin:8px;font-size:1.2em;font-weight:700;">...</div></center>
 				 <div style="display: flex;">
-					<div style="flex: 1;text-align:center;margin:8px;background:rgba(50,50,50,0.2);border-radius:4px;" class="w3-card-4">
+					<div style="flex: 1;text-align:center;margin:8px;background:rgba(50,50,50,0.35);border-radius:4px;" class="w3-card-12">
 						<img src="img/pictogram_temp.png" style="max-height:55px;margin-top:-30px;"><div id="actualTemp" name="actualTemp" style="display:inline-block;font-size:4em;">--</div>&#x2103;<br>
 					</div>
-					<div style="flex: 1;text-align:center;padding-top:33px;margin:8px;background:rgba(50,50,50,0.2);border-radius:4px;" class="w3-card-4">
+					<div style="flex: 1;text-align:center;padding-top:25px;margin:8px;background:rgba(50,50,50,0.35);border-radius:4px;" class="w3-card-12">
 						<img src="img/pictogram_drop.png" style="max-height:30px;margin-top:-15px;"> <div id="actualHumidity" name="actualHumidity" center style="display:inline-block;font-size:2em;">--</div>%<br> 
 					</div>
 					
@@ -490,25 +595,39 @@
 		</div>
 		
 		
-		<div id="myModalRGBW" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 1); z-index: 1010; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;background-image:url('img/rgbw_bgw.jpg');background-size:100% 100%;">
+		<div id="myModalRGBW" class="" style="width:100%; height:100%;  background-color: rgb(255,255,255); background-color: rgba(255,255,255, 1); z-index: 998; display: none; position:fixed; left:0; top:0;overflow:auto;padding:5px;background-image:url('img/rgbw_bgw.jpg');background-size:100% 100%;">
 			 <div style="margin:5px;">
 				 <center><div id="rgbwName" style="margin:8px;font-size:1.2em;font-weight:700;">...</div></center>
 				
 			</div>
 			<center><div id="actualRgbwState">ide jön a státusz</div></center>
-			<div style="display: flex;margin-top:30px;">
+			<div style="display: flex;margin-top:20px;">
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX3" onclick="">RGB mód</span>
+					<span class="closeX5" onclick="turnOffRGB()"><img src="img/exit.png" style="max-height:55px;margin:5px;"><br>KI</span>
 				</div>
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX3" onclick="">Fehér mód</span>
+					<span class="closeX5" onclick="showRgbSettingsDiv()"><img src="img/rgb.png" style="max-height:55px;margin:5px;"><br>RGB mód</span>
+				</div>
+				<div style="flex: 1;text-align:center;">
+					<span class="closeX5" onclick="showWhiteSettingsDiv()"><img src="img/white.png" style="max-height:55px;margin:5px;"><br>Fehér mód</span>
 				</div>
 			</div>	
 			
+			<div id="rgbSettingsDiv" style="text-align:center;margin:8px;padding-bottom:20px;display:none;">
+				<div class="closeX4">Kiválasztott szín beállítása</div>
+				<div style="margin-left:5px;">Szín: <input id="rgbPickerValue" name="rgbPickerValue" class="jscolor" value="009900" readonly></div>
+			</div>
+			
+			<div id="whiteSettingsDiv" style="text-align:center;margin:8px;padding-bottom:20px;display:none;">
+				<div class="closeX4">Fényerő beállítása</div>
+				<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+			</div>
+			
+			
 			
 			<div style="display: flex;margin-top:30px;">
 				<div style="flex: 1;text-align:center;">
-					<span class="closeX" onclick="closemyModalRGBW()">Bezár</span>
+					<span class="closeX" onclick="closemyModalRGBW()" style="transition: all .5s linear;">Bezár</span>
 				</div>
 			</div>		
 		</div>
@@ -518,6 +637,7 @@
 	<script type="text/javascript" src="cordova.js"></script>
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/jquery.menu.js"></script>
+	<script src="js/jscolor.js"></script>
 	<script src="js/jquery-ui-1.8.20.custom.min.js"></script>
 	<script src="js/Chart.min.js"></script>
 	<script type="text/javascript">
@@ -611,6 +731,42 @@
 					modalRGBW.style.display = "none";
 				},500);
 			
+			}
+			
+			
+			function showRgbSettingsDiv() {
+				var rgbDIV = document.getElementById('rgbSettingsDiv');
+				var whiteDIV = document.getElementById('whiteSettingsDiv');
+				
+				whiteDIV.className = "animated flipOutX";
+				setTimeout(function(){
+					whiteDIV.style.display = "none";
+					rgbDIV.style.display = "block";
+					rgbDIV.className = "animated flipInX";
+				},500);
+			}
+			
+			function showWhiteSettingsDiv() {
+				var rgbDIV = document.getElementById('rgbSettingsDiv');
+				var whiteDIV = document.getElementById('whiteSettingsDiv');
+				
+				rgbDIV.className = "animated flipOutX";
+				setTimeout(function(){
+					rgbDIV.style.display = "none";
+					whiteDIV.style.display = "block";
+					whiteDIV.className = "animated flipInX";
+				},500);
+			}
+			
+			function turnOffRGB() {
+				var rgbDIV = document.getElementById('rgbSettingsDiv');
+				var whiteDIV = document.getElementById('whiteSettingsDiv');
+				rgbDIV.className = "animated flipOutX";
+				whiteDIV.className = "animated flipOutX";
+				setTimeout(function(){
+					rgbDIV.style.display = "none";
+					whiteDIV.style.display = "none";
+				},1000);
 			}
 			
 			var randomName = "snodeApp_";
@@ -1489,6 +1645,7 @@
 		
 		</div>
 		
+		
 		<script>
 					
 			var pressTimer;
@@ -1563,7 +1720,7 @@
 					
 					
 					var commandTxtHistorie = 'snodeControlThisDevice:' + deviceName.replace('_DROP','_WS') + ';snodeControlCommand:sendMeYourHistory';
-					//showModalWS();
+					showModalWS();
 					cordova.plugins.CordovaMqTTPlugin.publish({
 							   topic:settingsMqttTopic,
 							   payload:commandTxtHistorie,
