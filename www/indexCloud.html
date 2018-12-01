@@ -772,7 +772,7 @@
 					   qos:0,
 					   retain:false,
 					  success:function(s){
-						logginToLog("parancs küldve: " + commandTxt);				
+						logginToLog("parancs küldve (1): " + commandTxtHistorie);				
 					  },
 					  error:function(e){
 						logginToLog("--- HIBA az snode eszközök vezérlése során! ---");
@@ -801,7 +801,7 @@
 					   qos:0,
 					   retain:false,
 					  success:function(s){
-						logginToLog("parancs küldve: " + commandTxt);				
+						logginToLog("parancs küldve (2): " + commandTxtHistorie);				
 					  },
 					  error:function(e){
 						logginToLog("--- HIBA az snode eszközök vezérlése során! ---");
@@ -820,7 +820,7 @@
 					   qos:0,
 					   retain:false,
 					  success:function(s){
-						logginToLog("parancs küldve: " + commandTxt);				
+						logginToLog("parancs küldve (3): " + commandTxtHistorie);				
 					  },
 					  error:function(e){
 						logginToLog("--- HIBA az snode eszközök vezérlése során! ---");
@@ -1348,7 +1348,10 @@
 											//kikapcsolva
 											document.getElementById('kocka' + j + 'ertek').innerHTML = 'KI';
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#ffffff';
-											document.getElementById('kocka' + j + 'ertekS').innerHTML = '';				
+											document.getElementById('kocka' + j + 'ertekS').innerHTML = '';			
+											document.getElementById('actualRgbwState').innerHTML = 'Kikapcsolva';
+											document.getElementById('rgbSettingsDiv').style.display = 'none';
+											document.getElementById('whiteSettingsDiv').style.display = 'none';											
 										}
 										
 										
@@ -1359,6 +1362,7 @@
 											document.getElementById('kocka' + j + 'ertek').innerHTML = 'BE';
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = 'rgb(' + tempRgbColor[2] + ',' + tempRgbColor[3] + ',' + tempRgbColor[4] + ')';
 											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' RGB';
+											document.getElementById('actualRgbwState').innerHTML = 'RGB mód aktív';
 											document.getElementById('rgbSettingsDiv').style.display = 'block';
 											document.getElementById('whiteSettingsDiv').style.display = 'none';
 											var col = document.getElementById( 'kocka' + i + 'iconConatiner' ).style.background;
@@ -1373,6 +1377,7 @@
 											document.getElementById('kocka' + j + 'ertek').innerHTML = tempWhitePercentage[5]  + '%';
 											document.getElementById('kocka' + j + 'iconConatiner').style.background = '#ffffff';
 											document.getElementById('kocka' + j + 'ertekS').innerHTML = ' Fehér';
+											document.getElementById('actualRgbwState').innerHTML = 'Fehér mód aktív';
 											document.getElementById('rgbSettingsDiv').style.display = 'none';
 											document.getElementById('whiteSettingsDiv').style.display = 'block';
 											document.getElementById('myRange').value = tempWhitePercentage[5];
@@ -1530,7 +1535,7 @@
 							   retain:false,
 							  success:function(s){
 								//alert("elküldve a tellMeYourSnodeStatus szöveg");
-								logginToLog("parancs küldve: " + commandTxt);				
+								logginToLog("parancs küldve (4): " + commandTxt);				
 								cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 							  },
 							  error:function(e){
@@ -1822,7 +1827,7 @@
 							   retain:false,
 							  success:function(s){
 								//alert("elküldve a tellMeYourSnodeStatus szöveg");
-								logginToLog("WS parancs küldve: " + commandTxt);				
+								logginToLog("WS parancs küldve: " + commandTxtHistorie);				
 								//cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 								
 								//a valasz ugye nem ide fog jonni, hanem a listen-es részre 						
@@ -1862,7 +1867,7 @@
 							   retain:false,
 							  success:function(s){
 								//alert("elküldve a tellMeYourSnodeStatus szöveg");
-								logginToLog("RGBW parancs küldve: " + commandTxt);				
+								logginToLog("RGBW parancs küldve: " + commandTxtHistorie);				
 								//cloudStatusI.style.backgroundImage = 'url(img/cloudSonline.svg)';
 								
 								//a valasz ugye nem ide fog jonni, hanem a listen-es részre 
