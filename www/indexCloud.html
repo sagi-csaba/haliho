@@ -1627,19 +1627,19 @@
 			function resetKockas() {
 				logging("UI Frissítése");
 				for (var i=20; i>= 1; i--) {
-					logging("UI Frissítése: 0");
+					//logging("UI Frissítése: 0");
 					document.getElementById('kocka' + i).style.display = 'none';
-					logging("UI Frissítése a" + i);
+					//logging("UI Frissítése a" + i);
 					document.getElementById('kocka' + i + 'type').innerHTML = 'ismeretlen';
-					logging("UI Frissítése b" + i);
+					//logging("UI Frissítése b" + i);
 					document.getElementById('kocka' + i + 'ertek').innerHTML = '...';
-					logging("UI Frissítése c" + i);
-					document.getElementById('kocka' + i + 'erteks').innerHTML = '';
-					logging("UI Frissítése d" + i);
+					//logging("UI Frissítése c" + i);
+					document.getElementById('kocka' + i + 'ertekS').innerHTML = '';
+					//logging("UI Frissítése d" + i);
 					document.getElementById('kocka' + i + 'nev').innerHTML = 'nincs_nev';
-					logging("UI Frissítése e" + i);
+					//logging("UI Frissítése e" + i);
 					document.getElementById('kocka' + i + 'szoba').innerHTML = 'OTTHON';
-					logging("UI Frissítése f" + i);
+					//logging("UI Frissítése f" + i);
 				
 				}
 				logging("UI Frissítése: kész!");
@@ -1659,11 +1659,6 @@
 				document.getElementById('scanBtn').innerHTML = "Kamera indítása folyamatban...";
 				 cordova.plugins.barcodeScanner.scan(
 				  function (result) {
-					  
-					setTimeout(function(){
-						document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról";
-					},500);
-					  
 					  if (result.text.indexOf('snodeConfig') != -1){
 						var resultArray = result.text.split(';');
 						document.getElementById('settingsMqttServerInput').value = resultArray[1].replace('server:','').replace(';','');
@@ -1672,9 +1667,11 @@
 						document.getElementById('settingsMqttPwdInput').value = resultArray[4].replace('password:','').replace(';','');
 						document.getElementById('settingsMqttTopicInput').value = resultArray[5].replace('topic:','').replace(';','');
 						alert("Beállítások beolvasva! A mentéshez koppints a 'Mentés' gombra");
+						document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
 					  }
 					  else {
 						alert('A QR kód nem tartalmaz snode beállításokat!');
+						document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
 					  }
 					  
 					//alert("We got a barcode\n" +
@@ -1684,6 +1681,7 @@
 				  },
 				  function (error) {
 					  alert("Hiba a szkennelés során: " + error);
+					  document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
 				  }
 			   );
 			
@@ -1697,7 +1695,7 @@
 				{
 					for (var i = 1; i <= 20; i++)
 					{
-						document.getElementById('kocka' + i).className = "kocka2";
+						document.getElementById('kocka' + i).className = "kocka2 animated flipInX";
 						document.getElementById('kocka' + i + 'iconConatiner').className = "ikon2";
 						document.getElementById('kocka' + i + 'icon').className = "ikonImg2";						
 						
