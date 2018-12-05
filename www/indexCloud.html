@@ -1699,7 +1699,7 @@
 					{
 						document.getElementById('kocka' + i).className = "kocka animated flipOutX";
 						setTimeout(function(){
-							document.getElementById('kocka' + i).className = "kocka2 animated flipInX";
+							
 							document.getElementById('kocka' + i + 'iconConatiner').className = "ikon2";
 							document.getElementById('kocka' + i + 'icon').className = "ikonImg2";						
 							
@@ -1714,6 +1714,8 @@
 							document.getElementById('kocka' + i + 'szoba').style.marginLeft  = "60px";
 							document.getElementById('viewIcon').src = 'img/viewmenu.svg';
 							nezet = "lista";
+							document.getElementById('kocka' + i).style.display = "inline-block";
+							document.getElementById('kocka' + i).className = "kocka2 animated flipInX";
 						},500);
 					}
 				}
