@@ -1695,9 +1695,16 @@
 			var geg = document.getElementById('kocka1').className;
 				if (geg == "kocka")
 				{
+					var tigris = "hamis";
 					for (var i = 1; i <= 20; i++)
 					{
 						//document.getElementById('kocka' + i).className = "kocka animated flipOutX";
+						tigris = "hamis";
+						if (document.getElementById('kocka' + i).style.display == "inline-block")
+							{
+								tigris = "igaz";
+								document.getElementById('kocka' + i).style.display = "none";
+							}
 						
 							document.getElementById('kocka' + i + 'iconConatiner').className = "ikon2";
 							document.getElementById('kocka' + i + 'icon').className = "ikonImg2";						
@@ -1713,9 +1720,9 @@
 							
 							document.getElementById('viewIcon').src = 'img/viewmenu.svg';
 							nezet = "lista";
-							if (document.getElementById('kocka' + i).style.display == "inline-block")
+							
+							if (tigris == "igaz")
 							{
-								document.getElementById('kocka' + i).style.display = "none";
 								document.getElementById('kocka' + i).style.display = "inline-block";
 							}
 						
