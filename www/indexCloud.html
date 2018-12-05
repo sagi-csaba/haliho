@@ -155,6 +155,31 @@
 			cursor: pointer;
 		}
 		
+		.kocka2 {
+			width: 96%;
+			height: 50px;
+			border-radius: 5px;
+			background: white;
+			display: inline-block;
+			margin: 3px;
+			transition: all 0.2s ease-in-out;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none; 
+			-ms-user-select: none; 
+			user-select: none; 
+		}
+			
+		.kocka2:active, kocka h1:active {
+			-ms-transform: scale(0.9);
+			-webkit-transform: scale(0.9); 
+			transform: scale(0.9); 
+			transition: all 0.2s ease-in-out;
+			background: #ffcccc;
+			cursor: pointer;
+		}
+		
+		
 		.beallitasokBtn {
 			margin-top:50px;
 			font-size: 14px;
@@ -207,6 +232,7 @@
 		}
 		
 		.ikon {
+			display:block;
 			width: 60px;
 			height: 60px;
 			border-radius: 30px;
@@ -216,6 +242,7 @@
 			top:10px;
 			left:85px;
 			position: relative;
+			transition: all 0.2s ease-in-out;
 		}
 		
 		.ikonImg {
@@ -223,6 +250,29 @@
 			margin-left: 6px;
 			height: 46px;
 			width: 46px;
+			transition: all 0.2s ease-in-out;
+		}
+		
+		.ikon2 {
+			display:inline-block;
+			width: 40px;
+			height: 40px;
+			border-radius: 20px;
+			border-color: gray;
+			border-style: solid;
+			border-width: 1px;
+			top:5px;
+			left:15px;
+			position: relative;
+			transition: all 0.2s ease-in-out;
+		}
+		
+		.ikonImg2 {
+			margin-top: 1px;
+			margin-left: 1px;
+			height: 36px;
+			width: 36px;
+			transition: all 0.2s ease-in-out;
 		}
 		
 		.closeX {
@@ -874,7 +924,7 @@
 					//alert(settingsMqttTopicValue);
 					
 					setTimeout(function(){
-						for (var i=1; i<= 10; i++) {
+						for (var i=1; i<= 20; i++) {
 						document.getElementById('kocka' + i + 'szoba').innerHTML = settingsMqttTopicValue;
 						}
 					}, 1); 
@@ -1110,7 +1160,7 @@
 						logginToLog("páratartalom érték: " + snodeDeviceValue2);
 						
 						var vanMarIlyen = 'nincs';
-						for (var i = 1; i<=10; i++)
+						for (var i = 1; i<=20; i++)
 						{
 							var csempe = document.getElementById('kocka' + i);
 							var csempeneve = 'kocka' + i;
@@ -1123,9 +1173,15 @@
 										document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue;
 										//csempe.className = "kocka";
 										//csempe.className = "kocka animated flash";
+										if (nezet == "blokk") {
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
 										  $(this).removeClass().addClass('kocka');
-										});
+										});}
+										if (nezet == "lista") {
+										$('#' + csempeneve).removeClass().addClass('kocka2 flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										  $(this).removeClass().addClass('kocka2');
+										});}
+										
 										vanMarIlyen = 'van';
 										logging("Frissítve: " + snodeDeviceName);
 										
@@ -1136,9 +1192,14 @@
 										document.getElementById('kocka' + i + 'ertek').innerHTML = snodeDeviceValue2;
 										//csempe.className = "kocka";
 										//csempe.className = "kocka animated flash";
+										if (nezet == "blokk") {
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
 										  $(this).removeClass().addClass('kocka');
-										});
+										});}
+										if (nezet == "lista") {
+										$('#' + csempeneve).removeClass().addClass('kocka2 flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										  $(this).removeClass().addClass('kocka2');
+										});}
 										vanMarIlyen = 'van';
 										logging("Frissítve: " + snodeDeviceName2);
 									}
@@ -1150,17 +1211,19 @@
 						
 						//ha a for ciklus végén a vanMarIlyen még 'nincs' értéken van, akkor létre kell hozni egy csempét az eszköznek
 						//méghozzá úgy, hogy végig kell menni a 10 csempén és az első, ami nem látható abba kell beletenni
-						for (var j = 1; j <= 10; j++) {
+						for (var j = 1; j <= 20; j++) {
 							var csempe = document.getElementById('kocka' + j);
 							var csempeTypeValue = document.getElementById('kocka' + j + 'type').innerHTML;
 							if (csempe.style.display == 'none' && csempeTypeValue == 'ismeretlen') {
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
-								csempe.className = "kocka animated bounceIn";
+								if (nezet == "blokk") {csempe.className = "kocka animated bounceIn";}
+								if (nezet == "lista") {csempe.className = "kocka2 animated bounceIn";}
 								var k = j + 1;
 								var csempe2 = document.getElementById('kocka' + k);
 								csempe2.style.display = 'inline-block';
-								csempe2.className = "kocka animated bounceIn";
+								if (nezet == "blokk") {csempe2.className = "kocka animated bounceIn";}
+								if (nezet == "lista") {csempe2.className = "kocka2 animated bounceIn";}
 								
 								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
 								document.getElementById('kocka' + j + 'type').innerHTML = "WS";
@@ -1193,7 +1256,7 @@
 						logginToLog("okos konnektor állapota: " + snodeDeviceValue);
 						
 						var vanMarIlyen = 'nincs';
-						for (var i = 1; i<=10; i++)
+						for (var i = 1; i<=20; i++)
 						{
 							var csempe = document.getElementById('kocka' + i);
 							var csempeneve = 'kocka' + i;
@@ -1212,10 +1275,15 @@
 											document.getElementById('kocka' + i + 'ertek').innerHTML = 'BE';
 											document.getElementById('kocka' + i + 'iconConatiner').style.background = '#99ff99';
 											} 
-										
+										if (nezet == "blokk") {
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
 										  $(this).removeClass().addClass('kocka');
-										});
+										});}
+										if (nezet == "lista") {
+										$('#' + csempeneve).removeClass().addClass('kocka2 flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										  $(this).removeClass().addClass('kocka2');
+										});}
+										
 										vanMarIlyen = 'van';
 										logging("Frissítve: " + snodeDeviceName);
 									}
@@ -1226,13 +1294,14 @@
 						
 						//ha a for ciklus végén a vanMarIlyen még 'nincs' értéken van, akkor létre kell hozni egy csempét az eszköznek
 						//méghozzá úgy, hogy végig kell menni a 10 csempén és az első, ami nem látható abba kell beletenni
-						for (var j = 1; j <= 10; j++) {
+						for (var j = 1; j <= 20; j++) {
 							var csempe = document.getElementById('kocka' + j);
 							var csempeTypeValue = document.getElementById('kocka' + j + 'type').innerHTML;
 							if (csempe.style.display == 'none' && csempeTypeValue == 'ismeretlen') {
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
-								csempe.className = "kocka animated bounceIn";
+								if (nezet == "blokk") {csempe.className = "kocka animated bounceIn";}
+								if (nezet == "lista") {csempe.className = "kocka2 animated bounceIn";}
 								
 								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
 								document.getElementById('kocka' + j + 'type').innerHTML = "SP";
@@ -1270,7 +1339,7 @@
 						//"snodeDeviceName:nappali_RGBW;snodeDeviceStatus:0-0-255-255-255-0"  rgbw:BE/KI-feher:BE/KI-rrr-ggg-bbb-feherfenyero
 						
 						var vanMarIlyen = 'nincs';
-						for (var i = 1; i<=10; i++)
+						for (var i = 1; i<=20; i++)
 						{
 							var csempe = document.getElementById('kocka' + i);
 							var csempeneve = 'kocka' + i;
@@ -1319,9 +1388,14 @@
 											document.getElementById('myRange').value = tempWhitePercentage[5];
 										}
 									
+										if (nezet == "blokk") {
 										$('#' + csempeneve).removeClass().addClass('kocka flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
 										  $(this).removeClass().addClass('kocka');
-										});
+										});}
+										if (nezet == "lista") {
+										$('#' + csempeneve).removeClass().addClass('kocka2 flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										  $(this).removeClass().addClass('kocka2');
+										});}
 										vanMarIlyen = 'van';
 										logging("Frissítve: " + snodeDeviceName);
 									}
@@ -1332,13 +1406,14 @@
 						if (vanMarIlyen == 'van') {return;} //kilépek, hogy ne adja hozzá mégegyszer
 						//ha a for ciklus végén a vanMarIlyen még 'nincs' értéken van, akkor létre kell hozni egy csempét az eszköznek
 						//méghozzá úgy, hogy végig kell menni a 10 csempén és az első, ami nem látható abba kell beletenni
-						for (var j = 1; j <= 10; j++) {
+						for (var j = 1; j <= 20; j++) {
 							var csempe = document.getElementById('kocka' + j);
 							var csempeTypeValue = document.getElementById('kocka' + j + 'type').innerHTML;
 							if (csempe.style.display == 'none' && csempeTypeValue == 'ismeretlen') {
 								//az első csempe a sorban aminek a láthatósága null
 								csempe.style.display = 'inline-block';
-								csempe.className = "kocka animated bounceIn";
+								if (nezet == "blokk") {csempe.className = "kocka animated bounceIn";}
+								if (nezet == "lista") {csempe.className = "kocka2 animated bounceIn";}
 								
 								document.getElementById('kocka' + j + 'nev').innerHTML = snodeDeviceName;
 								document.getElementById('kocka' + j + 'type').innerHTML = "RGBW";
@@ -1408,7 +1483,7 @@
 			}
 			
 			function executeFilter(type) {
-				for (var i = 1 ; i <= 10; i++)
+				for (var i = 1 ; i <= 20; i++)
 				{
 					var kockai = document.getElementById('kocka' + i);
 					var kockatype = document.getElementById('kocka' + i + 'type');
@@ -1416,8 +1491,8 @@
 					{
 						
 						kockai.style.display = 'inline-block';
-						kockai.className = "kocka animated bounceIn";
-						
+						if (nezet == "blokk") {kockai.className = "kocka animated bounceIn";}
+						if (nezet == "lista") {kockai.className = "kocka2 animated bounceIn";}
 						
 					}
 					else
@@ -1425,7 +1500,8 @@
 						if (type == kockatype.innerHTML) 
 						{ 
 							kockai.style.display = 'inline-block'; 
-							kockai.className = "kocka animated bounceIn";
+							if (nezet == "blokk") {kockai.className = "kocka animated bounceIn";}
+							if (nezet == "lista") {kockai.className = "kocka2 animated bounceIn";}
 						}
 						else
 						{
@@ -1549,7 +1625,7 @@
 			}
 
 			function resetKockas() {
-				for (var i=10; i> 10; i--) {
+				for (var i=20; i>= 1; i--) {
 					document.getElementById('kocka' + i).style.display = 'none';
 					document.getElementById('kocka' + i + 'type').innerHTML = 'ismeretlen';
 					document.getElementById('kocka' + i + 'ertek').innerHTML = '...';
@@ -1602,10 +1678,55 @@
 			   );
 			
 			}
+			
+			var nezet = "blokk";
+			
+			function nezetvaltas() {
+			var geg = document.getElementById('kocka1').className;
+				if (geg == "kocka")
+				{
+					for (var i = 1; i <= 20; i++)
+					{
+						document.getElementById('kocka' + i).className = "kocka2";
+						document.getElementById('kocka' + i + 'iconConatiner').className = "ikon2";
+						document.getElementById('kocka' + i + 'icon').className = "ikonImg2";						
+						
+						document.getElementById('kocka' + i + 'resultblock').className = "w3-right";
+						document.getElementById('kocka' + i + 'resultblock').style.marginTop  = "-5px";
+						document.getElementById('kocka' + i + 'resultblock').style.marginRight  = "7px";
+						
+						
+						document.getElementById('kocka' + i + 'nev').style.marginTop  = "-33px";
+						document.getElementById('kocka' + i + 'nev').style.marginLeft  = "60px";
+						document.getElementById('kocka' + i + 'szoba').style.marginTop  = "-4px";
+						document.getElementById('kocka' + i + 'szoba').style.marginLeft  = "60px";
+						document.getElementById('viewIcon').src = 'img/viewmenu.svg';
+						nezet = "lista";
+					}
+				}
+				else {
+					for (var i = 1; i <= 20; i++)
+					{
+						document.getElementById('kocka' + i).className = "kocka";
+						document.getElementById('kocka' + i + 'iconConatiner').className = "ikon";
+						document.getElementById('kocka' + i + 'icon').className = "ikonImg";
+						document.getElementById('kocka' + i + 'resultblock').className = "";
+						document.getElementById('kocka' + i + 'resultblock').style.marginTop  = "0px";
+						document.getElementById('kocka' + i + 'resultblock').style.marginRight  = "0px";
+						document.getElementById('kocka' + i + 'nev').style.marginTop  = "-14px";
+						document.getElementById('kocka' + i + 'nev').style.marginLeft  = "15px";
+						document.getElementById('kocka' + i + 'szoba').style.marginTop  = "-4px";
+						document.getElementById('kocka' + i + 'szoba').style.marginLeft  = "15px";
+						document.getElementById('viewIcon').src = 'img/viewlist.svg';
+						nezet = "blokk";
+					}
+				}
+			}
+			
 	</script>
 		
 		<div id="main">
-			
+			<!--<div class="w3-yellow" onclick="nezetvaltas()">átalakítás</div>-->
 			
 			<div id="headerImg" class="bgr"></div>
 			<!--<div onclick="resetKockas()">test</div>-->
@@ -1616,81 +1737,161 @@
 				<div id="kocka1" name="kocka1" class="kocka" style="display:none;">
 					<div id="kocka1type" name="kocka1type" style="display:none">ismeretlen</div>
 					<div id="kocka1iconConatiner" name="kocka1iconConatiner" class="ikon"><img id="kocka1icon" name="kocka1icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka1szoba" name="kocka1szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka1resultblock"><h1 id="kocka1ertek" name="kocka1ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka1ertekS" name="kocka1ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka1nev" name="kocka1nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka1szoba" name="kocka1szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka2" name="kocka2" class="kocka" style="display:none;">
 					<div id="kocka2type" name="kocka2type" style="display:none">ismeretlen</div>
 					<div id="kocka2iconConatiner" name="kocka2iconConatiner" class="ikon"><img id="kocka2icon" name="kocka2icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka2ertek" name="kocka2ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka2ertekS" name="kocka2ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka2nev" name="kocka2nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka2szoba" name="kocka2szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka2resultblock"><h1 id="kocka2ertek" name="kocka2ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka2ertekS" name="kocka2ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka2nev" name="kocka2nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka2szoba" name="kocka2szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka3" name="kocka3" class="kocka" style="display:none;">
 					<div id="kocka3type" name="kocka3type" style="display:none">ismeretlen</div>
 					<div id="kocka3iconConatiner" name="kocka3iconConatiner" class="ikon"><img id="kocka3icon" name="kocka3icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka3ertek" name="kocka3ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka3ertekS" name="kocka3ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka3nev" name="kocka3nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka3szoba" name="kocka3szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka3resultblock"><h1 id="kocka3ertek" name="kocka3ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka3ertekS" name="kocka3ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka3nev" name="kocka3nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka3szoba" name="kocka3szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka4" name="kocka4" class="kocka" style="display:none;">
 					<div id="kocka4type" name="kocka4type" style="display:none">ismeretlen</div>
 					<div id="kocka4iconConatiner" name="kocka4iconConatiner" class="ikon"><img id="kocka4icon" name="kocka4icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka4ertek" name="kocka4ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka4ertekS" name="kocka4ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka4nev" name="kocka4nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka4szoba" name="kocka4szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka4resultblock"><h1 id="kocka4ertek" name="kocka4ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka4ertekS" name="kocka4ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka4nev" name="kocka4nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka4szoba" name="kocka4szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka5" name="kocka5" class="kocka" style="display:none;">
 					<div id="kocka5type" name="kocka5type" style="display:none">ismeretlen</div>
 					<div id="kocka5iconConatiner" name="kocka5iconConatiner" class="ikon"><img id="kocka5icon" name="kocka5icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka5ertek" name="kocka5ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka5ertekS" name="kocka5ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka5nev" name="kocka5nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka5szoba" name="kocka5szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka5resultblock"><h1 id="kocka5ertek" name="kocka5ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka5ertekS" name="kocka5ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka5nev" name="kocka5nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka5szoba" name="kocka5szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka6" name="kocka6" class="kocka" style="display:none;">
 					<div id="kocka6type" name="kocka6type" style="display:none">ismeretlen</div>
 					<div id="kocka6iconConatiner" name="kocka6iconConatiner" class="ikon"><img id="kocka6icon" name="kocka6icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka6ertek" name="kocka6ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka6ertekS" name="kocka6ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka6nev" name="kocka6nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka6szoba" name="kocka6szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka6resultblock"><h1 id="kocka6ertek" name="kocka6ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka6ertekS" name="kocka6ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka6nev" name="kocka6nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka6szoba" name="kocka6szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka7" name="kocka7" class="kocka" style="display:none;">
 					<div id="kocka7type" name="kocka7type" style="display:none">ismeretlen</div>
 					<div id="kocka7iconConatiner" name="kocka7iconConatiner" class="ikon"><img id="kocka7icon" name="kocka7icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka7ertek" name="kocka7ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka7ertekS" name="kocka7ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka7nev" name="kocka7nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka7szoba" name="kocka7szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka7resultblock"><h1 id="kocka7ertek" name="kocka7ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka7ertekS" name="kocka7ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka7nev" name="kocka7nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka7szoba" name="kocka7szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka8" name="kocka8" class="kocka" style="display:none;">
 					<div id="kocka8type" name="kocka8type" style="display:none">ismeretlen</div>
 					<div id="kocka8iconConatiner" name="kocka8iconConatiner" class="ikon"><img id="kocka8icon" name="kocka8icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka8ertek" name="kocka8ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka8ertekS" name="kocka8ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka8nev" name="kocka8nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka8szoba" name="kocka8szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka8resultblock"><h1 id="kocka8ertek" name="kocka8ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka8ertekS" name="kocka8ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka8nev" name="kocka8nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka8szoba" name="kocka8szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka9" name="kocka9" class="kocka" style="display:none;">
 					<div id="kocka9type" name="kocka9type" style="display:none">ismeretlen</div>
 					<div id="kocka9iconConatiner" name="kocka9iconConatiner" class="ikon"><img id="kocka9icon" name="kocka9icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka9ertek" name="kocka9ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka9ertekS" name="kocka9ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka9nev" name="kocka9nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka9szoba" name="kocka9szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka9resultblock"><h1 id="kocka9ertek" name="kocka9ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka9ertekS" name="kocka9ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka9nev" name="kocka9nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka9szoba" name="kocka9szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				<div id="kocka10" name="kocka10" class="kocka" style="display:none;">
 					<div id="kocka10type" name="kocka10type" style="display:none">ismeretlen</div>
 					<div id="kocka10iconConatiner" name="kocka10iconConatiner" class="ikon"><img id="kocka10icon" name="kocka10icon" class="ikonImg" src="img/logo.svg"></div>
-					<h1 id="kocka10ertek" name="kocka10ertek" style="margin-left:15px;margin-top:8px;font-size:26px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka10ertekS" name="kocka10ertekS" style="font-size:16px;display:inline;color:#6d6d6d;"></div>
-					<div id="kocka10nev" name="kocka10nev" style="margin-left:15px;font-size:18px;margin-top:-14px;letter-spacing:-1px;color:#111;">nincs_nev</div>
-					<div id="kocka10szoba" name="kocka10szoba" style="margin-left:15px;font-size:12px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;">OTTHON</div>
+					<div id="kocka10resultblock"><h1 id="kocka10ertek" name="kocka10ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka10ertekS" name="kocka10ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka10nev" name="kocka10nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka10szoba" name="kocka10szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka11" name="kocka11" class="kocka" style="display:none;">
+					<div id="kocka11type" name="kocka11type" style="display:none">ismeretlen</div>
+					<div id="kocka11iconConatiner" name="kocka11iconConatiner" class="ikon"><img id="kocka11icon" name="kocka11icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka11resultblock"><h1 id="kocka11ertek" name="kocka11ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka11ertekS" name="kocka11ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka11nev" name="kocka11nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka11szoba" name="kocka11szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka12" name="kocka12" class="kocka" style="display:none;">
+					<div id="kocka12type" name="kocka12type" style="display:none">ismeretlen</div>
+					<div id="kocka12iconConatiner" name="kocka12iconConatiner" class="ikon"><img id="kocka12icon" name="kocka12icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka12resultblock"><h1 id="kocka12ertek" name="kocka12ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka12ertekS" name="kocka12ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka12nev" name="kocka12nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka12szoba" name="kocka12szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka13" name="kocka13" class="kocka" style="display:none;">
+					<div id="kocka13type" name="kocka13type" style="display:none">ismeretlen</div>
+					<div id="kocka13iconConatiner" name="kocka13iconConatiner" class="ikon"><img id="kocka13icon" name="kocka13icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka13resultblock"><h1 id="kocka13ertek" name="kocka13ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka13ertekS" name="kocka13ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka13nev" name="kocka13nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka13szoba" name="kocka13szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka14" name="kocka14" class="kocka" style="display:none;">
+					<div id="kocka14type" name="kocka14type" style="display:none">ismeretlen</div>
+					<div id="kocka14iconConatiner" name="kocka14iconConatiner" class="ikon"><img id="kocka14icon" name="kocka14icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka14resultblock"><h1 id="kocka14ertek" name="kocka14ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka14ertekS" name="kocka14ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka14nev" name="kocka14nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka14szoba" name="kocka14szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka15" name="kocka15" class="kocka" style="display:none;">
+					<div id="kocka15type" name="kocka15type" style="display:none">ismeretlen</div>
+					<div id="kocka15iconConatiner" name="kocka15iconConatiner" class="ikon"><img id="kocka15icon" name="kocka15icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka15resultblock"><h1 id="kocka15ertek" name="kocka15ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka15ertekS" name="kocka15ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka15nev" name="kocka15nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka15szoba" name="kocka15szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka16" name="kocka16" class="kocka" style="display:none;">
+					<div id="kocka16type" name="kocka16type" style="display:none">ismeretlen</div>
+					<div id="kocka16iconConatiner" name="kocka16iconConatiner" class="ikon"><img id="kocka16icon" name="kocka16icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka16resultblock"><h1 id="kocka16ertek" name="kocka16ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka16ertekS" name="kocka16ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka16nev" name="kocka16nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka16szoba" name="kocka16szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka17" name="kocka17" class="kocka" style="display:none;">
+					<div id="kocka17type" name="kocka17type" style="display:none">ismeretlen</div>
+					<div id="kocka17iconConatiner" name="kocka17iconConatiner" class="ikon"><img id="kocka17icon" name="kocka17icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka17resultblock"><h1 id="kocka17ertek" name="kocka17ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka17ertekS" name="kocka17ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka17nev" name="kocka17nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka17szoba" name="kocka17szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka18" name="kocka18" class="kocka" style="display:none;">
+					<div id="kocka18type" name="kocka18type" style="display:none">ismeretlen</div>
+					<div id="kocka18iconConatiner" name="kocka18iconConatiner" class="ikon"><img id="kocka18icon" name="kocka18icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka18resultblock"><h1 id="kocka18ertek" name="kocka18ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka18ertekS" name="kocka18ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka18nev" name="kocka18nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka18szoba" name="kocka18szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka19" name="kocka19" class="kocka" style="display:none;">
+					<div id="kocka19type" name="kocka19type" style="display:none">ismeretlen</div>
+					<div id="kocka19iconConatiner" name="kocka19iconConatiner" class="ikon"><img id="kocka19icon" name="kocka19icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka19resultblock"><h1 id="kocka19ertek" name="kocka19ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka19ertekS" name="kocka19ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka19nev" name="kocka19nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka19szoba" name="kocka19szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
+				</div>
+				
+				<div id="kocka20" name="kocka20" class="kocka" style="display:none;">
+					<div id="kocka20type" name="kocka20type" style="display:none">ismeretlen</div>
+					<div id="kocka20iconConatiner" name="kocka20iconConatiner" class="ikon"><img id="kocka20icon" name="kocka20icon" class="ikonImg" src="img/logo.svg"></div>
+					<div id="kocka20resultblock"><h1 id="kocka20ertek" name="kocka20ertek" style="margin-left:15px;margin-top:12px;font-size:24px;letter-spacing: 1.5px;color:#6d6d6d;display:inline-block">...</h1><div id="kocka20ertekS" name="kocka20ertekS" style="font-size:14px;display:inline;color:#6d6d6d;"></div></div>
+					<div id="kocka20nev" name="kocka20nev" style="margin-left:15px;font-size:16px;margin-top:-14px;letter-spacing:-1px;color:#111;transition: all 0.2s ease-in-out">nincs_nev</div>
+					<div id="kocka20szoba" name="kocka20szoba" style="margin-left:15px;font-size:10px;margin-top:-4px;letter-spacing:-1px;color:#404040;font-weight: 700 !important;transition: all 0.2s ease-in-out">OTTHON</div>
 				</div>
 				
 				
@@ -1733,6 +1934,10 @@
 						
 				
 				<div style="flex: 1;text-align:center;">
+					<div name="btn_changeView" class="settingsBtn" id="btn_changeView" onclick="nezetvaltas()"><img id="viewIcon" alt="list nézet váltás" src="img/viewlist.svg" style="height:20px;"></div> 
+				</div>
+				
+				<div style="flex: 1;text-align:center;">
 					<div name="btn_refresh" class="settingsBtn" id="btn_refresh" onclick="refreshEverything()"><img alt="node kereses" src="img/refresh.svg" style="height:20px;"></div> 
 				</div>
 				
@@ -1754,7 +1959,6 @@
 			var nodeNameToReplace = 'ures';
 			var nodeNameToReplaceAlt = 'ures';
 			//onclick="snodeDeviceCommand('1')"
-			
 			//$("#kocka1").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000);});
 			//$("#kocka2").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('2');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('2'); },1000);});
 			//$("#kocka3").mouseup(function(){ clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('3');}; longpress='0'; }).mousedown(function(){ pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('3'); },1000);});
@@ -1768,8 +1972,8 @@
 			
 			//$("#kocka1").on('touchend mouseup', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}	longpress='0'; });
 			//$("#kocka1").on('touchstart mousedown', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000); });
-			
 			//e.preventDefault();
+			
 			$("#kocka1").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('1');}	longpress='0'; });
 			$("#kocka1").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('1'); },1000); });
 			
@@ -1800,8 +2004,35 @@
 			$("#kocka10").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('10');}	longpress='0'; });
 			$("#kocka10").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('10'); },1000); });
 			
-				
+			$("#kocka11").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('11');}	longpress='0'; });
+			$("#kocka11").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('11'); },1000); });
 			
+			$("#kocka12").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('12');}	longpress='0'; });
+			$("#kocka12").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('12'); },1000); });
+			
+			$("#kocka13").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('13');}	longpress='0'; });
+			$("#kocka13").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('13'); },1000); });
+			
+			$("#kocka14").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('14');}	longpress='0'; });
+			$("#kocka14").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('14'); },1000); });
+			
+			$("#kocka15").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('15');}	longpress='0'; });
+			$("#kocka15").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('15'); },1000); });
+			
+			$("#kocka16").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('16');}	longpress='0'; });
+			$("#kocka16").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('16'); },1000); });
+			
+			$("#kocka17").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('17');}	longpress='0'; });
+			$("#kocka17").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('17'); },1000); });
+			
+			$("#kocka18").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('18');}	longpress='0'; });
+			$("#kocka18").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('18'); },1000); });
+			
+			$("#kocka19").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('19');}	longpress='0'; });
+			$("#kocka19").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('19'); },1000); });
+			
+			$("#kocka20").on('touchend', function(e) {clearTimeout(pressTimer); if (longpress=='0'){snodeDeviceCommand('20');}	longpress='0'; });
+			$("#kocka20").on('touchstart', function(e) { pressTimer = window.setTimeout(function() {longpress='1'; showDeviceDetails('20'); },1000); });			
 			
 			function showDeviceDetails(id) {
 				var deviceName = document.getElementById('kocka' + id + 'nev').innerHTML;
@@ -1816,7 +2047,7 @@
 					var devMainNameHumidity = devicenameArr[0] + '_DROP';
 					
 					//irjuk be az akutalis adatokat
-					for (var i = 1; i<=10; i++)
+					for (var i = 1; i<=20; i++)
 					{
 						if (document.getElementById('kocka' + i + 'nev').innerHTML.indexOf(devMainNameTemperature) != -1) {document.getElementById('actualTemp').innerHTML = document.getElementById('kocka' + i + 'ertek').innerHTML;}
 						if (document.getElementById('kocka' + i + 'nev').innerHTML.indexOf(devMainNameHumidity) != -1) {document.getElementById('actualHumidity').innerHTML = document.getElementById('kocka' + i + 'ertek').innerHTML;}
@@ -1886,9 +2117,9 @@
 							  }
 							});
 					
-					setTimeout(function(){
+					//setTimeout(function(){
 									showModalRGBW();
-								},250);
+					//			},250);
 					
 				}
 				else {
