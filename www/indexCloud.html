@@ -1625,6 +1625,7 @@
 			}
 
 			function resetKockas() {
+				logging("UI Frissítése");
 				for (var i=20; i>= 1; i--) {
 					document.getElementById('kocka' + i).style.display = 'none';
 					document.getElementById('kocka' + i + 'type').innerHTML = 'ismeretlen';
@@ -1634,6 +1635,7 @@
 					document.getElementById('kocka' + i + 'szoba').innerHTML = 'OTTHON';
 				
 				}
+				logging("UI Frissítése: kész!");
 			}
 		
 			function refreshEverything() {
@@ -1641,6 +1643,7 @@
 				resetKockas();
 				//es mindent megprobalunk elorol, mintha most toltenenk be; egyenlore csak gombbal, mert nem akarom folyamatosan ujrakapcsolni
 				//de lehene akar az alabbi fuggveny onConnectionLost eseményénél is egy ujracsatlakozas
+				logging("Újracsatlakozás: Cloud server");
 				connectAndRefreshCloud();
 			}
 			
