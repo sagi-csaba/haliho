@@ -1697,37 +1697,29 @@
 				{
 					for (var i = 1; i <= 20; i++)
 					{
-						document.getElementById('kocka' + i).className = "kocka animated flipOutX";
-						//setTimeout(function(){
-							logging("1:" +i);
+						//document.getElementById('kocka' + i).className = "kocka animated flipOutX";
+						
 							document.getElementById('kocka' + i + 'iconConatiner').className = "ikon2";
-							logging("2:" +i);
 							document.getElementById('kocka' + i + 'icon').className = "ikonImg2";						
-							logging("3:" +i);
+							
 							document.getElementById('kocka' + i + 'resultblock').className = "w3-right";
-							logging("4:" +i);
 							document.getElementById('kocka' + i + 'resultblock').style.marginTop  = "-5px";
-							logging("5:" +i);
 							document.getElementById('kocka' + i + 'resultblock').style.marginRight  = "7px";
-							logging("6:" +i);
 							
 							document.getElementById('kocka' + i + 'nev').style.marginTop  = "-33px";
-							logging("7:" +i);
 							document.getElementById('kocka' + i + 'nev').style.marginLeft  = "60px";
-							logging("8:" +i);
 							document.getElementById('kocka' + i + 'szoba').style.marginTop  = "-4px";
-							logging("9:" +i);
 							document.getElementById('kocka' + i + 'szoba').style.marginLeft  = "60px";
-							logging("10:" +i);
-							document.getElementById('viewIcon').src = 'img/viewmenu.svg';
-							logging("11:" +i);
-							nezet = "lista";
-							logging("12:" +i);
-							document.getElementById('kocka' + i).style.display = "inline-block";
 							
-							logging("13:" +i);
-							document.getElementById('kocka' + i).className = "kocka2 animated flipInX";
-						//},500);
+							document.getElementById('viewIcon').src = 'img/viewmenu.svg';
+							nezet = "lista";
+							if (document.getElementById('kocka' + i).style.display == "inline-block")
+							{
+								document.getElementById('kocka' + i).style.display = "none";
+								document.getElementById('kocka' + i).style.display = "inline-block";
+								document.getElementById('kocka' + i).className = "kocka2 animated flipInX";
+							}
+						
 					}
 				}
 				else {
