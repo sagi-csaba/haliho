@@ -1704,6 +1704,9 @@
 							{
 								tigris = "igaz";
 								document.getElementById('kocka' + i).style.display = "none";
+								document.getElementById('kocka' + i + 'resultblock').className = "w3-right";
+								document.getElementById('kocka' + i + 'resultblock').style.marginTop  = "-5px";
+								document.getElementById('kocka' + i + 'resultblock').style.marginRight  = "7px";
 								document.getElementById('kocka' + i).className = "kocka2";
 							}
 						
@@ -1715,9 +1718,7 @@
 							document.getElementById('kocka' + i + 'szoba').style.marginTop  = "-4px";
 							document.getElementById('kocka' + i + 'szoba').style.marginLeft  = "60px";
 							
-							document.getElementById('kocka' + i + 'resultblock').className = "w3-right";
-							document.getElementById('kocka' + i + 'resultblock').style.marginTop  = "-5px";
-							document.getElementById('kocka' + i + 'resultblock').style.marginRight  = "7px";
+							
 							
 							document.getElementById('viewIcon').src = 'img/viewmenu.svg';
 							nezet = "lista";
