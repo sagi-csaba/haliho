@@ -1627,12 +1627,19 @@
 			function resetKockas() {
 				logging("UI Frissítése");
 				for (var i=20; i>= 1; i--) {
+					logging("UI Frissítése: 0");
 					document.getElementById('kocka' + i).style.display = 'none';
+					logging("UI Frissítése a" + i);
 					document.getElementById('kocka' + i + 'type').innerHTML = 'ismeretlen';
+					logging("UI Frissítése b" + i);
 					document.getElementById('kocka' + i + 'ertek').innerHTML = '...';
+					logging("UI Frissítése c" + i);
 					document.getElementById('kocka' + i + 'erteks').innerHTML = '';
+					logging("UI Frissítése d" + i);
 					document.getElementById('kocka' + i + 'nev').innerHTML = 'nincs_nev';
+					logging("UI Frissítése e" + i);
 					document.getElementById('kocka' + i + 'szoba').innerHTML = 'OTTHON';
+					logging("UI Frissítése f" + i);
 				
 				}
 				logging("UI Frissítése: kész!");
