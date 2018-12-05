@@ -1657,34 +1657,36 @@
 			
 			function scanQRcode(){
 				document.getElementById('scanBtn').innerHTML = "Kamera indítása folyamatban...";
-				 cordova.plugins.barcodeScanner.scan(
-				  function (result) {
-					  if (result.text.indexOf('snodeConfig') != -1){
-						var resultArray = result.text.split(';');
-						document.getElementById('settingsMqttServerInput').value = resultArray[1].replace('server:','').replace(';','');
-						document.getElementById('settingsMqttPortInput').value = resultArray[2].replace('port:','').replace(';','');
-						document.getElementById('settingsMqttUserInput').value = resultArray[3].replace('user:','').replace(';','');
-						document.getElementById('settingsMqttPwdInput').value = resultArray[4].replace('password:','').replace(';','');
-						document.getElementById('settingsMqttTopicInput').value = resultArray[5].replace('topic:','').replace(';','');
-						alert("Beállítások beolvasva! A mentéshez koppints a 'Mentés' gombra");
-						document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
-					  }
-					  else {
-						alert('A QR kód nem tartalmaz snode beállításokat!');
-						document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
-					  }
-					  
-					//alert("We got a barcode\n" +
-					//"Result: " + result.text + "\n" +
-					//"Format: " + result.format + "\n" +
-					//"Cancelled: " + result.cancelled);
-				  },
-				  function (error) {
-					  alert("Hiba a szkennelés során: " + error);
-					  document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
-				  }
-			   );
-			
+				
+				setTimeout(function(){
+							 cordova.plugins.barcodeScanner.scan(
+							  function (result) {
+								  if (result.text.indexOf('snodeConfig') != -1){
+									var resultArray = result.text.split(';');
+									document.getElementById('settingsMqttServerInput').value = resultArray[1].replace('server:','').replace(';','');
+									document.getElementById('settingsMqttPortInput').value = resultArray[2].replace('port:','').replace(';','');
+									document.getElementById('settingsMqttUserInput').value = resultArray[3].replace('user:','').replace(';','');
+									document.getElementById('settingsMqttPwdInput').value = resultArray[4].replace('password:','').replace(';','');
+									document.getElementById('settingsMqttTopicInput').value = resultArray[5].replace('topic:','').replace(';','');
+									alert("Beállítások beolvasva! A mentéshez koppints a 'Mentés' gombra");
+									document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
+								  }
+								  else {
+									alert('A QR kód nem tartalmaz snode beállításokat!');
+									document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
+								  }
+								  
+								//alert("We got a barcode\n" +
+								//"Result: " + result.text + "\n" +
+								//"Format: " + result.format + "\n" +
+								//"Cancelled: " + result.cancelled);
+							  },
+							  function (error) {
+								  alert("Hiba a szkennelés során: " + error);
+								  document.getElementById('scanBtn').innerHTML = "Beállítások szkennelése QR kódról...";
+							  }
+						   );
+				},150);
 			}
 			
 			var nezet = "blokk";
@@ -1695,21 +1697,24 @@
 				{
 					for (var i = 1; i <= 20; i++)
 					{
-						document.getElementById('kocka' + i).className = "kocka2 animated flipInX";
-						document.getElementById('kocka' + i + 'iconConatiner').className = "ikon2";
-						document.getElementById('kocka' + i + 'icon').className = "ikonImg2";						
-						
-						document.getElementById('kocka' + i + 'resultblock').className = "w3-right";
-						document.getElementById('kocka' + i + 'resultblock').style.marginTop  = "-5px";
-						document.getElementById('kocka' + i + 'resultblock').style.marginRight  = "7px";
-						
-						
-						document.getElementById('kocka' + i + 'nev').style.marginTop  = "-33px";
-						document.getElementById('kocka' + i + 'nev').style.marginLeft  = "60px";
-						document.getElementById('kocka' + i + 'szoba').style.marginTop  = "-4px";
-						document.getElementById('kocka' + i + 'szoba').style.marginLeft  = "60px";
-						document.getElementById('viewIcon').src = 'img/viewmenu.svg';
-						nezet = "lista";
+						document.getElementById('kocka' + i).className = "kocka animated flipOutX";
+						setTimeout(function(){
+							document.getElementById('kocka' + i).className = "kocka2 animated flipInX";
+							document.getElementById('kocka' + i + 'iconConatiner').className = "ikon2";
+							document.getElementById('kocka' + i + 'icon').className = "ikonImg2";						
+							
+							document.getElementById('kocka' + i + 'resultblock').className = "w3-right";
+							document.getElementById('kocka' + i + 'resultblock').style.marginTop  = "-5px";
+							document.getElementById('kocka' + i + 'resultblock').style.marginRight  = "7px";
+							
+							
+							document.getElementById('kocka' + i + 'nev').style.marginTop  = "-33px";
+							document.getElementById('kocka' + i + 'nev').style.marginLeft  = "60px";
+							document.getElementById('kocka' + i + 'szoba').style.marginTop  = "-4px";
+							document.getElementById('kocka' + i + 'szoba').style.marginLeft  = "60px";
+							document.getElementById('viewIcon').src = 'img/viewmenu.svg';
+							nezet = "lista";
+						},500);
 					}
 				}
 				else {
